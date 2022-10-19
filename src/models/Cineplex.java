@@ -1,6 +1,10 @@
 package models;
 
 import java.time.LocalTime;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+import java.util.LinkedList;
 
 /**
  * Represents a cineplex theatre
@@ -82,4 +86,29 @@ public class Cineplex {
         return (openingHours.compareTo(time) <= 0) && (closingHours.compareTo(time) >= 0);
     }
 
+    public static LinkedList<Cineplex> getCineplexes() {
+
+        LinkedList<Cineplex> list = new LinkedList<Cineplex>();
+        try {
+            File f = new File("./data/cineplexes.csv");
+            System.out.println(f.getPath());
+            System.out.println(f.getAbsolutePath());
+
+            Scanner sc = new Scanner(f);
+
+            String in, params[];
+            while (sc.hasNextLine()) {
+                in = sc.nextLine();
+                params = in.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+                list.add(new Cineplex(params[0], params[1], params[2], params[3]));
+            }
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("Cineplexes File not found");
+            e.printStackTrace();
+        }
+
+        return list;
+
+    }
 }
