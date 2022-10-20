@@ -86,19 +86,22 @@ public class Cineplex {
         return (openingHours.compareTo(time) <= 0) && (closingHours.compareTo(time) >= 0);
     }
 
+    /**
+     * Reads data from file and parses into a linked list of Cineplexes
+     * @return a list of the available Cineplexes
+     */
     public static LinkedList<Cineplex> getCineplexes() {
 
         LinkedList<Cineplex> list = new LinkedList<Cineplex>();
         try {
             File f = new File("./data/cineplexes.csv");
-            System.out.println(f.getPath());
-            System.out.println(f.getAbsolutePath());
 
             Scanner sc = new Scanner(f);
 
             String in, params[];
             while (sc.hasNextLine()) {
                 in = sc.nextLine();
+                // regex to split by comma, but not those within quotation marks
                 params = in.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
                 list.add(new Cineplex(params[0], params[1], params[2], params[3]));
             }
