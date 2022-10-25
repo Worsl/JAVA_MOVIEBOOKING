@@ -36,5 +36,5 @@ The format of how the following resources are stored in CSV.
 ## Movie
 
 ```
-<Title>,<Showing Status>,<Synopsis>,<Director>,<Cast>,<Type>
+<Title>,<Showing Status>,<Synopsis>,<Director>,<Cast>,<Type>,<Duration>,<Content Rating>
 ```

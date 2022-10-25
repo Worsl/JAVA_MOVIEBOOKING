@@ -6,9 +6,14 @@ package models;
 public class Review {
 
     /**
+     * The reviewer of the movie.
+     */
+    private User reviewer;
+
+    /**
      * The reviewer's rating of the movie.
      */
-    private int rating;
+    private int ratingScore;
 
     /**
      * The reviewer's comment on the movie.
@@ -16,39 +21,43 @@ public class Review {
     private String comment;
 
     /**
-     * The reviewer of the movie.
-     */
-    private String reviewer;
-
-    /**
-     * The movie of the review.
-     */
-    private Movie movie;
-
-    /**
      * Crates a new Review from the given parameters
+     * @param reviewer The Review's reviewer
      * @param rating The Review's rating
      * @param comment The Review's comment
-     * @param reviewer The Review's reviewer
-     * @param movie The Review's movie
      */
-    public Review (int rating, String comment, String reviewer, Movie movie) {
-        this.rating = rating;
-        this.comment = comment;
+    public Review (User reviewer, int ratingScore, String comment) {
         this.reviewer = reviewer;
-        this.movie = movie;
+        this.ratingScore = ratingScore;
+        this.comment = comment;
     }
 
     /**
-     * Gets the rating of the review
+     * Gets the reviewer of this review
+     * @return this Review's reviewer
+     */
+    public User getReviewer() {
+        return this.reviewer;
+    }
+
+    /**
+     * Gets the rating of this review
      * @return this Review's rating
      */
-    public int getRating() {
-        return this.rating;
+    public int getRatingScore() {
+        return this.ratingScore;
     }
 
     /**
-     * Gets the comment of the review
+     * Updates the rating score of this review
+     * @param ratingScore the new rating sacore of this review
+     */
+    public void setRatingScore(int ratingScore) {
+        this.ratingScore = ratingScore;
+    }
+
+    /**
+     * Gets the comment of this review
      * @return this Review's comment
      */
     public String getComment() {
@@ -56,18 +65,11 @@ public class Review {
     }
 
     /**
-     * Gets the reviewer of the review
-     * @return this Review's reviewer
+     * Updates the comment of this review.
+     * @param comment The new comment of this review
      */
-    public String getReviewer() {
-        return this.reviewer;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
-    /**
-     * Gets the movie of the review
-     * @return this Review's movie
-     */
-    public Movie getMovie() {
-        return this.movie;
-    }
 }

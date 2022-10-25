@@ -18,7 +18,7 @@ public class Cinema {
     /**
      * The class of the cinema.
      */
-    private String classType;
+    private String cinemaClass;
 
     /**
      * The Cineplex the cinema is in.
@@ -29,12 +29,12 @@ public class Cinema {
      * Creates a new Cinema from the given parameters
      * @param cinemaCode the Cinema's code
      * @param capacity the Cinema's capacity
-     * @param classType the Cinema's class
+     * @param cinemaClass the Cinema's class
      * @param cineplex the Cinema's cineplex
      */
-    public Cinema(String cinemaCode, String classType, Cineplex cineplex) {
+    public Cinema(String cinemaCode, String cinemaClass, Cineplex cineplex) {
         this.cinemaCode = cinemaCode;
-        this.classType = classType;
+        this.cinemaClass = cinemaClass;
         this.cineplex = cineplex;
     }
 
@@ -47,11 +47,27 @@ public class Cinema {
     }
 
     /**
+     * Sets the code of this Cinema.
+     * @param cinemaCode this Cinema's new code
+     */
+    public void setCinemaCode(String cinemaCode) {
+        this.cinemaCode = cinemaCode;
+    }
+
+    /**
      * Gets the class of this Cinema.
      * @return this Cinema's class.
      */
-    public String getClassType() {
-        return this.classType;
+    public String getCinemaClass() {
+        return this.cinemaClass;
+    }
+
+    /**
+     * Sets the class of this Cinema.
+     * @param cinemaClass this Cinema's new class
+     */
+    public void setCinemaClass(String cinemaClass) {
+        this.cinemaClass = cinemaClass;
     }
 
     /**
@@ -64,6 +80,7 @@ public class Cinema {
 
     /**
      * Reads data from file and parses into a linked list of Cinemas
+     * @param cineplexes the list of current available cineplexes
      */
     public static LinkedList<Cinema> getCinemas(LinkedList<Cineplex> cineplexes) {
 

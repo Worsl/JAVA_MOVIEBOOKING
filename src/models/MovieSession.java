@@ -1,5 +1,7 @@
 package models;
 
+import java.util.LinkedList;
+
 import java.time.LocalDateTime;
 
 /**
@@ -23,6 +25,11 @@ public class MovieSession {
     private Movie movie;
 
     /**
+     * The list of seats for this session
+     */
+    private LinkedList<Seat> seats;
+
+    /**
      * Creates a new Session from the given parameters
      * @param timeSlot the Session's time slot
      * @param cinema the Session's cinema
@@ -32,6 +39,8 @@ public class MovieSession {
         this.timeSlot = timeSlot;
         this.cinema = cinema;
         this.movie = movie;
+        // TODO structure of the movie theatre, then create seats in constructor
+        this.seats = new LinkedList<Seat>();
     }
 
     /**
@@ -56,6 +65,34 @@ public class MovieSession {
      */
     public Movie getMovie() {
         return this.movie;
+    }
+
+    /**
+     * Books a particular seat given by the parameter
+     * @param seatId the id of the seat to be booked
+     */
+    public void setSeat(String seatId) {
+        for (Seat s: seats) {
+            if (s.getSeatId() == seatId) {
+                s.occupySeat();
+                break;
+            }
+        }
+    }
+
+    /**
+     * Count the number of seats booked for this particular session
+     * @return the number of seats booked
+     */
+    public int countSeats() {
+        int count = 0;
+
+        for (Seat s: seats) {
+            if (s.checkOccupied())
+                count++;
+        }
+
+        return count;
     }
 
 }

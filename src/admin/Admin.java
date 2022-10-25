@@ -1,5 +1,6 @@
 import models.*;
 import java.util.LinkedList;
+import java.util.Scanner;
 
 /**
  * The entry point for the admin portal
@@ -13,29 +14,38 @@ class Admin {
          LinkedList<Cinema> cinemas = Cinema.getCinemas(cineplexes);
          LinkedList<Movie> movies = Movie.getMovies();
 
-         // for (Cineplex c: cineplexes) {
-         //     System.out.println(c.getName());
-         //     System.out.println(c.getLocation());
-         //     System.out.println(c.getOpeningHours());
-         //     System.out.println(c.getClosingHours());
-         //     System.out.println();
-         // }
+         Scanner sc = new Scanner(System.in);
 
-         // for (Cinema c: cinemas) {
-         //     System.out.println(c.getCinemaCode());
-         //     System.out.println(c.getClassType());
-         //     System.out.println(c.getCineplex().getName());
-         //     System.out.println();
-         // }
+        System.out.println("Welcome to MOBLIMA Admin Portal!");
+        int in = 0;
+        while (in != 7) {
+            System.out.println("What would you like to do today?");
+            System.out.println("1. Add a new movie");
+            System.out.println("2. Update a movie's details");
+            System.out.println("3. Delete an existing movie");
+            System.out.println("4. Add a new time slot for a movie");
+            System.out.println("5. Update a time slot for a movie");
+            System.out.println("6. Delete an existing time slot for a movie");
+            System.out.println("7. Exit");
+            in = sc.nextInt();
 
-         // for (Movie m: movies) {
-         //     System.out.println(m.getTitle());
-         //     System.out.println(m.getShowingStatus());
-         //     System.out.println(m.getSynopsis());
-         //     System.out.println(m.getDirector());
-         //     System.out.println(m.getCast());
-         //     System.out.println(m.getMovieType());
-         //     System.out.println();
-         // }
+            switch(in) {
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+            case 7:
+                System.out.println("Thank you for using MOBLIMA Admin Portal!");
+                break;
+            }
+        }
     }
 }
