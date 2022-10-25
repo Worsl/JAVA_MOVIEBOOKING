@@ -9,30 +9,54 @@ import java.time.LocalDateTime;
 public class Ticket {
 
     /**
-     * The age group of the owner of the ticket
+     * The type of this ticket
      */
-    private String ageGroup;
+    private TicketType ticketType;
 
     /**
-     * The date and time of the movie
+     * The seat of this ticket
      */
-    private LocalDateTime dateTime;
+    private Seat seat;
 
     /**
-     * The booking tied to the ticket
+     * The booking associated to this ticket
      */
     private Booking booking;
 
     /**
      * Creates a new Ticket from the given parameters
-     @param ageGroup The Ticket's age group
-     @param dateTime The Ticket's date & time
+     @param ticketType The Ticket's type
+     @param seat The Ticket's seat
      @param booking The Ticket's booking
      */
-    public Ticket (String ageGroup, LocalDateTime dateTime, Booking booking) {
-        this.ageGroup = ageGroup;
-        this.dateTime = dateTime;
+    public Ticket (TicketType ticketType, Seat seat, Booking booking) {
+        this.ticketType = ticketType;
+        this.seat = seat;
         this.booking = booking;
+    }
+
+    /**
+     * Gets the ticket type of this ticket
+     * @return the ticketType of this ticket
+     */
+    public TicketType getTicketType() {
+        return ticketType;
+    }
+
+    /**
+     * Gets the seat of this ticket
+     * @return the Seat of this ticket
+     */
+    public Seat getSeat() {
+        return seat;
+    }
+
+    /**
+     * Gets the booking of this ticket
+     * @return the booking of this ticket
+     */
+    public Booking getBooking() {
+        return booking;
     }
 
     /**
@@ -40,7 +64,7 @@ public class Ticket {
      * @return the price of the ticket
      */
     public double getTicketPrice() {
-        // TODO determine logic for price
+        // TODO determine logic for price (by CinemaClass, TicketType, MovieType)
         return 0;
     }
 }

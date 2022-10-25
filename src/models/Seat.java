@@ -7,14 +7,14 @@ package models;
 public class Seat {
 
     /**
-     * The seat number of the seat
-     */
-    private String seatNo;
-
-    /**
      * The availability of the seat
      */
     private boolean isOccupied;
+
+    /**
+     * The seat number of the seat
+     */
+    private String seatId;
 
     /**
      * The movie session of the seat
@@ -26,18 +26,10 @@ public class Seat {
      * @param seatNo The Seat's number
      * @param movieSession The Seat's associated movieSession
      */
-    public Seat (String seatNo, MovieSession movieSession) {
-        this.seatNo = seatNo;
+    public Seat (String seatId, MovieSession movieSession) {
         this.isOccupied = false;
+        this.seatId = seatId;
         this.movieSession = movieSession;
-    }
-
-    /**
-     * Gets the occupancy status of this seat
-     * @return true if occupied, false otherwise
-     */
-    public boolean getStatus() {
-        return this.isOccupied;
     }
 
     /**
@@ -45,6 +37,22 @@ public class Seat {
      */
     public void occupySeat() {
         isOccupied = true;
+    }
+
+    /**
+     * Gets the occupancy status of this seat
+     * @return true if occupied, false otherwise
+     */
+    public boolean checkOccupied() {
+        return this.isOccupied;
+    }
+
+    /**
+     * Gets the id of this seat
+     * @return the seatId of this seat
+     */
+    public String getSeatId() {
+        return this.seatId;
     }
 
 }

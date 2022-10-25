@@ -78,6 +78,38 @@ public class Cineplex {
     }
 
     /**
+     * Sets the name of this Cineplex.
+     * @param name the Cineplex's new name.
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Sets the location of this Cineplex.
+     * @param location this Cineplex's new location.
+     */
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    /**
+     * Sets the opening hours of this Cineplex.
+     * @param openingHours this Cineplex's new opening hours.
+     */
+    public void setOpeningHours(LocalTime openingHours) {
+        this.openingHours = openingHours;
+    }
+
+    /**
+     * Sets the closing hours of this Cineplex.
+     * @return closingHorus this Cineplex's new closing hours.
+     */
+    public void setClosingHours(LocalTime closingHours) {
+        this.closingHours = closingHours;
+    }
+
+    /**
      * Gets the availability of whether this Cineplex is open.
      * @param time The given time to check whether cineplex is open.
      * @return true if cineplex is open at given timing, false otherwise.
