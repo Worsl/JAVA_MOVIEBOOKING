@@ -5,8 +5,16 @@ package models;
  * Written on Tuesday, 25 October 2022.
  */
 
-public enum ContentRating {
 
+/**
+* Represents the ContentRating
+*/
+public enum ContentRating {
+    PG, 
+    PG13,
+    NC16, 
+    M18, 
+    R21,
     Placeholder;
 
     public static ContentRating getContentRating(String s) {

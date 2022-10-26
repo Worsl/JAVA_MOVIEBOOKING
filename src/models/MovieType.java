@@ -7,7 +7,18 @@ package models;
 
 public enum MovieType {
 
-    Placeholder;
+
+    REGULAR(4),   //value associated with each movie represents the baseprice of movie
+    THREE_DIMENSIONAL(10),
+    Placeholder(0);
+
+    int basePrice;
+
+    MovieType(int price)
+    {
+        this.basePrice = price;
+    }
+
     public static MovieType getMovieType(String s) {
         // TODO match movie type with given string s
         return Placeholder;
