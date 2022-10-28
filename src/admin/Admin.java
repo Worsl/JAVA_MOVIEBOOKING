@@ -1,5 +1,7 @@
 import models.*;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.Scanner;
 
 /**
@@ -10,9 +12,14 @@ import java.util.Scanner;
 
 class Admin {
      public static void main(String[] args) {
-         LinkedList<Cineplex> cineplexes = Cineplex.getCineplexes();
-         LinkedList<Cinema> cinemas = Cinema.getCinemas(cineplexes);
-         LinkedList<Movie> movies = Movie.getMovies();
+         // Key = Cineplex Name, Value = Cineplex
+         HashMap<String, Cineplex> cineplexes = DAO.getCineplexes();
+         // Key = Cinema Code, Value = Cinema
+         HashMap<String, Cinema> cinemas = DAO.getCinemas(cineplexes);
+         // Key = Movie Title, Value = movie object
+         HashMap<String, Movie> movies = DAO.getMovies();
+         // Key = Movie Title, Value = List of corresponding sessions
+         HashMap<String, LinkedList<MovieSession>> sessions = DAO.getSessions(cinemas, movies);
 
          Scanner sc = new Scanner(System.in);
 
