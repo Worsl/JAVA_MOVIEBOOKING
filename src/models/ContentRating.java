@@ -7,7 +7,7 @@ package models;
 
 
 /**
-* Represents the ContentRating
+* Represents the ContentRating enum
 */
 public enum ContentRating {
     PG, 
