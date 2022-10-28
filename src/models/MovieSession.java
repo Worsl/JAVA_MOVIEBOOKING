@@ -1,8 +1,8 @@
 package models;
 
+import java.time.LocalTime;
 import java.util.LinkedList;
-
-import java.time.LocalDateTime;
+import java.util.HashMap;
 
 /**
  * Represents a single movie session.
@@ -12,7 +12,7 @@ public class MovieSession {
     /**
      * The time slot of the session.
      */
-    private LocalDateTime timeSlot;
+    private LocalTime timeSlot;
 
     /**
      * The cinema of the session.
@@ -27,7 +27,7 @@ public class MovieSession {
     /**
      * The list of seats for this session
      */
-    private LinkedList<Seat> seats;
+    private HashMap<String, Seat> seats;
 
     /**
      * Creates a new Session from the given parameters
@@ -35,19 +35,27 @@ public class MovieSession {
      * @param cinema the Session's cinema
      * @param movie the Session's movie
      */
-    public MovieSession (LocalDateTime timeSlot, Cinema cinema, Movie movie) {
-        this.timeSlot = timeSlot;
+    public MovieSession (String timeSlot, Cinema cinema, Movie movie) {
+        this.timeSlot = LocalTime.parse(timeSlot);
         this.cinema = cinema;
         this.movie = movie;
-        // TODO structure of the movie theatre, then create seats in constructor
-        this.seats = new LinkedList<Seat>();
+
+        this.seats = new HashMap<String, Seat>();
+        String rows[] = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K" }, seatId;
+
+        for (String r: rows) {
+            for (int i = 1; i <= 9; i++) {
+                seatId = r + i;
+                seats.put(seatId, new Seat(seatId, this));
+            }
+        }
     }
 
     /**
      * Gets the time slot of this session.
      * @return this Session's time slot.
      */
-    public LocalDateTime getTimeSlot() {
+    public LocalTime getTimeSlot() {
         return this.timeSlot;
     }
 
@@ -72,12 +80,7 @@ public class MovieSession {
      * @param seatId the id of the seat to be booked
      */
     public void setSeat(String seatId) {
-        for (Seat s: seats) {
-            if (s.getSeatId() == seatId) {
-                s.occupySeat();
-                break;
-            }
-        }
+        seats.get(seatId).occupySeat();
     }
 
     /**
@@ -87,7 +90,7 @@ public class MovieSession {
     public int countSeats() {
         int count = 0;
 
-        for (Seat s: seats) {
+        for (Seat s: seats.values()) {
             if (s.checkOccupied())
                 count++;
         }

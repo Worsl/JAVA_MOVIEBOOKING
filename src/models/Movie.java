@@ -1,8 +1,5 @@
 package models;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
 import java.util.LinkedList;
 
 /**
@@ -193,30 +190,4 @@ public class Movie {
         this.movieSessions.add(movieSession);
     }
 
-    /**
-     * Reads data from file and parses into a linked list of Movies
-     * @return a list of the available movies
-     */
-    public static LinkedList<Movie> getMovies() {
-
-        LinkedList<Movie> list = new LinkedList<Movie>();
-        try {
-            File f = new File("./data/movies.csv");
-            Scanner sc = new Scanner(f);
-            String in, params[];
-
-            while (sc.hasNextLine()) {
-                in = sc.nextLine();
-                // regex to split string by comma, but not commas within quotation marks
-                params = in.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-                list.add(new Movie(params[0], ShowingStatus.getShowingStatus(params[1]), params[2], params[3], params[4], MovieType.getMovieType(params[5]), Integer.parseInt(params[6]), ContentRating.getContentRating(params[7])));
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("Movies File not found");
-            e.printStackTrace();
-        }
-
-        return list;
-
-    }
 }
