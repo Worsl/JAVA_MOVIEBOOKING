@@ -12,10 +12,14 @@ import java.util.Scanner;
 
 class Admin {
      public static void main(String[] args) {
+         // Key = Cineplex Name, Value = Cineplex
          HashMap<String, Cineplex> cineplexes = DAO.getCineplexes();
+         // Key = Cinema Code, Value = Cinema
          HashMap<String, Cinema> cinemas = DAO.getCinemas(cineplexes);
+         // Key = Movie Title, Value = movie object
          HashMap<String, Movie> movies = DAO.getMovies();
-         HashMap<String, MovieSession> sessions = DAO.getSessions(cinemas, movies);
+         // Key = Movie Title, Value = List of corresponding sessions
+         HashMap<String, LinkedList<MovieSession>> sessions = DAO.getSessions(cinemas, movies);
 
          Scanner sc = new Scanner(System.in);
 

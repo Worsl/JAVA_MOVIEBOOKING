@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.HashMap;
+import java.util.LinkedList;
 /**
  * DAO.java
  *
@@ -103,9 +104,9 @@ public class DAO {
      * Reads data from file and parses into a map of (Movie Title -> Session)
      * @return a map of the available sessions
      */
-    public static HashMap<String, MovieSession> getSessions(HashMap<String, Cinema> cinemas, HashMap<String, Movie> movies) {
+    public static HashMap<String, LinkedList<MovieSession>> getSessions(HashMap<String, Cinema> cinemas, HashMap<String, Movie> movies) {
 
-        HashMap<String, MovieSession> map = new HashMap<String, MovieSession>();
+        HashMap<String, LinkedList<MovieSession>> map = new HashMap<String, LinkedList<MovieSession>>();
         try {
             File f = new File("./data/moviesessions.csv");
             Scanner sc = new Scanner(f);
@@ -119,7 +120,13 @@ public class DAO {
                 Cinema cinema = cinemas.get(params[0]);
                 Movie movie = movies.get(params[1]);
                 if (cinema != null && movie != null)
-                    map.put(movie.getTitle(), new MovieSession(params[2], cinema, movie));
+                    if (map.get(movie.getTitle()) != null)
+                        map.get(movie.getTitle()).add(new MovieSession(params[2], cinema, movie));
+                    else {
+                        LinkedList <MovieSession> ll = new LinkedList<MovieSession>();
+                        ll.add(new MovieSession(params[2], cinema, movie));
+                        map.put(movie.getTitle(), ll);
+                    }
             }
         } catch (FileNotFoundException e) {
             System.out.println("Movies File not found");
