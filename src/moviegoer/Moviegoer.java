@@ -46,6 +46,9 @@ class Moviegoer {
             case 4:
                 break;
             case 5:
+                System.out.println("All movie sessions: " + sessions.get("Black Adam"));
+                //MovieSession ms = new MovieSession(sessions.get("Black Adam"));
+                //Booking.createBooking();
                 break;
             case 6:
                 break;

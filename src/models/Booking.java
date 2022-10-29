@@ -1,6 +1,7 @@
 package models;
 
 import java.util.LinkedList;
+import java.util.*;
 
 /**
  * Represents a booking for a movie
@@ -99,6 +100,28 @@ public class Booking {
      */
     public void addTicket(Ticket t) {
         tickets.add(t);
+    }
+
+    public void createBooking(MovieSession movieSession) {
+
+        System.out.println("How many ticket would you like to buy? Please enter a number.");
+        Scanner sc = new Scanner(System.in);
+        int numtickets = sc.nextInt();
+
+        for(int i=0;i<numtickets;i++) {
+            System.out.println("Please enter the TicketType you are purchasing: ");
+            //TicketType tt = new TicketType();
+            System.out.println("Whcich seat number would you like?: ");
+            String seatnumber = sc.nextLine();
+
+            Seat newseat = new Seat(seatnumber, movieSession);
+            //Ticket(Tickettype??, newseat, this.booking)
+
+            
+        }
+
+
+
     }
 
 }
