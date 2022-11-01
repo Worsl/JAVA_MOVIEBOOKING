@@ -11,10 +11,10 @@ public enum ShowingStatus {
     PREVIEW, 
     NOT_SHOWING, 
     TO_BE_ACCOUNCED,
-    Placeholder;
+    END_OF_SHOWING;
     
     public static ShowingStatus getShowingStatus(String s) {
         // TODO match showing status with given string s
-        return Placeholder;
+        return COMING_SOON ;
     }
 }
