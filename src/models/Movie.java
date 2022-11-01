@@ -82,6 +82,11 @@ public class Movie {
         this.contentRating = contentRating;
     }
 
+    @Override
+    public String toString() {
+        return title;
+    }
+
     /**
      * Gets the title of this Movie.
      * @return this Movie's title.

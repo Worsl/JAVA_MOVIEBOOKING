@@ -1,5 +1,6 @@
 import models.*;
 import java.util.LinkedList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -19,7 +20,7 @@ class Moviegoer {
         // Key = Movie Title, Value = movie object
         HashMap<String, Movie> movies = DAO.getMovies();
         // Key = Movie Title, Value = List of corresponding sessions
-        HashMap<String, LinkedList<MovieSession>> sessions = DAO.getSessions(cinemas, movies);
+        HashMap<Integer, LinkedList<MovieSession>> sessions = DAO.getSessions(cinemas, movies);
 
         Scanner sc = new Scanner(System.in);
 
@@ -36,6 +37,8 @@ class Moviegoer {
             System.out.println("7. Exit");
             in = sc.nextInt();
 
+            System.out.println("Testing all sessions!: " + sessions.keySet());
+
             switch(in) {
             case 1:
                 break;
@@ -46,8 +49,27 @@ class Moviegoer {
             case 4:
                 break;
             case 5:
-                System.out.println("All movie sessions: " + sessions.get("Black Adam"));
-                //MovieSession ms = new MovieSession(sessions.get("Black Adam"));
+                System.out.println("What movie do you wish to watch? ");
+                System.out.println("1. Black Adam ");
+                System.out.println("2. Halloween Ends ");
+                Scanner sc1 = new Scanner(System.in);
+                int choiceofmovie = sc1.nextInt();
+                switch(choiceofmovie) {
+                    case 1:
+                        System.out.println("Choose your Cinema and Timeslot: " + sessions.keySet());
+                        int choiceses = sc.nextInt();
+
+                        switch(choiceses) {
+                            case 1: 
+                                break;
+                        }
+                        break;
+                        
+                    case 2:
+                        System.out.println("Choose your Cinema and Timeslot: " + sessions.get("Halloween Ends"));
+                        break;
+                }
+                
                 //Booking.createBooking();
                 break;
             case 6:

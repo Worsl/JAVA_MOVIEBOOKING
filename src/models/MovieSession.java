@@ -29,16 +29,21 @@ public class MovieSession {
      */
     private HashMap<String, Seat> seats;
 
+
+    //Testing attribute
+    private int uniqueid;
+
     /**
      * Creates a new Session from the given parameters
      * @param timeSlot the Session's time slot
      * @param cinema the Session's cinema
      * @param movie the Session's movie
      */
-    public MovieSession (String timeSlot, Cinema cinema, Movie movie) {
+    public MovieSession (String timeSlot, Cinema cinema, Movie movie, int uniqueid) {
         this.timeSlot = LocalTime.parse(timeSlot);
         this.cinema = cinema;
         this.movie = movie;
+        this.uniqueid = uniqueid;
 
         this.seats = new HashMap<String, Seat>();
         String rows[] = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K" }, seatId;
@@ -49,6 +54,12 @@ public class MovieSession {
                 seats.put(seatId, new Seat(seatId, this));
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        //LocalTime timeSlot = LocalTime.parse(timeSlot)
+        return cinema.getCinemaCode() + " "  + timeSlot + " " + uniqueid;
     }
 
     /**

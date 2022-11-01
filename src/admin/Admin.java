@@ -19,7 +19,7 @@ class Admin {
          // Key = Movie Title, Value = movie object
          HashMap<String, Movie> movies = DAO.getMovies();
          // Key = Movie Title, Value = List of corresponding sessions
-         HashMap<String, LinkedList<MovieSession>> sessions = DAO.getSessions(cinemas, movies);
+         HashMap<Integer, LinkedList<MovieSession>> sessions = DAO.getSessions(cinemas, movies);
 
          Scanner sc = new Scanner(System.in);
 
