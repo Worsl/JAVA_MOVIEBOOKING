@@ -109,9 +109,10 @@ public class Booking {
         int numtickets = sc.nextInt();
 
         for(int i=0;i<numtickets;i++) {
-            System.out.println("Please enter the TicketType you are purchasing: ");
+            System.out.println("Please enter the Ticke tType you are purchasing: ");
             //TicketType tt = new TicketType();
-            System.out.println("Whcich seat number would you like?: ");
+            System.out.println("Which seat number would you like?: ");
+            movieSession.listofavailableSeats();
             String seatnumber = sc.nextLine();
 
             Seat newseat = new Seat(seatnumber, movieSession);

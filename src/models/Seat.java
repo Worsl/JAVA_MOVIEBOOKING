@@ -32,6 +32,11 @@ public class Seat {
         this.movieSession = movieSession;
     }
 
+    @Override
+    public String toString() {
+        return seatId;
+    }
+
     /**
      * Sets this seat to be occupied
      */

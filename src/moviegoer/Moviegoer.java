@@ -3,6 +3,7 @@ import java.util.LinkedList;
 import java.util.HashMap;
 import java.util.Scanner;
 
+
 /**
  * The entry point for public users
  *
@@ -57,7 +58,7 @@ class Moviegoer {
                         System.out.println("Please select the cinema and timeslot by choosing the number: " + sessions.get("Black Adam"));
                         String choiceofsession = sc1.nextLine();
 
-                        //Test movieSession
+                        //Test movieSession, replace with actual data.
                         MovieSession ms = new MovieSession("14:30", cinemas.get("CAAMK01"), movies.get("Black Adam"));
                     
 
