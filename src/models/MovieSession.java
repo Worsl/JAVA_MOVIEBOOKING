@@ -94,7 +94,14 @@ public class MovieSession {
      * @param seatId the id of the seat to be booked
      */
     public void setSeat(String seatId) {
-        seats.get(seatId).occupySeat();
+        try {
+            seats.get(seatId).occupySeat();
+        }
+        catch(Exception e) {
+            System.out.println("Something went wrong, please double check your inputs.");
+        }
+        
+
     }
 
     /**
