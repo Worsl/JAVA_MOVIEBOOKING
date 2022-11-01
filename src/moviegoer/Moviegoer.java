@@ -27,6 +27,7 @@ class Moviegoer {
         Scanner sc = new Scanner(System.in);
 
         System.out.println("Welcome to MOBLIMA!");
+        MovieSession ms = new MovieSession("14:30", cinemas.get("CAAMK01"), movies.get("Black Adam"));
         int in = 0;
         while (in != 7) {
             System.out.println("What would you like to do today?");
@@ -50,23 +51,7 @@ class Moviegoer {
                 break;
             case 5:
                 
-                System.out.println("Please pick the movie you wish to watch: " + sessions.keySet());
-                Scanner sc1 = new Scanner(System.in);
-                String choiceofmovie = sc1.nextLine();
-                switch(choiceofmovie) {
-                    case "Black Adam":
-                        System.out.println("Please select the cinema and timeslot by choosing the number: " + sessions.get("Black Adam"));
-                        String choiceofsession = sc1.nextLine();
-
-                        //Test movieSession, replace with actual data.
-                        MovieSession ms = new MovieSession("14:30", cinemas.get("CAAMK01"), movies.get("Black Adam"));
-                    
-
-                        Booking.createBooking(ms);
-                        break;
-                }
-                
-                //Booking.createBooking(sessions.values());
+                Booking.createBooking(ms, cinemas, movies, sessions, sessions2);
                 break;
             case 6:
                 break;

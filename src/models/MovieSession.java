@@ -111,18 +111,17 @@ public class MovieSession {
 
         return count;
     }
+    
 
     public void listofavailableSeats() {
         AnsiConsole.systemInstall();
+        
         seats.get("A3").occupySeat();
 
         int count = 0;
         for (Seat entry : seats.values()) {
             
-            if (count == 9) {
-                System.out.println();
-                count = 0;
-            }
+            
             if(entry.checkOccupied() ==  false) {
                 System.out.print(ansi().fg(GREEN).a(entry.getSeatId()) + " ");
             }
@@ -130,6 +129,10 @@ public class MovieSession {
                 System.out.print(ansi().fg(RED).a(entry.getSeatId()) + " ");
             }
             count++;
+            if (count == 9) {
+                System.out.println();
+                count = 0;
+            }
             
         }
 

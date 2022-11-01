@@ -102,24 +102,43 @@ public class Booking {
         tickets.add(t);
     }
 
-    public static void createBooking(MovieSession movieSession) {
+    public static void createBooking(MovieSession ms, HashMap<String, Cinema> cinemas, HashMap<String, Movie> movies, HashMap<String, LinkedList<MovieSession>> sessions, HashMap<String, LinkedList<MovieSession>> sessions2) {
 
-        System.out.println("How many ticket would you like to buy? Please enter a number.");
-        Scanner sc = new Scanner(System.in);
-        int numtickets = sc.nextInt();
 
-        for(int i=0;i<numtickets;i++) {
-            System.out.println("Please enter the Ticke tType you are purchasing: ");
-            //TicketType tt = new TicketType();
-            System.out.println("Which seat number would you like?: ");
-            movieSession.listofavailableSeats();
-            String seatnumber = sc.nextLine();
+        System.out.println("Please pick the movie you wish to watch: " + sessions.keySet());
+                Scanner sc1 = new Scanner(System.in);
+                String choiceofmovie = sc1.nextLine();
+                switch(choiceofmovie) {
+                    case "Black Adam":
+                        System.out.println("Please select the cinema and timeslot by choosing the number: " + sessions.get("Black Adam"));
+                        String choiceofsession = sc1.nextLine();
 
-            Seat newseat = new Seat(seatnumber, movieSession);
-            //Ticket(Tickettype??, newseat, this.booking)
+                        //Test movieSession, replace with actual data.
+                        
 
-            
-        }
+                        System.out.println("How many ticket would you like to buy? Please enter a number.");
+                        Scanner sc = new Scanner(System.in);
+                        int numtickets = sc.nextInt();
+
+                        for(int i=0;i<numtickets;i++) {
+                            System.out.println("Please enter the Ticket Type you are purchasing: ");
+                            //TicketType tt = new TicketType();
+                            System.out.println("Which seat number would you like?: ");
+                            ms.listofavailableSeats();
+                            String seatnumber = sc1.nextLine();
+                            ms.setSeat(seatnumber);
+                            
+                            
+                            //Ticket(Tickettype??, newseat, this.booking)
+
+                            
+                        }
+
+                        
+                        break;
+                }
+
+        
 
 
 
