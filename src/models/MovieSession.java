@@ -51,6 +51,11 @@ public class MovieSession {
         }
     }
 
+    @Override
+    public String toString() {
+        return timeSlot + " " + movie.getTitle() + " "+ cinema.getCinemaCode();
+    }
+
     /**
      * Gets the time slot of this session.
      * @return this Session's time slot.

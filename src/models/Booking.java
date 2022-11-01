@@ -102,7 +102,7 @@ public class Booking {
         tickets.add(t);
     }
 
-    public void createBooking(MovieSession movieSession) {
+    public static void createBooking(MovieSession movieSession) {
 
         System.out.println("How many ticket would you like to buy? Please enter a number.");
         Scanner sc = new Scanner(System.in);

@@ -20,6 +20,8 @@ class Moviegoer {
         HashMap<String, Movie> movies = DAO.getMovies();
         // Key = Movie Title, Value = List of corresponding sessions
         HashMap<String, LinkedList<MovieSession>> sessions = DAO.getSessions(cinemas, movies);
+        // 
+        HashMap<String, LinkedList<MovieSession>> sessions2= DAO.getSessions2(cinemas,movies);
 
         Scanner sc = new Scanner(System.in);
 
@@ -46,9 +48,24 @@ class Moviegoer {
             case 4:
                 break;
             case 5:
-                System.out.println("All movie sessions: " + sessions.get("Black Adam"));
-                //MovieSession ms = new MovieSession(sessions.get("Black Adam"));
-                //Booking.createBooking();
+                
+                System.out.println("Please pick the movie you wish to watch: " + sessions.keySet());
+                Scanner sc1 = new Scanner(System.in);
+                String choiceofmovie = sc1.nextLine();
+                switch(choiceofmovie) {
+                    case "Black Adam":
+                        System.out.println("Please select the cinema and timeslot by choosing the number: " + sessions.get("Black Adam"));
+                        String choiceofsession = sc1.nextLine();
+
+                        //Test movieSession
+                        MovieSession ms = new MovieSession("14:30", cinemas.get("CAAMK01"), movies.get("Black Adam"));
+                    
+
+                        Booking.createBooking(ms);
+                        break;
+                }
+                
+                //Booking.createBooking(sessions.values());
                 break;
             case 6:
                 break;
