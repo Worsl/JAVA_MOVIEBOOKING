@@ -5,6 +5,9 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 /**
  * DAO.java
  *
@@ -137,5 +140,54 @@ public class DAO {
 
    }
 
+   /**
+     * Reads data from file and parses into a map of (Movie Title -> Reviews)
+     * @return a map of the reviews
+     */
+    public static void getReviews(HashMap<String, Movie> movies) {
 
+        try {
+            File f = new File("./data/reviews.csv");
+            Scanner sc = new Scanner(f);
+            String in, params[];
+
+            while (sc.hasNextLine()) {
+                in = sc.nextLine();
+                // regex to split string by comma, but not commas within quotation marks
+                params = in.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+
+                // params 0 = rating, params 1 = movietitle, params 2 = reviewer, params 3 = comment
+                int ratingScore = Integer.parseInt(params[0]);
+                Movie movie = movies.get(params[1]);
+                User reviewer = new User(params[2], "undefined", "undefined");
+                Review review = new Review(reviewer, ratingScore, params[3]);
+                if (movie != null)
+                    movie.addReview(review);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Movies File not found");
+            e.printStackTrace();
+        }
+
+   }
+
+   /**
+    * Writes reviews into a CSV file:
+     * @param ratingScore The Movie's Rating
+     * @param movie The Movie's Title
+     * @param reviewer The Reviewer/User's name
+     * @param comment The Rating's comments
+    */
+   public static void writeReviewsToCSV(int ratingScore, String movie, String reviewer, String comment) {
+        try {
+            FileWriter myWriter = new FileWriter("./data/reviews.csv", true);
+            myWriter.write(String.valueOf(ratingScore) + "," + movie + "," + reviewer + "," + comment + "\n");
+            myWriter.close();
+            System.out.println("Successfully added new review.");
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
+   
 }
