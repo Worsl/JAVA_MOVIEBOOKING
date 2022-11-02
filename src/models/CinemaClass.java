@@ -20,5 +20,10 @@ public enum CinemaClass {
         this.loungePrice = price;
     }
 
+    int getLoungePrice()
+    {
+        return this.loungePrice;
+    }
+
 
 }

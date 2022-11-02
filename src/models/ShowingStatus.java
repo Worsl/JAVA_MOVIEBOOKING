@@ -9,7 +9,6 @@ package models;
 /**
  * Represents the ShowingStatus of a movie
  */
-
 public enum ShowingStatus {
 
     COMING_SOON(0), 
@@ -26,13 +25,39 @@ public enum ShowingStatus {
 
     public int getInt()
     {
-        // returns the value associated with the ShowingStatus Enum
         return this.status;
     }
 
+    /**
+     * @return ShowingStatus ENUM based on String parsed
+     */
     public static ShowingStatus getShowingStatus(String s) {
-        // TODO match showing status with given string s
-        return COMING_SOON ;
+        
+        switch(s.toUpperCase())
+        {
+
+            case "COMING_SOON":{
+                return COMING_SOON;
+            }
+
+            case "PREVIEW":{
+                return PREVIEW;
+            }
+
+            case "NOW_SHOWING":
+            {
+                return NOW_SHOWING;
+            }
+
+            case "END_OF_SHOWING":
+            {
+                return  END_OF_SHOWING;
+            }
+
+            default:
+                return END_OF_SHOWING;
+
+        }
     }
 
 }

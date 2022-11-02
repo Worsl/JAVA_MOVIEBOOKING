@@ -10,7 +10,7 @@ package models;
   */
 
 public enum TicketType {
-    ADULT(10),
+    ADULT(10), //value associated with each movie represents the baseprice of movie
     SENIOR_CITIZEN(5),
     CHILD(3),
     STUDENT(7);
@@ -22,14 +22,10 @@ public enum TicketType {
         this.agePricing = number;
     }
 
-    int getAgePricing()
+    public int getAgePricing()
     {
         // returns the value associated with the TicketType Enum
         return this.agePricing;
-    }
-
-    public static void main(String[] args) {
-        
     }
 
 

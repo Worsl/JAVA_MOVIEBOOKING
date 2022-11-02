@@ -24,13 +24,26 @@ public enum MovieType {
 
     int getBasePrice()
     {
-        // returns the value associated with the MovieType Enum
         return this.basePrice;
     }
 
+    /**
+     * @return MovieType ENUM based on String parsed
+     */
     public static MovieType getMovieType(String s) {
-        // TODO match movie type with given string s
-        return REGULAR;
+
+        switch(s.toUpperCase()){
+            case "REGULAR":{
+                return REGULAR;
+            }
+
+            case "THREE_DIMESIONAL":{
+                return THREE_DIMENSIONAL;
+            }
+
+            default:
+                return REGULAR;
+        }
     }
 
 }
