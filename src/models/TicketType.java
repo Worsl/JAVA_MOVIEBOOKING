@@ -6,7 +6,7 @@ package models;
  */
 
   /**
-  * Represents the TicketType
+  * Represents the TicketType of a movie
   */
 
 public enum TicketType {
@@ -20,6 +20,12 @@ public enum TicketType {
     TicketType(int number)
     {
         this.agePricing = number;
+    }
+
+    int getAgePricing()
+    {
+        // returns the value associated with the TicketType Enum
+        return this.agePricing;
     }
 
     public static void main(String[] args) {
