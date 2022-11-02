@@ -9,7 +9,7 @@ public enum ShowingStatus {
 
     COMING_SOON, 
     PREVIEW, 
-    NOT_SHOWING, 
+    NOW_SHOWING, 
     END_OF_SHOWING;
     
     public static ShowingStatus getShowingStatus(String s) {
