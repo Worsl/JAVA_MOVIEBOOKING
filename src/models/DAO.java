@@ -144,7 +144,10 @@ public class DAO {
      * Reads data from file and parses into a map of (Movie Title -> Reviews)
      * @return a map of the reviews
      */
-    public static void getReviews(HashMap<String, Movie> movies) {
+    public static HashMap<String, LinkedList<Review>> getReviews(HashMap<String, Movie> movies) {
+
+        // TODO populate data from csv into map
+        HashMap<String, LinkedList<Review>> map = new HashMap<String, LinkedList<Review>>();
 
         try {
             File f = new File("./data/reviews.csv");
@@ -159,7 +162,8 @@ public class DAO {
                 // params 0 = rating, params 1 = movietitle, params 2 = reviewer, params 3 = comment
                 int ratingScore = Integer.parseInt(params[0]);
                 Movie movie = movies.get(params[1]);
-                User reviewer = new User(params[2], "undefined", "undefined");
+                // TODO retrieve the correct reviewer
+                User reviewer = new User(params[2], "undefined", "undefined", "");
                 Review review = new Review(reviewer, ratingScore, params[3]);
                 if (movie != null)
                     movie.addReview(review);
@@ -168,6 +172,34 @@ public class DAO {
             System.out.println("Movies File not found");
             e.printStackTrace();
         }
+
+        return map;
+
+   }
+
+    /**
+    * Reads data from file and parses into a map of (User Name -> User)
+    * @return a map of the available Cineplexes
+    */
+   public static HashMap<String, User> getUsers() {
+
+       HashMap<String, User> map = new HashMap<String, User>();
+       try {
+           File f = new File("./data/users.csv");
+           Scanner sc = new Scanner(f);
+           String in, params[];
+           while (sc.hasNextLine()) {
+               in = sc.nextLine();
+               // regex to split by comma, but not those within quotation marks
+               params = in.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+               map.put(params[0], new User(params[0], params[1], params[2], params[3]));
+           }
+       } catch (FileNotFoundException e) {
+           System.out.println("Users File not found");
+           e.printStackTrace();
+       }
+
+       return map;
 
    }
 

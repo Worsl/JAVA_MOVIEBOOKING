@@ -20,7 +20,7 @@ public class functionsByEeChern {
         // TO BE DISCUSSED - needs to be user, but how to pass?
         System.out.println("Enter your name:");
         String reviewerName = sc.nextLine();
-        User user = new User(reviewerName, "NULL", "NULL");
+        User user = new User(reviewerName, "NULL", "NULL", "");
 
         Review review = new Review(user, movieRating, movieComment);
 

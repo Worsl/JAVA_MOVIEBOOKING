@@ -2,6 +2,7 @@ import models.*;
 import java.util.LinkedList;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.io.Console;
 
 /**
  * The entry point for public users
@@ -11,7 +12,13 @@ import java.util.Scanner;
 
 class Moviegoer {
 
+    public static boolean validateUser(HashMap<String, User> users, String username, String password) {
+        return users.containsKey(username) && users.get(username).validatePassword(password);
+    }
+
     public static void main(String[] args) {
+        // Key = User name, Value = User
+        HashMap<String, User> users = DAO.getUsers();
         // Key = Cineplex Name, Value = Cineplex
         HashMap<String, Cineplex> cineplexes = DAO.getCineplexes();
         // Key = Cinema Code, Value = Cinema
@@ -25,7 +32,23 @@ class Moviegoer {
 
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("Welcome to MOBLIMA!");
+        System.out.println("Welcome to MOBLIMA! Please enter your login details: ");
+        Console console = System.console();
+        String username = "", password = "";
+
+        User currentUser;
+        boolean check = true;
+
+        while (check) {
+            System.out.print("Username: ");
+            username = sc.nextLine();
+            password = new String(console.readPassword("Password: "));
+            check = !validateUser(users, username, password);
+            if (check) System.out.println("Incorrect username or password");
+        }
+
+        currentUser = users.get(username);
+
         int in = 0;
         while (in != 7) {
             System.out.println("What would you like to do today?");
