@@ -121,16 +121,17 @@ public class DAO {
                 in = sc.nextLine();
                 // regex to split string by comma, but not commas within quotation marks
                 params = in.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-
+                String movieid = params[3];
                 Cinema cinema = cinemas.get(params[0]);
                 Movie movie = movies.get(params[1]);
+                String id = params[4];
                 if (cinema != null && movie != null)
-                    if (map.get(movie.getTitle()) != null)
-                        map.get(movie.getTitle()).add(new MovieSession(params[2], cinema, movie));
+                    if (map.get(movieid) != null)
+                        map.get(movieid).add(new MovieSession(params[2], cinema, movie, id));
                     else {
                         LinkedList <MovieSession> ll = new LinkedList<MovieSession>();
-                        ll.add(new MovieSession(params[2], cinema, movie));
-                        map.put(movie.getTitle(), ll);
+                        ll.add(new MovieSession(params[2], cinema, movie, id));
+                        map.put(movieid, ll);
                     }
             }
         } catch (FileNotFoundException e) {
@@ -158,13 +159,14 @@ public class DAO {
 
             Cinema cinema = cinemas.get(params[0]);
             Movie movie = movies.get(params[1]);
-            String id = (params[3]);
+            String movieid = (params[3]);
+            String id = params[4];
             if (cinema != null && movie != null)
                 if (map.get(id) != null)
-                    map.get(id).add(new MovieSession(params[2], cinema, movie));
+                    map.get(id).add(new MovieSession(params[2], cinema, movie, id));
                 else {
                     LinkedList <MovieSession> ll = new LinkedList<MovieSession>();
-                    ll.add(new MovieSession(params[2], cinema, movie));
+                    ll.add(new MovieSession(params[2], cinema, movie, id));
                     map.put(id, ll);
                 }
         }

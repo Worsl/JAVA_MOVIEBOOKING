@@ -102,13 +102,44 @@ public class Booking {
         tickets.add(t);
     }
 
-    public static void createBooking(MovieSession ms, HashMap<String, Cinema> cinemas, HashMap<String, Movie> movies, HashMap<String, LinkedList<MovieSession>> sessions, HashMap<String, LinkedList<MovieSession>> sessions2) {
+    public static void createBooking(HashMap<String, Cinema> cinemas, HashMap<String, Movie> movies, HashMap<String, LinkedList<MovieSession>> sessions, HashMap<String, LinkedList<MovieSession>> sessions2) {
+        Scanner sc1 = new Scanner(System.in);
+        System.out.println("How many tickets would you like to purchase? ");
+        int numtickets = sc1.nextInt();
+
+        for(int i=0;i<numtickets;i++) {
+            Scanner sc2 = new Scanner(System.in);
+            System.out.println("Please pick the movie you wish to watch: " + movies.keySet());
+            String choiceofmovie = sc2.nextLine();
+            System.out.println("Please select the session you would like: " + sessions.get(choiceofmovie));
+            String choiceofsession = sc2.nextLine();
+
+            System.out.println("Green = Available \nRed = Booked \nPink = Couple Seats");
+
+            sessions2.get(choiceofsession).getLast().listofavailableSeats();
+            System.out.println("Please select your seat number. ");
+            String seatnumber = sc2.nextLine();
+            sessions2.get(choiceofsession).getLast().setSeat(seatnumber);
+        }
+        
+                
+
+        
 
 
-        System.out.println("Please pick the movie you wish to watch: " + sessions.keySet());
-                Scanner sc1 = new Scanner(System.in);
-                String choiceofmovie = sc1.nextLine();
-                switch(choiceofmovie) {
+
+    }
+
+}
+
+
+
+
+
+
+
+
+/*switch(choiceofmovie) {
                     case "Black Adam":
                         System.out.println("Please select the cinema and timeslot by choosing the number: " + sessions.get("Black Adam"));
                         String choiceofsession = sc1.nextLine();
@@ -124,24 +155,14 @@ public class Booking {
                             System.out.println("Please enter the Ticket Type you are purchasing: ");
                             //TicketType tt = new TicketType();
                             System.out.println("Which seat number would you like?: ");
-                            ms.listofavailableSeats();
+                            System.out.println("Green - Available \nRed - Booked");
+                            sessions2.get(choiceofsession).getLast().listofavailableSeats();
                             String seatnumber = sc1.nextLine();
-                            ms.setSeat(seatnumber);
-                            
-                            
+                            sessions2.get(choiceofsession).getLast().setSeat(seatnumber);
                             //Ticket(Tickettype??, newseat, this.booking)
-
-                            
                         }
+                        
 
                         
                         break;
-                }
-
-        
-
-
-
-    }
-
-}
+                }*/

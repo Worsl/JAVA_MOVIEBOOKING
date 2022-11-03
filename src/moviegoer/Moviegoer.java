@@ -24,10 +24,11 @@ class Moviegoer {
         // 
         HashMap<String, LinkedList<MovieSession>> sessions2= DAO.getSessions2(cinemas,movies);
 
+        
         Scanner sc = new Scanner(System.in);
 
         System.out.println("Welcome to MOBLIMA!");
-        MovieSession ms = new MovieSession("14:30", cinemas.get("CAAMK01"), movies.get("Black Adam"));
+        //MovieSession ms = new MovieSession("14:30", cinemas.get("CAAMK01"), movies.get("Black Adam"));
         int in = 0;
         while (in != 7) {
             System.out.println("What would you like to do today?");
@@ -50,8 +51,7 @@ class Moviegoer {
             case 4:
                 break;
             case 5:
-                
-                Booking.createBooking(ms, cinemas, movies, sessions, sessions2);
+                Booking.createBooking(cinemas, movies, sessions, sessions2);
                 break;
             case 6:
                 break;

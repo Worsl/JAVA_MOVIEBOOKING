@@ -40,7 +40,7 @@ public class MovieSession {
      * @param cinema the Session's cinema
      * @param movie the Session's movie
      */
-    public MovieSession (String timeSlot, Cinema cinema, Movie movie) {
+    public MovieSession (String timeSlot, Cinema cinema, Movie movie, String id) {
         this.timeSlot = LocalTime.parse(timeSlot);
         this.cinema = cinema;
         this.movie = movie;
@@ -123,14 +123,20 @@ public class MovieSession {
     public void listofavailableSeats() {
         AnsiConsole.systemInstall();
         
-        seats.get("A3").occupySeat();
+        //seats.get("A3").occupySeat();
 
         int count = 0;
         for (Seat entry : seats.values()) {
             
             
             if(entry.checkOccupied() ==  false) {
-                System.out.print(ansi().fg(GREEN).a(entry.getSeatId()) + " ");
+                
+                if(entry.getSeatId().equals("K7") || entry.getSeatId().equals("K8") || entry.getSeatId().equals("K5") || entry.getSeatId().equals("K6")) {
+                    System.out.print(ansi().fg(MAGENTA).a(entry.getSeatId()) + " ");
+                }
+                else {
+                    System.out.print(ansi().fg(GREEN).a(entry.getSeatId()) + " ");
+                }
             }
             else {
                 System.out.print(ansi().fg(RED).a(entry.getSeatId()) + " ");
