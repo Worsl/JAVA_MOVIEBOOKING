@@ -1,5 +1,6 @@
 import models.*;
 import java.util.LinkedList;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -12,7 +13,7 @@ import java.util.Scanner;
 
 class Moviegoer {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException{
         // Key = Cineplex Name, Value = Cineplex
         HashMap<String, Cineplex> cineplexes = DAO.getCineplexes();
         // Key = Cinema Code, Value = Cinema

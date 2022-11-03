@@ -1,7 +1,15 @@
 package models;
 
 import java.util.LinkedList;
+
+import javax.naming.ldap.LdapName;
+
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.security.Timestamp;
 import java.util.*;
+import com.opencsv.*;
 
 /**
  * Represents a booking for a movie
@@ -36,12 +44,12 @@ public class Booking {
      * @param movieSession The Booking's session
      * @param user The Booking's owner
      */
-    public Booking (String TID, LinkedList<Ticket> tickets, MovieSession movieSession, User owner) {
+    /*public Booking (String TID, LinkedList<Ticket> tickets, MovieSession movieSession, User owner) {
         this.TID = TID;
         this.tickets = tickets;
         this.movieSession = movieSession;
         this.owner = owner;
-    }
+    }*/
 
     /**
      * Creates a new Booking from the given parameters
@@ -102,25 +110,55 @@ public class Booking {
         tickets.add(t);
     }
 
-    public static void createBooking(HashMap<String, Cinema> cinemas, HashMap<String, Movie> movies, HashMap<String, LinkedList<MovieSession>> sessions, HashMap<String, LinkedList<MovieSession>> sessions2) {
+    public static void createBooking(HashMap<String, Cinema> cinemas, HashMap<String, Movie> movies, HashMap<String, LinkedList<MovieSession>> sessions, HashMap<String, LinkedList<MovieSession>> sessions2) throws FileNotFoundException{
         Scanner sc1 = new Scanner(System.in);
+        
+        User rhys = new User("Rhys", "wongrhys@gmail.com", "90052336");
+        List<Booking> listbooking = new LinkedList<Booking>();
+
+        Scanner sc2 = new Scanner(System.in);
+        System.out.println("Please pick the movie you wish to watch: " + movies.keySet());
+        String choiceofmovie = sc2.nextLine();
+        System.out.println("Please select the session you would like: " + sessions.get(choiceofmovie));
+        String choiceofsession = sc2.nextLine();
+
+        System.out.println("Green = Available \nRed = Booked \nPink = Couple Seats");
         System.out.println("How many tickets would you like to purchase? ");
         int numtickets = sc1.nextInt();
-
         for(int i=0;i<numtickets;i++) {
-            Scanner sc2 = new Scanner(System.in);
-            System.out.println("Please pick the movie you wish to watch: " + movies.keySet());
-            String choiceofmovie = sc2.nextLine();
-            System.out.println("Please select the session you would like: " + sessions.get(choiceofmovie));
-            String choiceofsession = sc2.nextLine();
-
-            System.out.println("Green = Available \nRed = Booked \nPink = Couple Seats");
-
             sessions2.get(choiceofsession).getLast().listofavailableSeats();
             System.out.println("Please select your seat number. ");
             String seatnumber = sc2.nextLine();
             sessions2.get(choiceofsession).getLast().setSeat(seatnumber);
         }
+
+
+
+        java.sql.Timestamp timestamp = new java.sql.Timestamp(System.currentTimeMillis());
+        String transactionid = sessions2.get(choiceofsession).getLast().getCinema().getCinemaCode() + " " + timestamp;
+        System.out.println("TID is -> " + transactionid);
+        listbooking.add(new Booking(transactionid, sessions2.get(choiceofsession).getLast(),rhys));
+        try {
+            String[] bookingstring = {transactionid,sessions2.get(choiceofsession).getLast().toString(),"Rhys"};
+            FileWriter fw = new FileWriter("./data/bookings.csv",true);
+            CSVWriter writer = new CSVWriter(fw);
+
+            writer.writeNext(bookingstring);
+            writer.close();
+
+            
+
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        
+        
+
+
+
+        
+        
         
                 
 
