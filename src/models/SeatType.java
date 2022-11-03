@@ -1,5 +1,5 @@
 package models;
-enum seat {
+public enum SeatType {
     STANDARD, DISABLED, COUPLE, PREMIUM;
 }
 
