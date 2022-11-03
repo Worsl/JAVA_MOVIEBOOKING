@@ -23,7 +23,7 @@ class Admin {
 
          Scanner sc = new Scanner(System.in);
 
-        System.out.println("Welcome to MOBLIMA Admin Portal!");
+        System.out.println("Welcome to MOBLIMA Admin Portal! :)");
         int in = 0;
         while (in != 7) {
             System.out.println("What would you like to do today?");
