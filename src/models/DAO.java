@@ -2,10 +2,17 @@ package models;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.io.PrintWriter;
 import java.io.FileNotFoundException;
+<<<<<<< Updated upstream
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+=======
+import java.io.IOException;
+>>>>>>> Stashed changes
 import java.util.Scanner;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -143,9 +150,16 @@ public class DAO {
     
     
     //define file paths
+<<<<<<< Updated upstream
     static String movies_filepath = "C:/Users/jason/Desktop/SC2002 lab/group project/src/data/movies.csv";
     static String moviesessions_filepath = "C:/Users/jason/Desktop/SC2002 lab/group project/src/data/moviesessions.csv";
     static String temp_filepath = "C:/Users/jason/Desktop/SC2002 lab/group project/src/data/temp.csv";
+=======
+    static String movies_filepath = "./data/movies.csv";
+    static String moviesessions_filepath = "./data/moviesessions.csv";
+    static String temp_filepath = "./data/temp.csv";
+
+>>>>>>> Stashed changes
     
     /**
      * add movie to file 
@@ -154,7 +168,11 @@ public class DAO {
     public static void addMovie(String title, String showingStatus, String synopsis, String director, String cast, String type, int duration, String contentRating) {
     	
         try {
+<<<<<<< Updated upstream
         	//check movie not already in csv file
+=======
+        	//check movie not already in file
+>>>>>>> Stashed changes
         	File f = new File(movies_filepath);
         	Scanner sc = new Scanner(f);
         	String in, params[];
@@ -171,8 +189,13 @@ public class DAO {
         	}
         	sc.close();
         	
+<<<<<<< Updated upstream
         	//add movie to csv file
         	FileWriter fw = new FileWriter(f, true);
+=======
+        	//add movie to file
+        	FileWriter fw = new FileWriter(movies_filepath, true);
+>>>>>>> Stashed changes
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter pw = new PrintWriter(bw);
             
@@ -200,6 +223,7 @@ public class DAO {
     public static void updateMovie(String title, int category, String edit) {
     	
     	File oldFile = new File(movies_filepath);
+<<<<<<< Updated upstream
         File newFile = new File(temp_filepath);
         
         try {
@@ -207,6 +231,15 @@ public class DAO {
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter pw = new PrintWriter(bw);
         	Scanner sc = new Scanner(oldFile);
+=======
+    	File newFile = new File(temp_filepath);
+    	
+        try {
+        	FileWriter fw = new FileWriter(temp_filepath, true);
+        	BufferedWriter bw = new BufferedWriter(fw);
+        	PrintWriter pw = new PrintWriter(bw);
+        	Scanner sc = new Scanner(new File(movies_filepath));
+>>>>>>> Stashed changes
             String in, params[];
             boolean found = false;
 
@@ -219,10 +252,17 @@ public class DAO {
                 	params[category] = edit;
                 	//System.out.println(params[category]);
                 	//System.out.println(Arrays.toString(params));
+<<<<<<< Updated upstream
                 	pw.println(params);
                 	found = true;
                 } else {
                 	pw.println(params);
+=======
+                	pw.println(params[0]+","+params[1]+","+params[2]+","+params[3]+","+params[4]+","+params[5]+","+params[6]+","+params[7]);
+                	found = true;
+                } else {
+                	pw.println(in);
+>>>>>>> Stashed changes
                 }
             }
             
@@ -263,7 +303,11 @@ public class DAO {
             FileWriter fw = new FileWriter(temp_filepath, true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter pw = new PrintWriter(bw);
+<<<<<<< Updated upstream
         	Scanner sc = new Scanner(oldFile);
+=======
+        	Scanner sc = new Scanner(new File(movies_filepath));
+>>>>>>> Stashed changes
             String in, params[];
             boolean found = false;
             
@@ -273,7 +317,11 @@ public class DAO {
                 params = in.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
  
                 if (!params[0].equals(title)) {
+<<<<<<< Updated upstream
                 	pw.println(params);
+=======
+                	pw.println(in);
+>>>>>>> Stashed changes
                 } else {
                 	found = true;
                 }
@@ -338,6 +386,11 @@ public class DAO {
                 System.out.println(params[7]);
                 System.out.println(" ");
             }
+<<<<<<< Updated upstream
+=======
+            sc.close();
+            
+>>>>>>> Stashed changes
         } catch (FileNotFoundException e) {
             System.out.println("Movies File not found");
             e.printStackTrace();
@@ -364,6 +417,7 @@ public class DAO {
                 in = sc.nextLine();
                 // regex to split string by comma, but not commas within quotation marks
                 params = in.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+<<<<<<< Updated upstream
  
                 if (params[0].equals(cinema) && params[1].equals(title) && params[3].equals(timeSlot)) {
                 	System.out.println("Time slot is already in system.");
@@ -411,6 +465,55 @@ public class DAO {
             String in, params[];
             boolean found = false;
 
+=======
+
+                if (params[0].equals(cinema) && params[1].equals(title) && params[2].equals(timeSlot)) {
+                	System.out.println("Time slot is already in system.");
+                	return;
+                }
+        	}
+        	sc.close();
+        	
+        	//add timeslot to file
+        	FileWriter fw = new FileWriter(moviesessions_filepath, true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter pw = new PrintWriter(bw);
+            
+            pw.println(cinema+","+title+","+timeSlot);
+            pw.flush();
+            pw.close();
+            
+            System.out.println("Time slot successfully added.");
+  
+        } catch (FileNotFoundException e) {
+        	System.out.println("Moviesessions File not found");
+            e.printStackTrace();
+        } catch (IOException e) {
+        	System.out.println("IOException");
+        	e.printStackTrace();
+    	}
+        
+        return;
+    }
+    
+    /**
+     * update timeslot of a movie 
+     * @return void
+     */
+    public static void updateTimeSlot(String cinema, String title, String timeSlot, String newTimeSlot) {
+    	
+    	File oldFile = new File(moviesessions_filepath);
+        File newFile = new File(temp_filepath);
+        
+        try {
+            FileWriter fw = new FileWriter(temp_filepath, true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter pw = new PrintWriter(bw);
+        	Scanner sc = new Scanner(new File(moviesessions_filepath));
+            String in, params[];
+            boolean found = false;
+
+>>>>>>> Stashed changes
             while (sc.hasNextLine()) {
                 in = sc.nextLine();
                 // regex to split string by comma, but not commas within quotation marks
@@ -418,10 +521,17 @@ public class DAO {
  
                 if (params[0].equals(cinema) && params[1].equals(title) && params[2].equals(timeSlot)) {
                 	params[2] = newTimeSlot;
+<<<<<<< Updated upstream
                 	pw.println(params);
                 	found = true;
                 } else {
                 	pw.println(params);
+=======
+                	pw.println(params[0]+","+params[1]+","+params[2]);
+                	found = true;
+                } else {
+                	pw.println(in);
+>>>>>>> Stashed changes
                 }
             }
             
@@ -459,10 +569,17 @@ public class DAO {
         File newFile = new File(temp_filepath);
         
         try {
+<<<<<<< Updated upstream
             FileWriter fw = new FileWriter(newFile, true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter pw = new PrintWriter(bw);
         	Scanner sc = new Scanner(oldFile);
+=======
+            FileWriter fw = new FileWriter(temp_filepath, true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter pw = new PrintWriter(bw);
+        	Scanner sc = new Scanner(new File(moviesessions_filepath));
+>>>>>>> Stashed changes
             String in, params[];
             Boolean found = false;
             
@@ -471,8 +588,13 @@ public class DAO {
                 // regex to split string by comma, but not commas within quotation marks
                 params = in.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
  
+<<<<<<< Updated upstream
                 if (!params[0].equals(cinema) && !params[1].equals(title) && !params[3].equals(timeSlot)) {
                 	pw.println(params);
+=======
+                if (!params[0].equals(cinema) && !params[1].equals(title) && !params[2].equals(timeSlot)) {
+                	pw.println(in);
+>>>>>>> Stashed changes
                 } else {
                 	found = true;
                 }
@@ -509,9 +631,13 @@ public class DAO {
     public static void showTimeSlot() {
         
         try {
+<<<<<<< Updated upstream
             System.out.println("Cinema");
             System.out.println("Title");
             System.out.println("Time Slot");
+=======
+            System.out.println("Cinema   " + "Title   " + "Time Slot");
+>>>>>>> Stashed changes
             System.out.println(" ");
         	
             File f = new File(moviesessions_filepath);
@@ -523,11 +649,19 @@ public class DAO {
                 // regex to split string by comma, but not commas within quotation marks
                 params = in.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
                 
+<<<<<<< Updated upstream
                 System.out.println(params[0]);
                 System.out.println(params[1]);
                 System.out.println(params[2]);
                 System.out.println(" ");
             }
+=======
+                System.out.println(params[0]+"   "+params[1]+"   "+params[2]);
+                System.out.println(" ");
+            }
+            sc.close();
+            
+>>>>>>> Stashed changes
         } catch (FileNotFoundException e) {
             System.out.println("Moviesessions File not found");
             e.printStackTrace();

@@ -26,7 +26,7 @@ class Admin {
 
         System.out.println("Welcome to MOBLIMA Admin Portal!");
         int in = 0;
-        while (in != 7) {
+        while (in != 9) {
             System.out.println("What would you like to do today?");
             System.out.println("1. Add a new movie");
             System.out.println("2. Update a movie's details");
