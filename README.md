@@ -45,5 +45,5 @@ The format of how the following resources are stored in CSV.
 ## Review
 
 ```
-<ratingScore>,<movie>,<reviewer>,<comment>
+<ratingScore>,<movie>,<reviewer>,<email>,<phonenumber>,<comment>
 ```

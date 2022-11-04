@@ -28,7 +28,7 @@ class Moviegoer {
         // Key = Movie Title, Value = List of corresponding sessions
         HashMap<String, LinkedList<MovieSession>> sessions = DAO.getSessions(cinemas, movies);
         // Key = Movie Title, Value = List of corresponding reviews
-        HashMap<String, LinkedList<Review>> reviews = DAO.getReviews(movies);
+        DAO.getReviews(movies); // updates reviews into list in movie object
 
         Scanner sc = new Scanner(System.in);
 
@@ -63,12 +63,19 @@ class Moviegoer {
 
             switch(in) {
             case 1:
+                functionsByEeChern.viewMovieList(movies);
+                System.out.println();
                 break;
             case 2:
+                functionsByEeChern.lookForMovieDetails(movies);
+                System.out.println();
                 break;
             case 3:
+                functionsByEeChern.listTop5(movies);
                 break;
             case 4:
+                functionsByEeChern.reviewMovie(movies, currentUser);
+                System.out.println();
                 break;
             case 5:
                 break;

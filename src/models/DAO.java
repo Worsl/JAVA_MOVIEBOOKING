@@ -159,17 +159,17 @@ public class DAO {
                 // regex to split string by comma, but not commas within quotation marks
                 params = in.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
 
-                // params 0 = rating, params 1 = movietitle, params 2 = reviewer, params 3 = comment
+                // params 0 = rating, params 1 = movietitle, params 2 = reviewer, params 3 = email, params 4 = mobile, params 5 = comment
                 int ratingScore = Integer.parseInt(params[0]);
                 Movie movie = movies.get(params[1]);
                 // TODO retrieve the correct reviewer
-                User reviewer = new User(params[2], "undefined", "undefined", "");
-                Review review = new Review(reviewer, ratingScore, params[3]);
+                User reviewer = new User(params[2], params[3], params[4], "");
+                Review review = new Review(reviewer, ratingScore, params[5]);
                 if (movie != null)
                     movie.addReview(review);
             }
         } catch (FileNotFoundException e) {
-            System.out.println("Movies File not found");
+            System.out.println("Reviews File not found");
             e.printStackTrace();
         }
 
@@ -210,14 +210,14 @@ public class DAO {
      * @param reviewer The Reviewer/User's name
      * @param comment The Rating's comments
     */
-   public static void writeReviewsToCSV(int ratingScore, String movie, String reviewer, String comment) {
+   public static void writeReviewsToCSV(int ratingScore, String movie, String reviewer, String email, String mobileNumber, String comment) {
         try {
             FileWriter myWriter = new FileWriter("./data/reviews.csv", true);
-            myWriter.write(String.valueOf(ratingScore) + "," + movie + "," + reviewer + "," + comment + "\n");
+            myWriter.write(String.valueOf(ratingScore) + "," + movie + "," + reviewer + "," + email + "," + mobileNumber + "," + comment + "\n");
             myWriter.close();
-            System.out.println("Successfully added new review.");
+            
         } catch (IOException e) {
-            System.out.println("An error occurred.");
+            System.out.println("An error occurred when writing review to CSV, please see DAO.java");
             e.printStackTrace();
         }
     }
