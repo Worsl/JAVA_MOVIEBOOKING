@@ -227,7 +227,17 @@ public class Movie {
         System.out.println("Movie Type :        " + this.getMovieType());
         System.out.println("Duration :          " + this.getDuration());
         System.out.println("Content Rating :    " + this.getContentRating());
-        // (this.getMovieSessions());
+
+        //              For some reason, the movie sessions LinkedList is empty, so it is not tested yet.
+        // LinkedList<MovieSession> movieSessions = this.getMovieSessions();
+        // System.out.print(String.valueOf(movieSessions.size()));
+        
+        // for (int i = 0; i < movieSessions.size(); i++) {
+        //     MovieSession movieSession = movieSessions.get(i);
+        //     System.out.println(movieSession.getCinema() + "     " + movieSession.getTimeSlot());
+        //     System.out.println("Number of Seats Occupied : " + movieSession.countSeats());
+        // }
+        
 
         System.out.println("Average Rating :    " + this.getAverageRating());
         LinkedList<Review> reviews = this.getReviews();
