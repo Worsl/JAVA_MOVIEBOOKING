@@ -50,8 +50,21 @@ public class functionsByEeChern {
         // check to see if the movie exists
         String movieTitle = LookForMovieByTitle(movies).getTitle();
 
-        System.out.println("Enter your rating:");
-        int movieRating = sc.nextInt();
+        System.out.println("Enter a rating out of 5:");
+        int movieRating = -1;
+        while(!(movieRating >= 1 && movieRating <= 5)){
+            if (sc.hasNextInt()) {
+                movieRating = sc.nextInt();
+                if(!(movieRating >= 1 && movieRating <= 5)){
+                    System.out.println("Please input an integer between 1 and 5.");
+                }
+            } else {
+                System.out.println("Please input an integer.");
+                sc.next();
+            }
+        }
+        
+
         sc.nextLine(); //flushes the scanner buffer.
         System.out.println("Enter your comments:");
         String movieComment = sc.nextLine();

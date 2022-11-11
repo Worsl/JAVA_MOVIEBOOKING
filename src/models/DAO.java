@@ -251,6 +251,7 @@ public class DAO {
     */
    public static void writeReviewsToCSV(int ratingScore, String movie, String reviewer, String email, String mobileNumber, String comment) {
         try {
+            if(comment == "") comment = " "; // replace blank comments with a single space.
             FileWriter myWriter = new FileWriter("./data/reviews.csv", true);
             myWriter.write(String.valueOf(ratingScore) + "," + movie + "," + reviewer + "," + email + "," + mobileNumber + "," + comment + "\n");
             myWriter.close();
@@ -260,5 +261,4 @@ public class DAO {
             e.printStackTrace();
         }
     }
-   
 }
