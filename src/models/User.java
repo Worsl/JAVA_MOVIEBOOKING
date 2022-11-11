@@ -23,14 +23,20 @@ public class User {
     private String mobile;
 
     /**
+     * The password of the user
+     */
+    private String password;
+
+    /**
      * The list of bookings of the user
      */
     private LinkedList<Booking> bookings;
 
-    public User (String name, String email, String mobile) {
+    public User (String name, String email, String mobile, String password) {
         this.name = name;
         this.email = email;
         this.mobile = mobile;
+        this.password = password;
     }
 
     /**
@@ -86,6 +92,10 @@ public class User {
      */
     public void addBooking(Booking b) {
         bookings.add(b);
+    }
+
+    public boolean validatePassword(String password) {
+        return this.password.equals(password);
     }
 
 }

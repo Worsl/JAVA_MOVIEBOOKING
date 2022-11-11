@@ -21,10 +21,13 @@ class Admin {
          HashMap<String, Movie> movies = DAO.getMovies();
          // Key = Movie Title, Value = List of corresponding sessions
          HashMap<String, LinkedList<MovieSession>> sessions = DAO.getSessions(cinemas, movies);
+         // Key = Movie Title, Value = List of corresponding reviews
+         HashMap<String, LinkedList<Review>> reviews = DAO.getReviews(movies);
+
 
          Scanner sc = new Scanner(System.in);
 
-        System.out.println("Welcome to MOBLIMA Admin Portal!");
+        System.out.println("Welcome to MOBLIMA Admin Portal! :)");
         int in = 0;
         while (in != 9) {
             System.out.println("What would you like to do today?");

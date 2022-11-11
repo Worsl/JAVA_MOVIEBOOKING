@@ -45,11 +45,9 @@ public class Booking {
     /**
      * Creates a new Booking from the given parameters
      *
+     * @param tickets The Booking's transaction ID
      * @param movieSession  The Booking's session
-     * @param movieGoerName The Booking's owner
-     * @param mobile        The Booking's owner's mobile
-     * @param email         The Booking's owner's email
-     * @param transactionId The Booking's transaction ID
+     * @param user The Booking's owner
      */
     public Booking(String TID, MovieSession movieSession, User owner) {
         this.TID = TID;

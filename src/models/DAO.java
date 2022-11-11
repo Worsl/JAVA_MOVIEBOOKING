@@ -103,7 +103,7 @@ public class DAO {
         return map;
 
    }
-    
+   
     /**
      * Reads data from file and parses into a map of (Movie Title -> Session)
      * @return a map of the available sessions
@@ -329,6 +329,7 @@ public class DAO {
                 in = sc.nextLine();
                 // regex to split string by comma, but not commas within quotation marks
                 params = in.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+
                 System.out.println(params[0]);
                 System.out.println(params[1]);
                 System.out.println(params[2]);
@@ -536,4 +537,54 @@ public class DAO {
 
         return;
     }
+
+                
+
+   }
+
+    /**
+    * Reads data from file and parses into a map of (User Name -> User)
+    * @return a map of the available Cineplexes
+    */
+   public static HashMap<String, User> getUsers() {
+
+       HashMap<String, User> map = new HashMap<String, User>();
+       try {
+           File f = new File("./data/users.csv");
+           Scanner sc = new Scanner(f);
+           String in, params[];
+           while (sc.hasNextLine()) {
+               in = sc.nextLine();
+               // regex to split by comma, but not those within quotation marks
+               params = in.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+               map.put(params[0], new User(params[0], params[1], params[2], params[3]));
+           }
+       } catch (FileNotFoundException e) {
+           System.out.println("Users File not found");
+           e.printStackTrace();
+       }
+
+       return map;
+
+   }
+
+   /**
+    * Writes reviews into a CSV file:
+     * @param ratingScore The Movie's Rating
+     * @param movie The Movie's Title
+     * @param reviewer The Reviewer/User's name
+     * @param comment The Rating's comments
+    */
+   public static void writeReviewsToCSV(int ratingScore, String movie, String reviewer, String email, String mobileNumber, String comment) {
+        try {
+            FileWriter myWriter = new FileWriter("./data/reviews.csv", true);
+            myWriter.write(String.valueOf(ratingScore) + "," + movie + "," + reviewer + "," + email + "," + mobileNumber + "," + comment + "\n");
+            myWriter.close();
+            
+        } catch (IOException e) {
+            System.out.println("An error occurred when writing review to CSV, please see DAO.java");
+            e.printStackTrace();
+        }
+    }
+   
 }

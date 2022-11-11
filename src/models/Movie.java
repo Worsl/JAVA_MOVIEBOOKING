@@ -1,8 +1,5 @@
 package models;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
 import java.util.LinkedList;
 
 /**
@@ -194,29 +191,63 @@ public class Movie {
     }
 
     /**
-     * Reads data from file and parses into a linked list of Movies
-     * @return a list of the available movies
+     * Checks if the movie object title matches with string
+     * @param movieTitle to be checked
+     * @return
      */
-    public static LinkedList<Movie> getMovies() {
+    public boolean titleMatches(String movieTitle) {
+        return this.title.equals(movieTitle);
+    }
 
-        LinkedList<Movie> list = new LinkedList<Movie>();
-        try {
-            File f = new File("./data/movies.csv");
-            Scanner sc = new Scanner(f);
-            String in, params[];
-
-            while (sc.hasNextLine()) {
-                in = sc.nextLine();
-                // regex to split string by comma, but not commas within quotation marks
-                params = in.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-                list.add(new Movie(params[0], ShowingStatus.getShowingStatus(params[1]), params[2], params[3], params[4], MovieType.getMovieType(params[5]), Integer.parseInt(params[6]), ContentRating.getContentRating(params[7])));
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("Movies File not found");
-            e.printStackTrace();
+    /**
+     * Get the average rating of the movie
+     * @return average rating of the reviews
+     */
+    public float getAverageRating() {
+        float totalRating = 0;
+        int n = 0;
+        LinkedList<Review> reviews = this.getReviews();
+        for (int i = 0; i < reviews.size(); i++) {
+            totalRating += reviews.get(i).getRatingScore();
+            n++;
         }
+        if(n==0) return 0;
+        else return totalRating/n;
+    }
 
-        return list;
+    /**
+     * Outputs full movie details to System.out.
+     */
+    public void viewMovieDetails(){
+        System.out.println("Movie Title :       " + this.getTitle());
+        System.out.println("Showing Status :    " + this.getShowingStatus());
+        System.out.println("Synopsis :          " + this.getSynopsis());
+        System.out.println("Director :          " + this.getDirector());
+        System.out.println("Cast :              " + this.getCast());
+        System.out.println("Movie Type :        " + this.getMovieType());
+        System.out.println("Duration :          " + this.getDuration());
+        System.out.println("Content Rating :    " + this.getContentRating());
 
+        //              For some reason, the movie sessions LinkedList is empty, so it is not tested yet.
+        // LinkedList<MovieSession> movieSessions = this.getMovieSessions();
+        // System.out.print(String.valueOf(movieSessions.size()));
+        
+        // for (int i = 0; i < movieSessions.size(); i++) {
+        //     MovieSession movieSession = movieSessions.get(i);
+        //     System.out.println(movieSession.getCinema() + "     " + movieSession.getTimeSlot());
+        //     System.out.println("Number of Seats Occupied : " + movieSession.countSeats());
+        // }
+        
+
+        System.out.println("Average Rating :    " + this.getAverageRating());
+        LinkedList<Review> reviews = this.getReviews();
+        int counter = 1;
+        for (int i = 0; i < reviews.size(); i++) {
+            Review review = reviews.get(i);
+            String reviewerName = review.getReviewer().getName();
+            System.out.println("(" + String.valueOf(counter) + ")      " + reviewerName + "     Rating:" + String.valueOf(review.getRatingScore()));
+            System.out.println("Review : " + review.getComment());   
+            counter++;
+        }
     }
 }
