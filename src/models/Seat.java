@@ -52,6 +52,13 @@ public class Seat {
     }
 
     /**
+     * Sets this seat to be unoccupied
+     */
+    public void unoccupySeat() {
+        isOccupied = false;
+    }
+
+    /**
      * Gets the occupancy status of this seat
      * @return true if occupied, false otherwise
      */
