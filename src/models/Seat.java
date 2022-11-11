@@ -1,8 +1,5 @@
 package models;
 
-enum seat {
-    STANDARD, DISABLED, COUPLE, PREMIUM;
-}
 
 /**
  * Represents a seat for a given booking
