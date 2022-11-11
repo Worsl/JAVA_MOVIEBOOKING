@@ -34,16 +34,19 @@ public class MovieSession {
      */
     private LinkedHashMap<String, Seat> seats;
 
+    private String sessionid;
+
     /**
      * Creates a new Session from the given parameters
      * @param timeSlot the Session's time slot
      * @param cinema the Session's cinema
      * @param movie the Session's movie
      */
-    public MovieSession (String timeSlot, Cinema cinema, Movie movie, String id) {
+    public MovieSession (String timeSlot, Cinema cinema, Movie movie, String sessionid) {
         this.timeSlot = LocalTime.parse(timeSlot);
         this.cinema = cinema;
         this.movie = movie;
+        this.sessionid = sessionid;
 
         this.seats = new LinkedHashMap<String, Seat>();
         String rows[] = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K" }, seatId;
@@ -118,6 +121,10 @@ public class MovieSession {
 
         return count;
     }
+
+    public String getSessionid() {
+        return this.sessionid;
+    }
     
 
     public void listofavailableSeats() {
@@ -135,7 +142,7 @@ public class MovieSession {
                     System.out.print(ansi().fg(MAGENTA).a(entry.getSeatId()) + " ");
                 }
                 else {
-                    System.out.print(ansi().fg(GREEN).a(entry.getSeatId()) + " ");
+                    System.out.print(ansi().a(Attribute.UNDERLINE).fg(GREEN).a(entry.getSeatId()) + " ");
                 }
             }
             else {
