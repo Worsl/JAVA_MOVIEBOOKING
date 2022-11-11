@@ -186,11 +186,10 @@ public class Booking {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
         String formatdate = now.format(format);
 
-        //java.sql.Timestamp timestamp = new java.sql.Timestamp(System.currentTimeMillis());
-        String transactionid = selectedSession.getCinema().getCinemaCode() + " " + timestamp;        
+        String transactionid = selectedSession.getCinema().getCinemaCode() + formatdate;
         System.out.println("TID is -> " + transactionid);
         System.out.println("Session id: " + selectedSession.getSessionid());
-        Booking newBooking = new Booking(transactionid, sessions2.get(choiceofsession).getLast(), user);
+        Booking newBooking = new Booking(transactionid, selectedSession, user);
         try {
             //String[] bookingstring = {transactionid,sessions2.get(choiceofsession).getLast().toString(),user.getName()};
             FileWriter fw = new FileWriter("./data/bookings.csv",true);
