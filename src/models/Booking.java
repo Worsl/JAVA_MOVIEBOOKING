@@ -10,6 +10,10 @@ import java.io.IOException;
 import java.security.Timestamp;
 import java.util.*;
 import com.opencsv.*;
+import org.fusesource.jansi.AnsiConsole;
+import static org.fusesource.jansi.Ansi.*;
+import static org.fusesource.jansi.Ansi.Color.*;
+
 
 /**
  * Represents a booking for a movie
@@ -119,27 +123,43 @@ public class Booking {
         Scanner sc2 = new Scanner(System.in);
         System.out.println("Please pick the movie you wish to watch: " + movies.keySet());
         String choiceofmovie = sc2.nextLine();
-        System.out.println("Please select the session you would like: " + sessions.get(choiceofmovie));
-        String choiceofsession = sc2.nextLine();
 
-        System.out.println("Green = Available \nRed = Booked \nPink = Couple Seats");
-        System.out.println("How many tickets would you like to purchase? ");
-        int numtickets = sc1.nextInt();
-        for(int i=0;i<numtickets;i++) {
-            sessions2.get(choiceofsession).getLast().listofavailableSeats();
-            System.out.println("Please select your seat number. ");
-            String seatnumber = sc2.nextLine();
-            sessions2.get(choiceofsession).getLast().setSeat(seatnumber);
+        boolean ok = false;
+        MovieSession selectedSession = null;
+        while (!ok) {
+            System.out.println("Please select the session you would like: " + sessions.get(choiceofmovie));
+            String choiceofsession = sc2.nextLine();
+            if (sessions2.containsKey(choiceofsession)) {
+                selectedSession = sessions2.get(choiceofsession).getLast();
+                ok = true;
+                break;
+            }
+            System.out.println("You have selected an invalid session");
         }
 
+        AnsiConsole.systemInstall();
+        System.out.println("Green: " + ansi().fg(GREEN).a("Available").reset());
+        System.out.println("Red: " + ansi().fg(RED).a("Booked").reset());
+        System.out.println("Pink: " + ansi().fgBright(MAGENTA).a("Couple Seats").reset());
+        System.out.println("Blue: " + ansi().fg(BLUE).a("Disabled").reset());
+        System.out.println("Yellow: " + ansi().fg(YELLOW).a("Premium"));
+        AnsiConsole.systemUninstall();
 
+        System.out.println("How many tickets would you like to purchase?");
+        int noOfTickets = sc1.nextInt();
+        while (noOfTickets > 0) {
+            selectedSession.listofavailableSeats();
+            System.out.println("Please select your seat number. ");
+            String seatnumber = sc2.nextLine();
+            if (selectedSession.setSeat(seatnumber)) noOfTickets--;
+        }
 
         java.sql.Timestamp timestamp = new java.sql.Timestamp(System.currentTimeMillis());
-        String transactionid = sessions2.get(choiceofsession).getLast().getCinema().getCinemaCode() + " " + timestamp;
+        String transactionid = selectedSession.getCinema().getCinemaCode() + " " + timestamp;
         System.out.println("TID is -> " + transactionid);
-        listbooking.add(new Booking(transactionid, sessions2.get(choiceofsession).getLast(),rhys));
+        listbooking.add(new Booking(transactionid, selectedSession,rhys));
         try {
-            String[] bookingstring = {transactionid,sessions2.get(choiceofsession).getLast().toString(),"Rhys"};
+            String[] bookingstring = {transactionid,selectedSession.toString(),"Rhys"};
             FileWriter fw = new FileWriter("./data/bookings.csv",true);
             CSVWriter writer = new CSVWriter(fw);
 

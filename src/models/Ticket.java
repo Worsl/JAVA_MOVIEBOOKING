@@ -64,7 +64,11 @@ public class Ticket {
      * @return the price of the ticket
      */
     public double getTicketPrice() {
-        // TODO determine logic for price (by CinemaClass, TicketType, MovieType)
-        return 0;
+        return this.seat.getSeatType().multiplier *
+            (
+             this.booking.getMovieSession().getCinema().getCinemaClass().loungePrice +
+             this.booking.getMovieSession().getMovie().getMovieType().basePrice +
+             this.ticketType.agePricing
+             );
     }
 }

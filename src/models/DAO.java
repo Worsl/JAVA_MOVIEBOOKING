@@ -62,7 +62,7 @@ public class DAO {
                 Cineplex cineplex = cineplexes.get(params[2]);
 
                 if (cineplex != null)
-                    map.put(params[0], new Cinema(params[0], params[1], cineplex));
+                    map.put(params[0], new Cinema(params[0], CinemaClass.getCinemaClass(params[1]), cineplex));
             }
         } catch (FileNotFoundException e) {
             System.out.println("Cinemas File not found");
