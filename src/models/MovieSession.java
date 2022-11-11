@@ -49,19 +49,29 @@ public class MovieSession {
         this.sessionid = sessionid;
 
         this.seats = new LinkedHashMap<String, Seat>();
-        String rows[] = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K" }, seatId;
+        String rows[] = { "A", "B", "C", "D", "E", "F", "G", "H", "I"}, seatId;
+        String backRows[] = { "J", "K" };
 
         for (String r: rows) {
             for (int i = 1; i <= 9; i++) {
                 seatId = r + i;
-                seats.put(seatId, new Seat(seatId, this));
+                seats.put(seatId, new Seat(seatId, this, SeatType.STANDARD));
             }
+        }
+
+        for (String r: backRows) {
+            seatId = r;
+            seats.put(seatId + "1", new Seat(seatId + "1", this, SeatType.DISABLED));
+            seats.put(seatId + "2", new Seat(seatId + "2", this, SeatType.COUPLE));
+            seats.put(seatId + "3", new Seat(seatId + "3", this, SeatType.PREMIUM));
+            seats.put(seatId + "4", new Seat(seatId + "4", this, SeatType.COUPLE));
+            seats.put(seatId + "5", new Seat(seatId + "5", this, SeatType.DISABLED));
         }
     }
 
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_GREEN = "\u001B[91m";
-    
+
     //Overriding the default toString() Method
     @Override
     public String toString() {
@@ -96,15 +106,16 @@ public class MovieSession {
      * Books a particular seat given by the parameter
      * @param seatId the id of the seat to be booked
      */
-    public void setSeat(String seatId) {
+    public boolean setSeat(String seatId) {
+        boolean check = false;
         try {
             seats.get(seatId).occupySeat();
+            check = true;
         }
         catch(Exception e) {
-            System.out.println("Something went wrong, please double check your inputs.");
+            System.out.println("You have chosen an invalid seat.");
         }
-        
-
+        return check;
     }
 
     /**
@@ -125,35 +136,46 @@ public class MovieSession {
     public String getSessionid() {
         return this.sessionid;
     }
-    
 
     public void listofavailableSeats() {
         AnsiConsole.systemInstall();
-        
+
         //seats.get("A3").occupySeat();
 
         int count = 0;
-        for (Seat entry : seats.values()) {
-            
-            
-            if(entry.checkOccupied() ==  false) {
-                
-                if(entry.getSeatId().equals("K7") || entry.getSeatId().equals("K8") || entry.getSeatId().equals("K5") || entry.getSeatId().equals("K6")) {
-                    System.out.print(ansi().fg(MAGENTA).a(entry.getSeatId()) + " ");
-                }
-                else {
-                    System.out.print(ansi().a(Attribute.UNDERLINE).fg(GREEN).a(entry.getSeatId()) + " ");
-                }
+
+        Color color;
+        for (Seat seat : seats.values()) {
+            color = RED;
+            switch (seat.getSeatType()) {
+            case STANDARD:
+                if (!seat.checkOccupied()) color = GREEN;
+                System.out.print(ansi().fg(color).a(seat.getSeatId()) + " ");
+                count++;
+                break;
+            case COUPLE:
+                if (!seat.checkOccupied()) color = MAGENTA;
+                System.out.print(ansi().fgBright(color).a(seat.getSeatId() + "-" + seat.getSeatId()) + " ");
+                count += 2;
+                break;
+            case DISABLED:
+                if (!seat.checkOccupied()) color = BLUE;
+                System.out.print(ansi().fg(color).a(seat.getSeatId()) + " ");
+                count++;
+                break;
+            case PREMIUM:
+                if (!seat.checkOccupied()) color = YELLOW;
+                System.out.print(ansi().fg(color).a("   " + seat.getSeatId()) + "    ");
+                count += 3;
+                break;
+            default:
+                break;
+
             }
-            else {
-                System.out.print(ansi().fg(RED).a(entry.getSeatId()) + " ");
-            }
-            count++;
-            if (count == 9) {
+            if (count >= 9) {
                 System.out.println();
                 count = 0;
             }
-            
         }
 
         AnsiConsole.systemUninstall();
