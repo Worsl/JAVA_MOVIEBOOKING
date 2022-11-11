@@ -110,10 +110,10 @@ public class Booking {
         tickets.add(t);
     }
 
-    public static void createBooking(HashMap<String, Cinema> cinemas, HashMap<String, Movie> movies, HashMap<String, LinkedList<MovieSession>> sessions, HashMap<String, LinkedList<MovieSession>> sessions2) throws FileNotFoundException{
+    public static void createBooking(HashMap<String, Cinema> cinemas, HashMap<String, Movie> movies, HashMap<String, LinkedList<MovieSession>> sessions, HashMap<String, LinkedList<MovieSession>> sessions2) {
         Scanner sc1 = new Scanner(System.in);
         
-        User rhys = new User("Rhys", "wongrhys@gmail.com", "90052336");
+        User rhys = new User("Rhys", "wongrhys@gmail.com", "90052336","");
         List<Booking> listbooking = new LinkedList<Booking>();
 
         Scanner sc2 = new Scanner(System.in);
@@ -146,37 +146,14 @@ public class Booking {
             writer.writeNext(bookingstring);
             writer.close();
 
-            
-
         }
-        catch (IOException e){
+
+        catch (IOException e) {
             e.printStackTrace();
         }
-        
-        
-
-
-
-        
-        
-        
-                
-
-        
-
-
 
     }
-
 }
-
-
-
-
-
-
-
-
 /*switch(choiceofmovie) {
                     case "Black Adam":
                         System.out.println("Please select the cinema and timeslot by choosing the number: " + sessions.get("Black Adam"));
