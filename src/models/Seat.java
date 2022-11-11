@@ -1,5 +1,6 @@
 package models;
 
+
 /**
  * Represents a seat for a given booking
  *

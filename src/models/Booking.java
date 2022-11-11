@@ -4,10 +4,14 @@ import java.util.LinkedList;
 
 import javax.naming.ldap.LdapName;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.io.FileReader;
 import java.io.IOException;
 import java.security.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter; 
 import java.util.*;
 import com.opencsv.*;
 import org.fusesource.jansi.AnsiConsole;
@@ -114,7 +118,31 @@ public class Booking {
         tickets.add(t);
     }
 
-    public static void createBooking(HashMap<String, Cinema> cinemas, HashMap<String, Movie> movies, HashMap<String, LinkedList<MovieSession>> sessions, HashMap<String, LinkedList<MovieSession>> sessions2) {
+
+    // Returns booking of the current user.
+
+    public static void viewBookingrecord(User user) {
+        try {
+            
+            String path = "./data/bookings.csv";
+            String line = "";
+            BufferedReader br = new BufferedReader(new FileReader(path));
+
+            while((line = br.readLine()) != null) {
+                String[] values = line.split(",");
+                //System.out.println(values[2] + user.getName());
+                if (values[2].equalsIgnoreCase(user.getName())) {
+                    System.out.println(line);
+                }
+                
+            }
+        }
+        catch (Exception e) { 
+            e.printStackTrace();
+        }
+    }
+
+    public static void createBooking(HashMap<String, Cinema> cinemas, HashMap<String, Movie> movies, HashMap<String, LinkedList<MovieSession>> sessions, HashMap<String, LinkedList<MovieSession>> sessions2, User user) {
         Scanner sc1 = new Scanner(System.in);
         
         User rhys = new User("Rhys", "wongrhys@gmail.com", "90052336","");
@@ -154,17 +182,22 @@ public class Booking {
             if (selectedSession.setSeat(seatnumber)) noOfTickets--;
         }
 
-        java.sql.Timestamp timestamp = new java.sql.Timestamp(System.currentTimeMillis());
-        String transactionid = selectedSession.getCinema().getCinemaCode() + " " + timestamp;
-        System.out.println("TID is -> " + transactionid);
-        listbooking.add(new Booking(transactionid, selectedSession,rhys));
-        try {
-            String[] bookingstring = {transactionid,selectedSession.toString(),"Rhys"};
-            FileWriter fw = new FileWriter("./data/bookings.csv",true);
-            CSVWriter writer = new CSVWriter(fw);
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
+        String formatdate = now.format(format);
 
-            writer.writeNext(bookingstring);
-            writer.close();
+        //java.sql.Timestamp timestamp = new java.sql.Timestamp(System.currentTimeMillis());
+        String transactionid = selectedSession.getCinema().getCinemaCode() + " " + timestamp;        
+        System.out.println("TID is -> " + transactionid);
+        System.out.println("Session id: " + selectedSession.getSessionid());
+        Booking newBooking = new Booking(transactionid, sessions2.get(choiceofsession).getLast(), user);
+        try {
+            //String[] bookingstring = {transactionid,sessions2.get(choiceofsession).getLast().toString(),user.getName()};
+            FileWriter fw = new FileWriter("./data/bookings.csv",true);
+            //CSVWriter writer = new CSVWriter(fw);
+
+            fw.write(newBooking.getTID() + "," + newBooking.getMovieSession().getSessionid() + "," + newBooking.getOwner().getName() + "\n");
+            fw.close();
 
         }
 
@@ -174,30 +207,4 @@ public class Booking {
 
     }
 }
-/*switch(choiceofmovie) {
-                    case "Black Adam":
-                        System.out.println("Please select the cinema and timeslot by choosing the number: " + sessions.get("Black Adam"));
-                        String choiceofsession = sc1.nextLine();
 
-                        //Test movieSession, replace with actual data.
-                        
-
-                        System.out.println("How many ticket would you like to buy? Please enter a number.");
-                        Scanner sc = new Scanner(System.in);
-                        int numtickets = sc.nextInt();
-
-                        for(int i=0;i<numtickets;i++) {
-                            System.out.println("Please enter the Ticket Type you are purchasing: ");
-                            //TicketType tt = new TicketType();
-                            System.out.println("Which seat number would you like?: ");
-                            System.out.println("Green - Available \nRed - Booked");
-                            sessions2.get(choiceofsession).getLast().listofavailableSeats();
-                            String seatnumber = sc1.nextLine();
-                            sessions2.get(choiceofsession).getLast().setSeat(seatnumber);
-                            //Ticket(Tickettype??, newseat, this.booking)
-                        }
-                        
-
-                        
-                        break;
-                }*/

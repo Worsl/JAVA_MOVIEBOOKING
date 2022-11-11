@@ -83,9 +83,10 @@ class Moviegoer {
                 System.out.println();
                 break;
             case 5:
-                Booking.createBooking(cinemas, movies, sessions, sessions2);
+                Booking.createBooking(cinemas, movies, sessions, sessions2, currentUser);
                 break;
             case 6:
+                Booking.viewBookingrecord(currentUser);
                 break;
             case 7:
                 System.out.println("Thank you for using MOBLIMA!");

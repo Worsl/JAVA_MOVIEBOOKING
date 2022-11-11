@@ -34,16 +34,19 @@ public class MovieSession {
      */
     private LinkedHashMap<String, Seat> seats;
 
+    private String sessionid;
+
     /**
      * Creates a new Session from the given parameters
      * @param timeSlot the Session's time slot
      * @param cinema the Session's cinema
      * @param movie the Session's movie
      */
-    public MovieSession (String timeSlot, Cinema cinema, Movie movie, String id) {
+    public MovieSession (String timeSlot, Cinema cinema, Movie movie, String sessionid) {
         this.timeSlot = LocalTime.parse(timeSlot);
         this.cinema = cinema;
         this.movie = movie;
+        this.sessionid = sessionid;
 
         this.seats = new LinkedHashMap<String, Seat>();
         String rows[] = { "A", "B", "C", "D", "E", "F", "G", "H", "I"}, seatId;
@@ -130,6 +133,10 @@ public class MovieSession {
         return count;
     }
 
+    public String getSessionid() {
+        return this.sessionid;
+    }
+
     public void listofavailableSeats() {
         AnsiConsole.systemInstall();
 
@@ -163,6 +170,7 @@ public class MovieSession {
                 break;
             default:
                 break;
+
             }
             if (count >= 9) {
                 System.out.println();

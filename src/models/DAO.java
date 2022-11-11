@@ -160,14 +160,14 @@ public class DAO {
             Cinema cinema = cinemas.get(params[0]);
             Movie movie = movies.get(params[1]);
             String movieid = (params[3]);
-            String id = params[4];
+            String sessionid = (params[4]);
             if (cinema != null && movie != null)
-                if (map.get(id) != null)
-                    map.get(id).add(new MovieSession(params[2], cinema, movie, id));
+                if (map.get(sessionid) != null)
+                    map.get(sessionid).add(new MovieSession(params[2], cinema, movie, sessionid));
                 else {
                     LinkedList <MovieSession> ll = new LinkedList<MovieSession>();
-                    ll.add(new MovieSession(params[2], cinema, movie, id));
-                    map.put(id, ll);
+                    ll.add(new MovieSession(params[2], cinema, movie, sessionid));
+                    map.put(sessionid, ll);
                 }
         }
     } catch (FileNotFoundException e) {
@@ -251,6 +251,7 @@ public class DAO {
     */
    public static void writeReviewsToCSV(int ratingScore, String movie, String reviewer, String email, String mobileNumber, String comment) {
         try {
+            if(comment == "") comment = " "; // replace blank comments with a single space.
             FileWriter myWriter = new FileWriter("./data/reviews.csv", true);
             myWriter.write(String.valueOf(ratingScore) + "," + movie + "," + reviewer + "," + email + "," + mobileNumber + "," + comment + "\n");
             myWriter.close();
@@ -260,5 +261,4 @@ public class DAO {
             e.printStackTrace();
         }
     }
-   
 }
