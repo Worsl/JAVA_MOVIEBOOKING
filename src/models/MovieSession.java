@@ -1,6 +1,7 @@
 package models;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -17,7 +18,7 @@ public class MovieSession {
     /**
      * The time slot of the session.
      */
-    private LocalTime timeSlot;
+    private LocalDateTime timeSlot;
 
     /**
      * The cinema of the session.
@@ -43,7 +44,7 @@ public class MovieSession {
      * @param movie the Session's movie
      */
     public MovieSession (String timeSlot, Cinema cinema, Movie movie, String sessionid) {
-        this.timeSlot = LocalTime.parse(timeSlot);
+        this.timeSlot = LocalDateTime.parse(timeSlot, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         this.cinema = cinema;
         this.movie = movie;
         this.sessionid = sessionid;
@@ -82,7 +83,7 @@ public class MovieSession {
      * Gets the time slot of this session.
      * @return this Session's time slot.
      */
-    public LocalTime getTimeSlot() {
+    public LocalDateTime getTimeSlot() {
         return this.timeSlot;
     }
 
@@ -103,13 +104,27 @@ public class MovieSession {
     }
 
     /**
+     * Gets the particular seat of this session
+     * @param seatId the id of the seat to return
+     * @return the Seat with the corresponding seatId
+     */
+    public Seat getSeat(String seatId) {
+        return seats.get(seatId);
+    }
+    /**
      * Books a particular seat given by the parameter
      * @param seatId the id of the seat to be booked
      */
     public boolean setSeat(String seatId) {
         boolean check = false;
         try {
-            seats.get(seatId).occupySeat();
+            Seat seat = seats.get(seatId);
+            if (seat.checkOccupied()) {
+                System.out.println("This seat is already occupied!");
+                return false;
+            }
+            seat.occupySeat();
+
             check = true;
         }
         catch(Exception e) {

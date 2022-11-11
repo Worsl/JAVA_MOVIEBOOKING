@@ -4,11 +4,13 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.io.PrintWriter;
+import java.time.LocalDate;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.io.*;
 /**
@@ -86,9 +88,7 @@ public class DAO {
 
         HashMap<String, Movie> map = new HashMap<String, Movie>();
         try (BufferedReader br = new BufferedReader(new FileReader("./data/movies.csv"))) {
-            File f = new File("./data/movies.csv");
 
-            // Scanner sc = new Scanner(f);
             String in = br.readLine(), params[];
 
             while (in != null) {
@@ -148,9 +148,9 @@ public class DAO {
     
     
     //define file paths
-    static String movies_filepath = "./src/data/movies.csv";
-    static String moviesessions_filepath = "./src/data/moviesessions.csv";
-    static String temp_filepath = "./src/data/temp.csv";
+    static String movies_filepath = "./data/movies.csv";
+    static String moviesessions_filepath = "./data/moviesessions.csv";
+    static String temp_filepath = "./data/temp.csv";
 
     
     /**
@@ -171,7 +171,7 @@ public class DAO {
                 params = in.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
  
                 if (params[0].equals(title)) {
-                	System.out.println("Movie is already in sytem.");
+                	System.out.println("Movie is already in system.");
                 	return;
                 }
         	}
@@ -579,7 +579,38 @@ public class DAO {
         return;
     }
 
-                
+    /**
+     * Reads data from file and parses into a map of (Movie Title -> Reviews)
+     * @return a map of the reviews
+     */
+    public static HashMap<String, LinkedList<Review>> getReviews(HashMap<String, Movie> movies) {
+
+        HashMap<String, LinkedList<Review>> map = new HashMap<String, LinkedList<Review>>();
+
+        try {
+            File f = new File("./data/reviews.csv");
+            Scanner sc = new Scanner(f);
+            String in, params[];
+
+            while (sc.hasNextLine()) {
+                in = sc.nextLine();
+                // regex to split string by comma, but not commas within quotation marks
+                params = in.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+
+                // params 0 = rating, params 1 = movietitle, params 2 = reviewer, params 3 = comment
+                int ratingScore = Integer.parseInt(params[0]);
+                Movie movie = movies.get(params[1]);
+                User reviewer = new User(params[2], "undefined", "undefined", "");
+                Review review = new Review(reviewer, ratingScore, params[3]);
+                if (movie != null)
+                    movie.addReview(review);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Movies File not found");
+            e.printStackTrace();
+        }
+
+        return map;
 
    }
 
@@ -622,10 +653,34 @@ public class DAO {
             FileWriter myWriter = new FileWriter("./data/reviews.csv", true);
             myWriter.write(String.valueOf(ratingScore) + "," + movie + "," + reviewer + "," + email + "," + mobileNumber + "," + comment + "\n");
             myWriter.close();
-            
+
         } catch (IOException e) {
             System.out.println("An error occurred when writing review to CSV, please see DAO.java");
             e.printStackTrace();
         }
+    }
+
+    private static HashSet<LocalDate> holidays = null;
+    public static HashSet<LocalDate> getHolidays() {
+        if (holidays != null) return holidays;
+        holidays = new HashSet<LocalDate>();
+        try (BufferedReader br = new BufferedReader(new FileReader("./data/holidays.csv"))) {
+
+            // Scanner sc = new Scanner(f);
+            String in = br.readLine(), params[];
+
+            while (in != null) {
+                holidays.add(LocalDate.parse(in));
+                in = br.readLine();
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Holidays File not found");
+            e.printStackTrace();
+        }  catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return holidays;
+
     }
 }

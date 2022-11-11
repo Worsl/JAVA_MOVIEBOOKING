@@ -15,6 +15,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import com.opencsv.*;
 import org.fusesource.jansi.AnsiConsole;
+
+import models.TicketType;
+
 import static org.fusesource.jansi.Ansi.*;
 import static org.fusesource.jansi.Ansi.Color.*;
 
@@ -118,6 +121,14 @@ public class Booking {
         tickets.add(t);
     }
 
+    /**
+     * Gets of tickets of this booking
+     * @return the ticket list of this booking
+     */
+    public LinkedList<Ticket> getTickets() {
+        return this.tickets;
+    }
+
 
     // Returns booking of the current user.
 
@@ -143,20 +154,16 @@ public class Booking {
     }
 
     public static void createBooking(HashMap<String, Cinema> cinemas, HashMap<String, Movie> movies, HashMap<String, LinkedList<MovieSession>> sessions, HashMap<String, LinkedList<MovieSession>> sessions2, User user) {
-        Scanner sc1 = new Scanner(System.in);
-        
-        User rhys = new User("Rhys", "wongrhys@gmail.com", "90052336","");
-        List<Booking> listbooking = new LinkedList<Booking>();
 
-        Scanner sc2 = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
         System.out.println("Please pick the movie you wish to watch: " + movies.keySet());
-        String choiceofmovie = sc2.nextLine();
+        String choiceofmovie = sc.next();
 
         boolean ok = false;
         MovieSession selectedSession = null;
         while (!ok) {
             System.out.println("Please select the session you would like: " + sessions.get(choiceofmovie));
-            String choiceofsession = sc2.nextLine();
+            String choiceofsession = sc.next();
             if (sessions2.containsKey(choiceofsession)) {
                 selectedSession = sessions2.get(choiceofsession).getLast();
                 ok = true;
@@ -164,6 +171,16 @@ public class Booking {
             }
             System.out.println("You have selected an invalid session");
         }
+
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
+        String formatdate = now.format(format);
+
+        String transactionid = selectedSession.getCinema().getCinemaCode() + formatdate;
+        Booking newBooking = new Booking(transactionid, selectedSession, user);
+
+        System.out.println("How many tickets would you like to purchase?");
+        int noOfTickets = sc.nextInt();
 
         AnsiConsole.systemInstall();
         System.out.println("Green: " + ansi().fg(GREEN).a("Available").reset());
@@ -173,23 +190,55 @@ public class Booking {
         System.out.println("Yellow: " + ansi().fg(YELLOW).a("Premium"));
         AnsiConsole.systemUninstall();
 
-        System.out.println("How many tickets would you like to purchase?");
-        int noOfTickets = sc1.nextInt();
         while (noOfTickets > 0) {
             selectedSession.listofavailableSeats();
             System.out.println("Please select your seat number. ");
-            String seatnumber = sc2.nextLine();
-            if (selectedSession.setSeat(seatnumber)) noOfTickets--;
+            String seatnumber = sc.next();
+            if (selectedSession.setSeat(seatnumber)) {
+                TicketType tt = null;
+                while (tt == null) {
+                    System.out.println("Select the number which age group this seat is for:");
+                    System.out.println("1. Child (< 7)");
+                    System.out.println("2. Student (7 - 18)");
+                    System.out.println("3. Adult (18 - 65)");
+                    System.out.println("4. Senior Citizen (> 65)");
+                    int ageGroup = sc.nextInt();
+
+                    switch(ageGroup) {
+                        case 1:
+                            tt = TicketType.CHILD;
+                            break;
+                        case 2:
+                            tt = TicketType.STUDENT;
+                            break;
+                        case 3:
+                            tt = TicketType.ADULT;
+                            break;
+                        case 4:
+                            tt = TicketType.SENIOR_CITIZEN;
+                            break;
+                        default:
+                            break;
+                    }
+                    if (tt == null) System.out.println("Invalid Choice. Please choose again.");
+                }
+                Ticket ticket = new Ticket(tt, selectedSession.getSeat(seatnumber), newBooking);
+                System.out.format("This ticket price for seat " + ticket.getSeat().getSeatId() + " is S$%.2f. Confirm Purchase? (y/n)", ticket.getTicketPrice());
+                if (sc.next().equalsIgnoreCase("y")) {
+                    noOfTickets--;
+                    newBooking.addTicket(ticket);
+                }
+                else selectedSession.getSeat(seatnumber).unoccupySeat();;
+            }
         }
 
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
-        String formatdate = now.format(format);
+        System.out.format("The total price for your booking is S$%.2f.Confirm Purchase? (y/n)\n", + newBooking.getTotalPrice());
+        if (!sc.next().equalsIgnoreCase("y")) return;
 
-        String transactionid = selectedSession.getCinema().getCinemaCode() + formatdate;
-        System.out.println("TID is -> " + transactionid);
-        System.out.println("Session id: " + selectedSession.getSessionid());
-        Booking newBooking = new Booking(transactionid, selectedSession, user);
+
+        System.out.println("Your transaction ID is -> " + transactionid + ". Thank you for your purchase!");
+
+
         try {
             //String[] bookingstring = {transactionid,sessions2.get(choiceofsession).getLast().toString(),user.getName()};
             FileWriter fw = new FileWriter("./data/bookings.csv",true);
@@ -202,6 +251,19 @@ public class Booking {
 
         catch (IOException e) {
             e.printStackTrace();
+        }
+
+        try {
+            FileWriter fw = new FileWriter("./data/tickets.csv", true);
+            for (Ticket t: newBooking.getTickets()) {
+                fw.write(t.getBooking().TID + "," + t.getSeat().getSeatId() + "," + t.getTicketType().name()+"\n");
+            }
+
+            fw.close();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Failed to save ticket");
         }
 
     }
