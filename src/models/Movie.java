@@ -228,7 +228,7 @@ public class Movie {
         System.out.println("Duration :          " + this.getDuration());
         System.out.println("Content Rating :    " + this.getContentRating());
 
-        //              For some reason, the movie sessions LinkedList is empty, so it is not tested yet.
+        //              The movie sessions LinkedList is empty, so it is not tested yet.
         // LinkedList<MovieSession> movieSessions = this.getMovieSessions();
         // System.out.print(String.valueOf(movieSessions.size()));
         
@@ -247,6 +247,7 @@ public class Movie {
             String reviewerName = review.getReviewer().getName();
             System.out.println("(" + String.valueOf(counter) + ")      " + reviewerName + "     Rating:" + String.valueOf(review.getRatingScore()));
             System.out.println("Review : " + review.getComment());   
+            System.out.println();
             counter++;
         }
     }

@@ -1,15 +1,10 @@
 package models;
-/**
- * MovieType.java
- *
- * Written on Tuesday, 25 October 2022.
- */
+
 
 
  /**
  * Represents the MovieType of a movie
  */
-
 public enum MovieType {
 
     REGULAR(2),  //value associated with each movie represents the baseprice of movie

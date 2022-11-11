@@ -25,5 +25,10 @@ public enum CinemaClass {
         return this.loungePrice;
     }
 
+    public static CinemaClass getCinemaClass(String cls) {
+        if (cls.equalsIgnoreCase("platinum")) return PLATINIUM;
+        else return STANDARD;
+    }
+
 
 }

@@ -10,6 +10,7 @@ import java.util.Scanner;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.io.*;
 /**
  * DAO.java
  *
@@ -66,7 +67,7 @@ public class DAO {
                 Cineplex cineplex = cineplexes.get(params[2]);
 
                 if (cineplex != null)
-                    map.put(params[0], new Cinema(params[0], params[1], cineplex));
+                    map.put(params[0], new Cinema(params[0], CinemaClass.getCinemaClass(params[1]), cineplex));
             }
         } catch (FileNotFoundException e) {
             System.out.println("Cinemas File not found");
@@ -84,26 +85,29 @@ public class DAO {
     public static HashMap<String, Movie> getMovies() {
 
         HashMap<String, Movie> map = new HashMap<String, Movie>();
-        try {
+        try (BufferedReader br = new BufferedReader(new FileReader("./data/movies.csv"))) {
             File f = new File("./data/movies.csv");
-            Scanner sc = new Scanner(f);
-            String in, params[];
 
-            while (sc.hasNextLine()) {
-                in = sc.nextLine();
+            // Scanner sc = new Scanner(f);
+            String in = br.readLine(), params[];
+
+            while (in != null) {
                 // regex to split string by comma, but not commas within quotation marks
                 params = in.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
                 map.put(params[0], new Movie(params[0], ShowingStatus.getShowingStatus(params[1]), params[2], params[3], params[4], MovieType.getMovieType(params[5]), Integer.parseInt(params[6]), ContentRating.getContentRating(params[7])));
+                in = br.readLine();
             }
         } catch (FileNotFoundException e) {
             System.out.println("Movies File not found");
+            e.printStackTrace();
+        }  catch (IOException e) {
             e.printStackTrace();
         }
 
         return map;
 
    }
-   
+
     /**
      * Reads data from file and parses into a map of (Movie Title -> Session)
      * @return a map of the available sessions
@@ -120,16 +124,17 @@ public class DAO {
                 in = sc.nextLine();
                 // regex to split string by comma, but not commas within quotation marks
                 params = in.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-
+                String movieid = params[3];
                 Cinema cinema = cinemas.get(params[0]);
                 Movie movie = movies.get(params[1]);
+                String id = params[4];
                 if (cinema != null && movie != null)
-                    if (map.get(movie.getTitle()) != null)
-                        map.get(movie.getTitle()).add(new MovieSession(params[2], cinema, movie));
+                    if (map.get(movieid) != null)
+                        map.get(movieid).add(new MovieSession(params[2], cinema, movie, id));
                     else {
                         LinkedList <MovieSession> ll = new LinkedList<MovieSession>();
-                        ll.add(new MovieSession(params[2], cinema, movie));
-                        map.put(movie.getTitle(), ll);
+                        ll.add(new MovieSession(params[2], cinema, movie, id));
+                        map.put(movieid, ll);
                     }
             }
         } catch (FileNotFoundException e) {
@@ -250,6 +255,42 @@ public class DAO {
         
         return;
     } 
+
+   // Reading data for users to choose
+   public static HashMap<String, LinkedList<MovieSession>> getSessions2(HashMap<String, Cinema> cinemas, HashMap<String, Movie> movies) {
+
+    HashMap<String, LinkedList<MovieSession>> map = new HashMap<String, LinkedList<MovieSession>>();
+    try {
+        File f = new File("./data/moviesessions.csv");
+        Scanner sc = new Scanner(f);
+        String in, params[];
+
+        while (sc.hasNextLine()) {
+            in = sc.nextLine();
+            // regex to split string by comma, but not commas within quotation marks
+            params = in.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+
+            Cinema cinema = cinemas.get(params[0]);
+            Movie movie = movies.get(params[1]);
+            String movieid = (params[3]);
+            String sessionid = (params[4]);
+            if (cinema != null && movie != null)
+                if (map.get(sessionid) != null)
+                    map.get(sessionid).add(new MovieSession(params[2], cinema, movie, sessionid));
+                else {
+                    LinkedList <MovieSession> ll = new LinkedList<MovieSession>();
+                    ll.add(new MovieSession(params[2], cinema, movie, sessionid));
+                    map.put(sessionid, ll);
+                }
+        }
+    } catch (FileNotFoundException e) {
+        System.out.println("Movies File not found");
+        e.printStackTrace();
+    }
+
+        return map;
+
+   }
 
     /**
      * Delete a movie from file
@@ -577,6 +618,7 @@ public class DAO {
     */
    public static void writeReviewsToCSV(int ratingScore, String movie, String reviewer, String email, String mobileNumber, String comment) {
         try {
+            if(comment == "") comment = " "; // replace blank comments with a single space.
             FileWriter myWriter = new FileWriter("./data/reviews.csv", true);
             myWriter.write(String.valueOf(ratingScore) + "," + movie + "," + reviewer + "," + email + "," + mobileNumber + "," + comment + "\n");
             myWriter.close();
@@ -586,5 +628,4 @@ public class DAO {
             e.printStackTrace();
         }
     }
-   
 }
