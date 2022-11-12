@@ -177,6 +177,47 @@ public class DAO {
     static String moviesessions_filepath = "./data/moviesessions.csv";
     static String temp_filepath = "./data/temp.csv";
 
+        LinkedList<Booking> list = new LinkedList<Booking>();
+
+        try {
+            File f = new File("./data/bookings.csv");
+            Scanner sc = new Scanner(f);
+            String in, params[];
+            while (sc.hasNextLine()) {
+                in = sc.nextLine();
+                // regex to split by comma, but not those within quotation marks
+                params = in.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+                list.add(new Booking(params[0], sessions.get(params[1]), users.get(params[2])));
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Cineplexes File not found");
+            e.printStackTrace();
+        }
+
+        return list;
+
+    }
+
+    // Reading data for users to choose
+    public static HashMap<String, MovieSession> getSessionsById (HashMap<String, ArrayList<MovieSession>> sessions) {
+
+     HashMap<String, MovieSession> map = new HashMap<String, MovieSession>();
+
+     for (ArrayList<MovieSession> al: sessions.values()) {
+         for (MovieSession s: al) {
+             map.put(s.getSessionId(), s);
+         }
+     }
+     return map;
+
+    }
+    
+    
+    //define file paths
+    static String movies = "./src/data/movies.csv";
+    static String moviesessions = "./src/data/moviesessions.csv";
+    static String temp1 = "./src/data/temp.csv";
+    static String temp2 = "./src/data/temp.csv";
     
     /**
      * add movie to file 
@@ -186,7 +227,7 @@ public class DAO {
     	
         try {
         	//check movie not already in file
-        	File f = new File(movies_filepath);
+        	File f = new File(movies);
         	Scanner sc = new Scanner(f);
         	String in, params[];
         	
@@ -203,7 +244,7 @@ public class DAO {
         	sc.close();
         	
         	//add movie to file
-        	FileWriter fw = new FileWriter(movies_filepath, true);
+        	FileWriter fw = new FileWriter(movies, true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter pw = new PrintWriter(bw);
             
@@ -211,7 +252,7 @@ public class DAO {
             pw.flush();
             pw.close();
             
-            System.out.println("Movies successfully added.");
+            System.out.println("Movie successfully added.");
   
         } catch (FileNotFoundException e) {
             System.out.println("Movies File not found");
@@ -229,15 +270,15 @@ public class DAO {
      * @return void
      */
     public static void updateMovie(String title, int category, String edit) {
-    	
-    	File oldFile = new File(movies_filepath);
-    	File newFile = new File(temp_filepath);
+
+    	File oldFile = new File(movies);
+    	File newFile = new File(temp1);
     	
         try {
-        	FileWriter fw = new FileWriter(temp_filepath, true);
+        	FileWriter fw = new FileWriter(temp1, true);
         	BufferedWriter bw = new BufferedWriter(fw);
         	PrintWriter pw = new PrintWriter(bw);
-        	Scanner sc = new Scanner(new File(movies_filepath));
+        	Scanner sc = new Scanner(new File(movies));
             String in, params[];
             boolean found = false;
 
@@ -246,10 +287,8 @@ public class DAO {
                 // regex to split string by comma, but not commas within quotation marks
                 params = in.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
  
-                if (params[0].equals(title)) {
+                if (params[0].equals(title) && !params[1].equals("End Showing")) {
                 	params[category] = edit;
-                	//System.out.println(params[category]);
-                	//System.out.println(Arrays.toString(params));
                 	pw.println(params[0]+","+params[1]+","+params[2]+","+params[3]+","+params[4]+","+params[5]+","+params[6]+","+params[7]);
                 	found = true;
                 } else {
@@ -261,7 +300,7 @@ public class DAO {
             pw.flush();
             pw.close();
             oldFile.delete();
-            File dump = new File (movies_filepath);
+            File dump = new File (movies);
             newFile.renameTo(dump);
             
             if (found) {
@@ -301,14 +340,14 @@ public class DAO {
      */
     public static void deleteMovie(String title) {
     	
-    	File oldFile = new File(movies_filepath);
-        File newFile = new File(temp_filepath);
+    	File oldFile = new File(movies);
+        File newFile = new File(temp1);
         
         try {
-            FileWriter fw = new FileWriter(temp_filepath, true);
+            FileWriter fw = new FileWriter(temp1, true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter pw = new PrintWriter(bw);
-        	Scanner sc = new Scanner(new File(movies_filepath));
+        	Scanner sc = new Scanner(new File(movies));
             String in, params[];
             boolean found = false;
             
@@ -317,10 +356,12 @@ public class DAO {
                 // regex to split string by comma, but not commas within quotation marks
                 params = in.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
  
-                if (!params[0].equals(title)) {
-                	pw.println(in);
-                } else {
+                if (params[0].equals(title) && !params[1].equals("End Showing")) {
+                	params[1] = "End Showing";
+                	pw.println(params[0]+","+params[1]+","+params[2]+","+params[3]+","+params[4]+","+params[5]+","+params[6]+","+params[7]);
                 	found = true;
+                } else {
+                	pw.println(in);
                 }
             }
             
@@ -328,7 +369,7 @@ public class DAO {
             pw.flush();
             pw.close();
             oldFile.delete();
-            File dump = new File (movies_filepath);
+            File dump = new File (movies);
             newFile.renameTo(dump);
             
             if (found) {
@@ -365,7 +406,7 @@ public class DAO {
             System.out.println("Content Rating");
             System.out.println(" ");
             
-            File f = new File(movies_filepath);
+            File f = new File(movies);
             Scanner sc = new Scanner(f);
             String in, params[];
             
@@ -397,14 +438,14 @@ public class DAO {
     
     
     /**
-     * add timeslot to a movie 
+     * add a movie session 
      * @return void
      */
-    public static void addTimeSlot(String cinema, String title, String timeSlot) {
+    public static void addSession(String cinema, String title, String dateTime, String sessionID) {
     	
         try {
-        	//check timeslot not already in file
-        	File f = new File(moviesessions_filepath);
+        	//check sessionID not already in file
+        	File f = new File(moviesessions);
             Scanner sc = new Scanner(f);
         	String in, params[];
         	
@@ -413,23 +454,24 @@ public class DAO {
                 // regex to split string by comma, but not commas within quotation marks
                 params = in.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
 
-                if (params[0].equals(cinema) && params[1].equals(title) && params[2].equals(timeSlot)) {
-                	System.out.println("Time slot is already in system.");
+                if (params[3].equals(sessionID)) {
+                	System.out.println("Movie session is already in system.");
                 	return;
                 }
         	}
+        	
         	sc.close();
         	
-        	//add timeslot to file
-        	FileWriter fw = new FileWriter(moviesessions_filepath, true);
+        	//add session to file
+        	FileWriter fw = new FileWriter(moviesessions, true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter pw = new PrintWriter(bw);
             
-            pw.println(cinema+","+title+","+timeSlot);
+            pw.println(cinema + "," + title + "," + dateTime + "," + sessionID);
             pw.flush();
             pw.close();
             
-            System.out.println("Time slot successfully added.");
+            System.out.println("Movie session successfully added.");
   
         } catch (FileNotFoundException e) {
         	System.out.println("Moviesessions File not found");
@@ -443,19 +485,19 @@ public class DAO {
     }
     
     /**
-     * update timeslot of a movie 
+     * update a movie session
      * @return void
      */
-    public static void updateTimeSlot(String cinema, String title, String timeSlot, String newTimeSlot) {
+    public static void updateSession(String newCinema, String newTitle, String newDateTime, String sessionID) {
     	
-    	File oldFile = new File(moviesessions_filepath);
-        File newFile = new File(temp_filepath);
+    	File oldFile = new File(moviesessions);
+        File newFile = new File(temp2);
         
         try {
-            FileWriter fw = new FileWriter(temp_filepath, true);
+            FileWriter fw = new FileWriter(temp2, true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter pw = new PrintWriter(bw);
-        	Scanner sc = new Scanner(new File(moviesessions_filepath));
+        	Scanner sc = new Scanner(new File(moviesessions));
             String in, params[];
             boolean found = false;
 
@@ -464,9 +506,8 @@ public class DAO {
                 // regex to split string by comma, but not commas within quotation marks
                 params = in.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
  
-                if (params[0].equals(cinema) && params[1].equals(title) && params[2].equals(timeSlot)) {
-                	params[2] = newTimeSlot;
-                	pw.println(params[0]+","+params[1]+","+params[2]);
+                if (params[3].equals(sessionID)) {
+                	pw.println(newCinema + "," + newTitle + "," + newDateTime + "," + sessionID);
                 	found = true;
                 } else {
                 	pw.println(in);
@@ -477,13 +518,13 @@ public class DAO {
             pw.flush();
             pw.close();
             oldFile.delete();
-            File dump = new File(moviesessions_filepath);
+            File dump = new File(moviesessions);
             newFile.renameTo(dump);
             
             if (found) {
-            	System.out.println("Time slot successfully updated");
+            	System.out.println("Movie session successfully updated");
             } else {
-            	System.out.println("Time slot not found");
+            	System.out.println("Movie session not found");
             }
             
         } catch (FileNotFoundException e) {
@@ -498,19 +539,19 @@ public class DAO {
     } 
 
     /**
-     * Delete timeslot of a movie
+     * Delete a movie session
      * @return void
      */
-    public static void deleteTimeSlot(String cinema, String title, String timeSlot) {
+    public static void deleteSession(String sessionID) {
     	
-    	File oldFile = new File(moviesessions_filepath);
-        File newFile = new File(temp_filepath);
+    	File oldFile = new File(moviesessions);
+        File newFile = new File(temp2);
         
         try {
-            FileWriter fw = new FileWriter(temp_filepath, true);
+            FileWriter fw = new FileWriter(temp2, true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter pw = new PrintWriter(bw);
-        	Scanner sc = new Scanner(new File(moviesessions_filepath));
+        	Scanner sc = new Scanner(new File(moviesessions));
             String in, params[];
             Boolean found = false;
             
@@ -519,7 +560,7 @@ public class DAO {
                 // regex to split string by comma, but not commas within quotation marks
                 params = in.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
  
-                if (!params[0].equals(cinema) && !params[1].equals(title) && !params[2].equals(timeSlot)) {
+                if (!params[3].equals(sessionID)) {
                 	pw.println(in);
                 } else {
                 	found = true;
@@ -530,13 +571,13 @@ public class DAO {
             pw.flush();
             pw.close();
             oldFile.delete();
-            File dump = new File (moviesessions_filepath);
+            File dump = new File (moviesessions);
             newFile.renameTo(dump);
             
             if (found) {
-            	System.out.println("Time slot successfully deleted");
+            	System.out.println("Movie session successfully deleted");
             } else {
-            	System.out.println("Time slot not found");
+            	System.out.println("Movie session not found");
             }
             
         } catch (FileNotFoundException e) {
@@ -551,16 +592,16 @@ public class DAO {
     }
     
     /**
-     * Show timeslot of movies
+     * Show movie sessions in system
      * @return void
      */
-    public static void showTimeSlot() {
+    public static void showSession() {
         
         try {
-            System.out.println("Cinema   " + "Title   " + "Time Slot");
+            System.out.println("Cinema    " + "Title        " + "Date Time          " + "SessionID");
             System.out.println(" ");
         	
-            File f = new File(moviesessions_filepath);
+            File f = new File(moviesessions);
             Scanner sc = new Scanner(f);
             String in, params[];
             
@@ -569,7 +610,7 @@ public class DAO {
                 // regex to split string by comma, but not commas within quotation marks
                 params = in.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
                 
-                System.out.println(params[0]+"   "+params[1]+"   "+params[2]);
+                System.out.println(params[0]+"   "+params[1]+"   "+params[2]+"   "+params[3]);
                 System.out.println(" ");
             }
             sc.close();
