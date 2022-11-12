@@ -51,7 +51,7 @@ public enum ShowingStatus {
 
             case "END_OF_SHOWING":
             {
-                return  END_OF_SHOWING;
+                return END_OF_SHOWING;
             }
 
             default:
