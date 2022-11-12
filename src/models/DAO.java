@@ -471,11 +471,8 @@ public class DAO {
      * Reads data from file and binds the reviews to the movie
      * @param movies a map of movies
      * @param users a map of users
-     * @return a map of the reviews
      */
-    public static HashMap<String, LinkedList<Review>> setReviews(HashMap<String, Movie> movies, HashMap<String, User> users) {
-
-        HashMap<String, LinkedList<Review>> map = new HashMap<String, LinkedList<Review>>();
+    public static void setReviews(HashMap<String, Movie> movies, HashMap<String, User> users) {
 
         try {
             File f = new File("./data/reviews.csv");
@@ -499,7 +496,24 @@ public class DAO {
             e.printStackTrace();
         }
 
-        return map;
+   }
+
+    /**
+     * Reads data from file and binds the sessions to the movie
+     * @param movies a map of movies
+     * @param users a map of users
+     * @return a map of the reviews
+     */
+    public static void setSessions(HashMap<String, Movie> movies, HashMap<String, ArrayList<MovieSession>> sessions) {
+
+        for (String title: movies.keySet()) {
+            if (sessions.containsKey(title)) {
+                for (MovieSession s: sessions.get(title)) {
+                    movies.get(title).addMovieSession(s);
+                }
+
+            }
+        }
 
    }
 

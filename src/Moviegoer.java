@@ -65,7 +65,7 @@ class Moviegoer {
                 HashMap<String, ? extends PromtResultItemIF> result = prompt.prompt(promptBuilder.build());
                 InputResult promptusername = (InputResult) result.get("username");
                 InputResult promptpassword = (InputResult) result.get("password");
-    
+
                 check = !validateUser(users,promptusername.getInput(),promptpassword.getInput());
                 if (check) System.out.println("Incorrect username or password");
                 username = promptusername.getInput();
@@ -83,59 +83,6 @@ class Moviegoer {
         currentUser = users.get(username);
 
         int in = 0;
-        /*while (in != 7) {
-            // Key = Cineplex Name, Value = Cineplex
-            HashMap<String, Cineplex> cineplexes = DAO.getCineplexes();
-            // Key = Cinema Code, Value = Cinema
-            HashMap<String, Cinema> cinemas = DAO.getCinemas(cineplexes);
-            // Key = Movie Title, Value = Movie
-            HashMap<String, Movie> movies = DAO.getMovies();
-            // Key = Movie Title, Value = List of corresponding sessions
-            HashMap<String, ArrayList<MovieSession>> sessions = DAO.getSessions(cinemas, movies);
-            // Key = Session Id, Value = Session
-            HashMap<String, MovieSession> sessionsById = DAO.getSessionsById(sessions);
-            // Key = Transaction Id, Value = Booking
-            HashMap<String, Booking> bookings = DAO.getBookings(sessionsById, users);
-
-            DAO.setReviews(movies, users);
-            DAO.setTickets(bookings);
-            MoviegoerBooking.setTickets(sessionsById, bookings);
-
-            System.out.println("What would you like to do today?");
-            System.out.println("1. List / Search movies");
-            System.out.println("2. Look at a movie's details & reviews");
-            System.out.println("3. Show top 5 movies");
-            System.out.println("4. Review a movie");
-            System.out.println("5. Book a movie");
-            System.out.println("6. View booking history");
-            System.out.println("7. Exit");
-            in = sc.nextInt();
-
-            switch(in) {
-            case 1:
-                MoviegoerMovie.viewMovieList(movies);
-                break;
-            case 2:
-                MoviegoerMovie.lookForMovieDetails(movies);
-                break;
-            case 3:
-                MoviegoerMovie.listTop5(movies);
-                break;
-            case 4:
-                MoviegoerMovie.reviewMovie(movies, currentUser);
-                break;
-            case 5:
-                MoviegoerBooking.createBooking(sessions, currentUser, sc);
-                break;
-            case 6:
-                MoviegoerBooking.viewBookingRecord(currentUser, bookings);
-                break;
-            case 7:
-                System.out.print("Thank you for using MOBLIMA!");
-                break;
-            }
-            System.out.println();
-        }*/
         while (in !=7) {
             try {
                 // Key = Cineplex Name, Value = Cineplex
@@ -149,11 +96,12 @@ class Moviegoer {
                 // Key = Session Id, Value = Session
                 HashMap<String, MovieSession> sessionsById = DAO.getSessionsById(sessions);
                 HashMap<String, Booking> bookings = DAO.getBookings(sessionsById, users);
-    
+
+                DAO.setSessions(movies, sessions);
                 DAO.setReviews(movies, users);
                 DAO.setTickets(bookings);
                 MoviegoerBooking.setTickets(sessionsById, bookings);
-                
+
                 ConsolePrompt prompt = new ConsolePrompt();
                 PromptBuilder promptBuilder = prompt.getPromptBuilder();
                 promptBuilder.createListPrompt()
@@ -165,17 +113,17 @@ class Moviegoer {
                 .newItem("4").text("4. Review a movie").add()
                 .newItem("5").text("5. Book a movie").add()
                 .newItem("6").text("6. View booking history").add()
-                .newItem("7").text("7. Exit").add()                
+                .newItem("7").text("7. Exit").add()
                 .addPrompt();
-    
+
                 HashMap<String, ? extends PromtResultItemIF> result = prompt.prompt(promptBuilder.build());
                 ListResult listchoice = (ListResult) result.get("mainMenu");
                 int listchoiceint = Integer.parseInt(listchoice.getSelectedId());
                 in = listchoiceint;
-                
+
                 switch(listchoiceint) {
                     case 1:
-                        functionsByEeChern.viewMovieList(movies);
+                        MoviegoerMovie.viewMovieList(movies);
                         break;
                     case 2:
                     try {
@@ -183,7 +131,7 @@ class Moviegoer {
                         } catch (Exception e) {
                         e.printStackTrace();
                         }
-                        functionsByEeChern.lookForMovieDetails(movies);
+                        MoviegoerMovie.lookForMovieDetails(movies);
                         break;
                     case 3:
                     try {
@@ -191,7 +139,7 @@ class Moviegoer {
                         } catch (Exception e) {
                         e.printStackTrace();
                         }
-                        functionsByEeChern.listTop5(movies);
+                        MoviegoerMovie.listTop5(movies);
                         break;
                     case 4:
                     try {
@@ -199,7 +147,7 @@ class Moviegoer {
                         } catch (Exception e) {
                         e.printStackTrace();
                         }
-                        functionsByEeChern.reviewMovie(movies, currentUser);
+                        MoviegoerMovie.reviewMovie(movies, currentUser);
                         break;
                     case 5:
                         AnsiConsole.systemUninstall();
@@ -214,7 +162,7 @@ class Moviegoer {
                         MoviegoerBooking.viewBookingRecord(currentUser, bookings);
                         break;
                     case 7:
-                        System.out.print("Thank you for using MOBLIMA!");
+                        System.out.println("Thank you for using MOBLIMA!");
                         break;
                     }
               } catch (IOException e) {
@@ -226,7 +174,7 @@ class Moviegoer {
                     e.printStackTrace();
                     }
                 }
-                
+
         }
         AnsiConsole.systemUninstall();
     }
