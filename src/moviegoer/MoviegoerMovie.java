@@ -3,6 +3,14 @@ package moviegoer;
 import models.*;
 import java.util.HashMap;
 import java.util.Scanner;
+import de.codeshelf.consoleui.prompt.ConsolePrompt;
+import de.codeshelf.consoleui.prompt.InputResult;
+import de.codeshelf.consoleui.prompt.ListResult;
+import de.codeshelf.consoleui.prompt.PromtResultItemIF;
+import de.codeshelf.consoleui.prompt.builder.PromptBuilder;
+import jline.TerminalFactory;
+import org.fusesource.jansi.AnsiConsole;
+import java.io.IOException;
 
 public class MoviegoerMovie {
     /**
@@ -32,11 +40,38 @@ public class MoviegoerMovie {
         boolean check = false;
         // check to see if the movie exists
         while (!check) {
-            System.out.println("Enter the movie title:");
-            movieTitle = sc.nextLine();
-            check = movieExists(movies, movieTitle);
-            if (!check) System.out.println("Movie does not exist, please try again.");
+            // System.out.println("Enter the movie title:");
+            // movieTitle = sc.nextLine();
+            // check = movieExists(movies, movieTitle);
+            // if (!check) System.out.println("Movie does not exist, please try again.");
+            try {
+                ConsolePrompt prompt = new ConsolePrompt();
+                PromptBuilder promptBuilder = prompt.getPromptBuilder();
+
+                promptBuilder.createInputPrompt()
+                    .name("movieTitle")
+                    .message("Enter the movie title")
+                    .defaultValue("Example: Black Adam")
+                    //.mask('*')
+                    .addPrompt();
+ 
+                HashMap<String, ? extends PromtResultItemIF> result = prompt.prompt(promptBuilder.build());
+                InputResult promptmovieTitle = (InputResult) result.get("movieTitle");
+                movieTitle = promptmovieTitle.getInput();
+                check = movieExists(movies, movieTitle);
+                if (!check) System.out.println("Movie does not exist, please try again.");
+                
+              } catch (IOException e) {
+                e.printStackTrace();
+        }finally {
+            try {
+              TerminalFactory.get().restore();
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
+          }
         }
+        
         return movies.get(movieTitle);
     }
 
@@ -45,29 +80,53 @@ public class MoviegoerMovie {
      * @param movies map of movies
      * @param user current user
      */
-    public static void reviewMovie(HashMap<String, Movie> movies, User user){
+    public static void reviewMovie(HashMap<String, Movie> movies, User user) throws IOException{
         Scanner sc = new Scanner(System.in);
 
         // check to see if the movie exists
         String movieTitle = LookForMovieByTitle(movies).getTitle();
 
-        System.out.println("Enter a rating out of 5:");
-        int movieRating = -1;
-        while(!(movieRating >= 1 && movieRating <= 5)){
-            if (sc.hasNextInt()) {
-                movieRating = sc.nextInt();
-                if(!(movieRating >= 1 && movieRating <= 5)){
-                    System.out.println("Please input an integer between 1 and 5.");
-                }
-            } else {
-                System.out.println("Please input an integer.");
-                sc.next();
-            }
-        }
+        // System.out.println("Enter a rating out of 5:");
+         int movieRating = -1;
+         String movieComment;
+        // while(!(movieRating >= 1 && movieRating <= 5)){
+        //     if (sc.hasNextInt()) {
+        //         movieRating = sc.nextInt();
+        //         if(!(movieRating >= 1 && movieRating <= 5)){
+        //             System.out.println("Please input an integer between 1 and 5.");
+        //         }
+        //     } else {
+        //         System.out.println("Please input an integer.");
+        //         sc.next();
+        //     }
+        // }
+        ConsolePrompt prompt = new ConsolePrompt();
+        PromptBuilder promptBuilder = prompt.getPromptBuilder();
+        promptBuilder.createListPrompt()
+        .name("Rating")
+        .message("Please rate the movie from 1 to 5 stars: ")
+        .newItem("1").text("*").add()
+        .newItem("2").text("**").add()
+        .newItem("3").text("***").add()
+        .newItem("4").text("****").add()
+        .newItem("5").text("*****").add()
+        .addPrompt();
 
-        sc.nextLine(); //flushes the scanner buffer.
-        System.out.println("Enter your comments:");
-        String movieComment = sc.nextLine();
+        promptBuilder.createInputPrompt()
+        .name("review")
+        .message("Enter your comments: ")
+        .addPrompt();
+
+
+        // sc.nextLine(); //flushes the scanner buffer.
+        // System.out.println("Enter your comments:");
+        // String movieComment = sc.nextLine();
+
+        HashMap<String, ? extends PromtResultItemIF> result = prompt.prompt(promptBuilder.build());
+        ListResult rating = (ListResult) result.get("Rating");
+        InputResult review1 = (InputResult) result.get("review");
+        movieRating = Integer.parseInt(rating.getSelectedId());
+        movieComment = review1.getInput();
 
         Review review = new Review(user, movieRating, movieComment);
 
@@ -138,7 +197,7 @@ public class MoviegoerMovie {
         for (int i = 1; i < n; ++i) {
             Movie key = movieList[i];
             int j = i - 1;
- 
+
             /* Move elements of arr[0..i-1], that are
                greater than key, to one position ahead
                of their current position */
@@ -193,7 +252,7 @@ public class MoviegoerMovie {
         for (int i = 1; i < n; ++i) {
             Movie key = movieList[i];
             int j = i - 1;
- 
+
             /* Move elements of arr[0..i-1], that are
                greater than key, to one position ahead
                of their current position */

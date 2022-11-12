@@ -1,6 +1,8 @@
 {
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
-        "d:\\Downloads\\jansi-2.1.0.jar"
+        "d:\\Downloads\\jansi-2.1.0.jar",
+        "d:\\Downloads\\consoleui-0.0.13.jar",
+        "d:\\Downloads\\jline-2.14.6.jar"
     ]
 }
