@@ -29,11 +29,9 @@ import org.fusesource.jansi.AnsiConsole;
  */
 public class MoviegoerBooking {
 
-    public static void setTickets (HashMap<String, MovieSession> sessions, LinkedList<Booking> bookings) {
-        for (Booking b : bookings) {
+    public static void setTickets (HashMap<String, MovieSession> sessions, HashMap<String, Booking> bookings) {
+        for (Booking b : bookings.values()) {
             for (Ticket t : b.getTickets()) {
-                System.out.println(b.getMovieSession().getSessionId());
-                System.out.println(t.getSeat().getSeatId());
                 sessions.get(b.getMovieSession().getSessionId()).setSeat(t.getSeat().getSeatId());
             }
         }
@@ -44,11 +42,19 @@ public class MoviegoerBooking {
      * Prints the booking records of the current login user
      * @param user The current login user
      */
-    public static void viewBookingRecord(User user, LinkedList<Booking> bookings) {
-        for (Booking booking : bookings) {
-            // TODO print the booking details properly
-            if (user.equals(booking.getOwner()))
-                System.out.println(booking);
+    public static void viewBookingRecord(User user, HashMap<String, Booking> bookings) {
+        for (Booking booking : bookings.values()) {
+            if (user.equals(booking.getOwner())) {
+                System.out.println("Movie:" + booking.getMovieSession().getMovie().getTitle());
+                System.out.println("Date: " + booking.getMovieSession().getTimeSlot().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")));
+                System.out.printf("You bought %d tickets: ", booking.getTickets().size());
+                for (Ticket t: booking.getTickets()) {
+                    System.out.print(t.getSeat().getSeatId() + " ");
+                }
+                System.out.println();
+                System.out.println();
+            }
+
         }
     }
 

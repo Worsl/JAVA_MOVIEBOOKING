@@ -28,8 +28,10 @@ class Moviegoer {
         return users.containsKey(username) && users.get(username).validatePassword(password);
     }
 
+
     public static void main(String[] args) throws InterruptedException {
         AnsiConsole.systemInstall();
+
         Scanner sc = new Scanner(System.in);
 
         // Key = User name, Value = User
@@ -44,23 +46,23 @@ class Moviegoer {
 
         while (check) {
             try {
-                ConsolePrompt prompt = new ConsolePrompt();                     // #2
-                PromptBuilder promptBuilder = prompt.getPromptBuilder();        // #3
-          
-                promptBuilder.createInputPrompt()                                // #4
-                    .name("username")                                                 // #2
-                    .message("Please enter your username")                            // #3
-                    .defaultValue("UserName123")                                     // #4
-                    //.mask('*')                                                  // #5
-                    .addPrompt();  
-                    
-                    promptBuilder.createInputPrompt()                                // #4
-                    .name("password")                                                 // #2
-                    .message("Please enter your password")                            // #3
-                    .mask('*')                                                  // #5
-                    .addPrompt();     
-                
-                HashMap<String, ? extends PromtResultItemIF> result = prompt.prompt(promptBuilder.build()); // #5
+                ConsolePrompt prompt = new ConsolePrompt();
+                PromptBuilder promptBuilder = prompt.getPromptBuilder();
+
+                promptBuilder.createInputPrompt()
+                    .name("username")
+                    .message("Please enter your username")
+                    .defaultValue("UserName123")
+                    //.mask('*')
+                    .addPrompt();
+
+                    promptBuilder.createInputPrompt()
+                    .name("password")
+                    .message("Please enter your password")
+                    .mask('*')
+                    .addPrompt();
+
+                HashMap<String, ? extends PromtResultItemIF> result = prompt.prompt(promptBuilder.build());
                 InputResult promptusername = (InputResult) result.get("username");
                 InputResult promptpassword = (InputResult) result.get("password");
     
@@ -92,9 +94,10 @@ class Moviegoer {
             HashMap<String, ArrayList<MovieSession>> sessions = DAO.getSessions(cinemas, movies);
             // Key = Session Id, Value = Session
             HashMap<String, MovieSession> sessionsById = DAO.getSessionsById(sessions);
-            LinkedList<Booking> bookings = DAO.getBookings(sessionsById, users);
+            HashMap<String, Booking> bookings = DAO.getBookings(sessionsById, users);
 
             DAO.setReviews(movies, users);
+            DAO.setTickets(bookings);
             MoviegoerBooking.setTickets(sessionsById, bookings);
 
             System.out.println("What would you like to do today?");
