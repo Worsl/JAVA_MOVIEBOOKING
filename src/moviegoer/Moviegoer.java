@@ -1,9 +1,19 @@
 import models.*;
 import java.util.LinkedList;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.io.Console;
+
+
+import de.codeshelf.consoleui.prompt.ConsolePrompt;
+import de.codeshelf.consoleui.prompt.InputResult;
+import de.codeshelf.consoleui.prompt.ListResult;
+import de.codeshelf.consoleui.prompt.PromtResultItemIF;
+import de.codeshelf.consoleui.prompt.builder.PromptBuilder;
+import jline.TerminalFactory;
+import org.fusesource.jansi.AnsiConsole;
 
 
 /**
@@ -18,7 +28,9 @@ class Moviegoer {
         return users.containsKey(username) && users.get(username).validatePassword(password);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException{
+        AnsiConsole.systemInstall();
+
         // Key = User name, Value = User
         HashMap<String, User> users = DAO.getUsers();
         // Key = Cineplex Name, Value = Cineplex
@@ -43,19 +55,58 @@ class Moviegoer {
 
         User currentUser;
         boolean check = true;
+        
 
-        while (check) {
+        /*while (check) {
             System.out.print("Username: ");
             username = sc.nextLine();
             password = new String(console.readPassword("Password: "));
             check = !validateUser(users, username, password);
             if (check) System.out.println("Incorrect username or password");
-        }
+        }*/
 
+        ;
+        while (check) {
+            try {
+                ConsolePrompt prompt = new ConsolePrompt();                     // #2
+                PromptBuilder promptBuilder = prompt.getPromptBuilder();        // #3
+          
+                promptBuilder.createInputPrompt()                                // #4
+                    .name("username")                                                 // #2
+                    .message("Please enter your username")                            // #3
+                    .defaultValue("UserName123")                                     // #4
+                    //.mask('*')                                                  // #5
+                    .addPrompt();  
+                    
+                    promptBuilder.createInputPrompt()                                // #4
+                    .name("password")                                                 // #2
+                    .message("Please enter your password")                            // #3
+                    .mask('*')                                                  // #5
+                    .addPrompt();     
+                
+                HashMap<String, ? extends PromtResultItemIF> result = prompt.prompt(promptBuilder.build()); // #5
+                InputResult promptusername = (InputResult) result.get("username");
+                InputResult promptpassword = (InputResult) result.get("password");
+    
+                check = !validateUser(users,promptusername.getInput(),promptpassword.getInput());
+                if (check) System.out.println("Incorrect username or password");
+                username = promptusername.getInput();
+              } catch (IOException e) {
+                e.printStackTrace();
+        }finally {
+            try {
+              TerminalFactory.get().restore();
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
+          }}
+        
         currentUser = users.get(username);
 
+
+
         int in = 0;
-        while (in != 7) {
+        /*while (in != 7) {
             System.out.println("What would you like to do today?");
             System.out.println("1. List / Search movies");
             System.out.println("2. Look at a movie's details & reviews");
@@ -92,7 +143,76 @@ class Moviegoer {
                 System.out.println("Thank you for using MOBLIMA!");
                 break;
             }
-        }
+        }*/
+
+        
+            try {
+                ConsolePrompt prompt = new ConsolePrompt();                     // #2
+                PromptBuilder promptBuilder = prompt.getPromptBuilder();
+                promptBuilder.createListPrompt()                                                // #1
+                .name("mainmenu")                                                            // #2
+                .message("What would you like to do today?")                                          // #3
+                .newItem("1").text("1. List / Search movies").add()  // without name (name defaults to text)     #4
+                .newItem("2").text("2. Look at a movie's details & reviews").add()                                 // #5
+                .newItem("3").text("3. Show top 5 movies").add()                                         
+                .newItem("4").text("4. Review a movie").add()
+                .newItem("5").text("5. Book a movie").add()
+                .newItem("6").text("6. View booking history").add()
+                .newItem("7").text("7. Exit").add()
+                // .pageSize(10)                                                                 #6
+                // .relativePageSize(66)																											   #7
+                .addPrompt();
+    
+                HashMap<String, ? extends PromtResultItemIF> result = prompt.prompt(promptBuilder.build());
+                ListResult listchoice = (ListResult) result.get("mainmenu");
+                int listchoiceint = Integer.parseInt(listchoice.getSelectedId());
+                
+                switch(listchoiceint) {
+                    case 1:
+                        functionsByEeChern.viewMovieList(movies);
+                        System.out.println();
+                        break;
+                    case 2:
+                        functionsByEeChern.lookForMovieDetails(movies);
+                        System.out.println();
+                        break;
+                    case 3:
+                        functionsByEeChern.listTop5(movies);
+                        break;
+                    case 4:
+                        functionsByEeChern.reviewMovie(movies, currentUser);
+                        System.out.println();
+                        break;
+                    case 5:
+                        try {
+                            TerminalFactory.get().restore();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        Booking.createBooking(cinemas, movies, sessions, sessions2, currentUser);
+                        break;
+                    case 6:
+                        Booking.viewBookingrecord(currentUser);
+                        break;
+                    case 7:
+                        System.out.println("Thank you for using MOBLIMA!");
+                        break;
+                    }
+              } catch (IOException e) {
+                e.printStackTrace();
+                }finally {
+                    try {
+                    TerminalFactory.get().restore();
+                    } catch (Exception e) {
+                    e.printStackTrace();
+                    }
+                }
+
+
+        
+
+
+                AnsiConsole.systemUninstall();
 
     }
 }
