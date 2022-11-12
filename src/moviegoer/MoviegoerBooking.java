@@ -131,6 +131,7 @@ public class MoviegoerBooking {
                 for (Ticket t : newBooking.getTickets())
                     System.out.println(t.getSeat().getSeatId() + " " + t.getSeat().getSeatType().name() + " " + t.getTicketType());
             }
+            
             System.out.println("Please select your seat number.");
             String seatnumber = sc.next();
             if (selectedSession.setSeat(seatnumber)) {

@@ -165,22 +165,22 @@ public class MovieSession {
             switch (seat.getSeatType()) {
             case STANDARD:
                 if (!seat.checkOccupied()) color = GREEN;
-                System.out.print(ansi().fg(color).a(seat.getSeatId()) + " ");
+                System.out.print(ansi().fg(color).a(seat.getSeatId()).reset() + " ");
                 count++;
                 break;
             case COUPLE:
                 if (!seat.checkOccupied()) color = MAGENTA;
-                System.out.print(ansi().fgBright(color).a(seat.getSeatId() + "-" + seat.getSeatId()) + " ");
+                System.out.print(ansi().fgBright(color).a(seat.getSeatId() + "-" + seat.getSeatId()).reset() + " ");
                 count += 2;
                 break;
             case DISABLED:
                 if (!seat.checkOccupied()) color = BLUE;
-                System.out.print(ansi().fg(color).a(seat.getSeatId()) + " ");
+                System.out.print(ansi().fg(color).a(seat.getSeatId()).reset() + " ");
                 count++;
                 break;
             case PREMIUM:
                 if (!seat.checkOccupied()) color = YELLOW;
-                System.out.print(ansi().fg(color).a("   " + seat.getSeatId()) + "    ");
+                System.out.print(ansi().fg(color).a("   " + seat.getSeatId()).reset() + "    ");
                 count += 3;
                 break;
             default:
