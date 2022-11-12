@@ -26,23 +26,25 @@ class Admin {
          Scanner sc = new Scanner(System.in);
 		Console cons;
 
-		System.out.println("Please enter your credentials to visit the Admin Portal:"); //username is admin
-		System.out.print("Username:");
-		if (sc.nextLine() == "admin");
+	System.out.println("Please enter your credentials to visit the Admin Portal:"); //username is admin
+	System.out.print("Username:");
+	if (sc.nextLine() == "admin");
 
 
-		cons = System.console();
-		char[] pwd = cons.readPassword("Enter your password: "); //password is password
-		String password = new String(pwd);
+	cons = System.console();
+	char[] pwd = cons.readPassword("Enter your password: "); //password is password
+	String password = new String(pwd);
 		
-		if (password.equals("password"))
-		{
-			System.out.println("Login sucessful");
-		}
-		else{
-			System.out.println("Error. invalid access attempt, exiting out of system.");
-			System.exit(0);
-		}
+	if (password.equals("password"))
+	{
+		System.out.println("Login sucessful");
+	}
+	else{
+		System.out.println("Error. invalid access attempt, exiting out of system.");
+		System.exit(0);
+	}
+	     
+	     
         System.out.println("Welcome to MOBLIMA Admin Portal! :)");
         int in = 0;
         while (in != 9) {
