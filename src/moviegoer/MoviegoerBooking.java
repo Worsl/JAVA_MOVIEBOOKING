@@ -14,6 +14,17 @@ import org.fusesource.jansi.AnsiConsole;
 import static org.fusesource.jansi.Ansi.*;
 import static org.fusesource.jansi.Ansi.Color.*;
 
+import de.codeshelf.consoleui.elements.ConfirmChoice.ConfirmationValue;
+import de.codeshelf.consoleui.prompt.ConfirmResult;
+import de.codeshelf.consoleui.prompt.ConsolePrompt;
+import de.codeshelf.consoleui.prompt.InputResult;
+import de.codeshelf.consoleui.prompt.ListResult;
+import de.codeshelf.consoleui.prompt.PromtResultItemIF;
+import de.codeshelf.consoleui.prompt.builder.ListPromptBuilder;
+import de.codeshelf.consoleui.prompt.builder.PromptBuilder;
+import jline.TerminalFactory;
+import org.fusesource.jansi.AnsiConsole;
+
 /**
  * The functions accessible to moviegoers regarding booking
  */
@@ -35,7 +46,8 @@ public class MoviegoerBooking {
     public static void viewBookingRecord(User user, HashMap<String, Booking> bookings) {
         for (Booking booking : bookings.values()) {
             if (user.equals(booking.getOwner())) {
-                System.out.println("Movie:" + booking.getMovieSession().getMovie().getTitle());
+                System.out.println("Transaction ID: " + booking.getTID());
+                System.out.println("Movie: " + booking.getMovieSession().getMovie().getTitle());
                 System.out.println("Date: " + booking.getMovieSession().getTimeSlot().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")));
                 System.out.printf("You bought %d tickets: ", booking.getTickets().size());
                 for (Ticket t: booking.getTickets()) {
@@ -51,48 +63,87 @@ public class MoviegoerBooking {
     public static void createBooking
         (HashMap<String, ArrayList<MovieSession>> sessions,
          User user,
-         Scanner sc) {
+         Scanner sc) throws IOException {
 
         boolean ok = false;
 
         int movieChoice = 0;
         ArrayList<String> moviesArr = new ArrayList<String>(sessions.keySet());
 
-        while (!ok) {
-            System.out.println("Select the movie by entering the corresponding number:");
-            int idx = 1;
-            for (String title : moviesArr) {
-                System.out.println(idx++ + ") " + title);
-            }
-            movieChoice = sc.nextInt();
-            ok = movieChoice <= idx && movieChoice > 0;
-            if (!ok)
-                System.out.println("Invalid number.");
+        // while (!ok) {
+        //     System.out.println("Select the movie by entering the corresponding number:");
+        //     int idx = 1;
+        //     for (String title : moviesArr) {
+        //         System.out.println(idx++ + ") " + title);
+        //     }
+        //     movieChoice = sc.nextInt();
+        //     ok = movieChoice <= idx && movieChoice > 0;
+        //     if (!ok)
+        //         System.out.println("Invalid number.");
+        // }
+
+        AnsiConsole.systemInstall();
+        ConsolePrompt prompt1 = new ConsolePrompt();
+        PromptBuilder promptBuilder = prompt1.getPromptBuilder();
+        ListPromptBuilder lpb = promptBuilder.createListPrompt()
+        .name("MovieSelection")
+        .message("Select the movie you like to book");
+        int index = 1;
+        for (String title: moviesArr) {
+            lpb.newItem(String.valueOf(index)).text("" + index++ + ". "+ title).add();
         }
+        lpb.addPrompt();
+
+        HashMap<String, ? extends PromtResultItemIF> result = prompt1.prompt(promptBuilder.build());
+        ListResult choice = (ListResult) result.get("MovieSelection");
+        movieChoice = Integer.parseInt(choice.getSelectedId());
+
 
         MovieSession selectedSession = null;
         ArrayList<MovieSession> sessionsArr = sessions.get(moviesArr.get(movieChoice - 1));
-        ok = false;
 
-        while (!ok) {
-            System.out.println("Please select the session you would like:");
-
-            int idx = 1;
-            for (MovieSession session: sessionsArr) {
-                System.out.println(idx++ + ") " + session.getCinema().getCineplex().getName() + ", " + session.getCinema().getCinemaCode() + ", " + session.getTimeSlot().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")));
-            }
-
-            int sessionChoice = sc.nextInt();
-
-            ok = sessionChoice <= idx && movieChoice > 0;
-            if (!ok) {
-                System.out.println("You have selected an invalid session");
-            }
-            else {
-                selectedSession = sessionsArr.get(sessionChoice - 1);
-            }
-
+        ConsolePrompt prompt2 = new ConsolePrompt();
+        PromptBuilder promptBuilder2 = prompt2.getPromptBuilder();
+        ListPromptBuilder lpb2 = promptBuilder2.createListPrompt()
+        .name("MovieSessionSelection")
+        .message("Select the session you like to book");
+        index = 1;
+        for (MovieSession session: sessionsArr) {
+            lpb2.newItem(String.valueOf(index)).text("" + index++ + ". "+ session.getCinema().getCineplex().getName() + ", " + session.getCinema().getCinemaCode() + ", " + session.getCinema().getCinemaClass().name() + ", " + session.getTimeSlot().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))).add();
         }
+        lpb2.addPrompt();
+
+        HashMap<String, ? extends PromtResultItemIF> result2 = prompt2.prompt(promptBuilder2.build());
+        ListResult choice2 = (ListResult) result2.get("MovieSessionSelection");
+        selectedSession = sessionsArr.get(Integer.parseInt(choice2.getSelectedId()) - 1);
+        try {
+            TerminalFactory.get().restore();
+            } catch (Exception e) {
+            e.printStackTrace();
+            }
+        
+
+        // ok = false;
+
+        // while (!ok) {
+        //     System.out.println("Please select the session you would like:");
+
+        //     int idx = 1;
+        //     for (MovieSession session: sessionsArr) {
+        //         System.out.println(idx++ + ") " + session.getCinema().getCineplex().getName() + ", " + session.getCinema().getCinemaCode() + ", " + session.getTimeSlot().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")));
+        //     }
+
+        //     int sessionChoice = sc.nextInt();
+
+        //     ok = sessionChoice <= idx && movieChoice > 0;
+        //     if (!ok) {
+        //         System.out.println("You have selected an invalid session");
+        //     }
+        //     else {
+        //         selectedSession = sessionsArr.get(sessionChoice - 1);
+        //     }
+
+        // }
 
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
@@ -127,19 +178,59 @@ public class MoviegoerBooking {
                 for (Ticket t : newBooking.getTickets())
                     System.out.println(t.getSeat().getSeatId() + " " + t.getSeat().getSeatType().name() + " " + t.getTicketType());
             }
+            try {
+                TerminalFactory.get().restore();
+                } catch (Exception e) {
+                e.printStackTrace();
+                }
+            
             System.out.println("Please select your seat number.");
             String seatnumber = sc.next();
             if (selectedSession.setSeat(seatnumber)) {
                 TicketType tt = null;
-                while (tt == null) {
+                // while (tt == null) {
                     System.out.println("Select the number which age group this seat is for:");
                     System.out.println("1. Child (< 7)");
                     System.out.println("2. Student (7 - 18)");
                     System.out.println("3. Adult (18 - 65)");
                     System.out.println("4. Senior Citizen (> 65)");
-                    int ageGroup = sc.nextInt();
+                //     int ageGroup = sc.nextInt();
 
-                    switch(ageGroup) {
+                //     switch(ageGroup) {
+                //     case 1:
+                //         tt = TicketType.CHILD;
+                //         break;
+                //     case 2:
+                //         tt = TicketType.STUDENT;
+                //         break;
+                //     case 3:
+                //         tt = TicketType.ADULT;
+                //         break;
+                //     case 4:
+                //         tt = TicketType.SENIOR_CITIZEN;
+                //         break;
+                //     default:
+                //         break;
+                //     }
+                //     if (tt == null) System.out.println("Invalid Choice. Please choose again.");
+                // }
+
+                ConsolePrompt prompt3 = new ConsolePrompt();
+                PromptBuilder promptBuilder3 = prompt3.getPromptBuilder();
+                promptBuilder3.createListPrompt()
+                .name("TicketTypeSelection")
+                .message("Select ticket type: ")
+                .newItem("1").text("1. Child (< 7)").add()  
+                .newItem("2").text("2. Student (7 - 18)").add()                                
+                .newItem("3").text("3. Adult (18 - 65)").add()
+                .newItem("4").text("4. Senior Citizen (> 65)").add()  
+                .addPrompt();
+                
+                HashMap<String, ? extends PromtResultItemIF> result3 = prompt3.prompt(promptBuilder3.build());
+                ListResult choice3 = (ListResult) result3.get("TicketTypeSelection");
+                int ticketChoice = Integer.parseInt(choice3.getSelectedId());
+                
+                switch(ticketChoice) {
                     case 1:
                         tt = TicketType.CHILD;
                         break;
@@ -155,21 +246,46 @@ public class MoviegoerBooking {
                     default:
                         break;
                     }
-                    if (tt == null) System.out.println("Invalid Choice. Please choose again.");
-                }
+
                 Ticket ticket = new Ticket(tt, selectedSession.getSeat(seatnumber), newBooking);
-                System.out.format("This ticket price for seat " + ticket.getSeat().getSeatId() + " is S$%.2f. Confirm Purchase? (y/n)", ticket.getTicketPrice());
-                if (sc.next().equalsIgnoreCase("y")) {
+                
+                // System.out.format("This ticket price for seat " + ticket.getSeat().getSeatId() + " is S$%.2f. Confirm Purchase? (y/n)", ticket.getTicketPrice());
+                // if (sc.next().equalsIgnoreCase("y")) {
+                //     noOfTickets--;
+                //     newBooking.addTicket(ticket);
+                // }
+                // 
+                ConsolePrompt prompt4 = new ConsolePrompt();
+                PromptBuilder promptBuilder4 = prompt4.getPromptBuilder();
+                promptBuilder4.createConfirmPromp()
+                    .name("confirmSeat")
+                    .message("This ticket price for seat " + ticket.getSeat().getSeatId() + " is S$" + String.format("%.2f", ticket.getTicketPrice()) + ". Confirm Purchase? ")
+                    .addPrompt();
+                HashMap<String, ? extends PromtResultItemIF> result4 = prompt4.prompt(promptBuilder4.build());
+                ConfirmResult confirmchoice = (ConfirmResult) result4.get("confirmSeat");        
+                if (confirmchoice.getConfirmed() == ConfirmationValue.YES) {
                     noOfTickets--;
                     newBooking.addTicket(ticket);
                 }
-                else selectedSession.getSeat(seatnumber).unoccupySeat();;
+                else selectedSession.getSeat(seatnumber).unoccupySeat();
             }
+            
         }
 
-        System.out.format("The total price for your booking is S$%.2f.Confirm Purchase? (y/n)\n", + newBooking.getTotalPrice());
-        if (!sc.next().equalsIgnoreCase("y")) return;
+        AnsiConsole.systemInstall();
+        ConsolePrompt prompt = new ConsolePrompt();                     
+        PromptBuilder promptBuilder1 = prompt.getPromptBuilder();
+        promptBuilder1.createConfirmPromp()
+            .name("finalBooking")                                      
+            .message("The total price for your booking is S$" + String.format("%.2f", newBooking.getTotalPrice()) + ". Confirm Purchase? ")                
+            .addPrompt();
+        HashMap<String, ? extends PromtResultItemIF> result1 = prompt.prompt(promptBuilder1.build());    
+        ConfirmResult confirmChoice = (ConfirmResult) result1.get("finalBooking");
 
+
+        //System.out.format("The total price for your booking is S$%.2f.Confirm Purchase? (y/n)\n", + newBooking.getTotalPrice());
+        if (confirmChoice.getConfirmed() == ConfirmationValue.NO) return;
+        AnsiConsole.systemUninstall();
 
         try {
             FileWriter fw = new FileWriter("./data/bookings.csv",true);
@@ -194,8 +310,10 @@ public class MoviegoerBooking {
         }
 
 
-        System.out.printf("You have bought %d for the movie " + newBooking.getMovieSession().getMovie().getTitle() + " at " + newBooking.getMovieSession().getTimeSlot().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))
+        System.out.printf("You have bought %d tickets for the movie " + newBooking.getMovieSession().getMovie().getTitle() + " at " + newBooking.getMovieSession().getTimeSlot().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))
  + "\n", newBooking.getTickets().size());
+        for (Ticket t: newBooking.getTickets()) System.out.print(t.getSeat() + " ");
+        System.out.println();
         System.out.println("Your transaction ID is -> " + transactionid + ". Thank you for your purchase!");
 
 
