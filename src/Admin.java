@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.io.console;
 
 /**
  * The entry point for the admin portal
@@ -23,7 +24,25 @@ class Admin {
          HashMap<String, ArrayList<MovieSession>> sessions = DAO.getSessions(cinemas, movies);
 
          Scanner sc = new Scanner(System.in);
+		Console cons;
 
+		System.out.println("Please enter your credentials to visit the Admin Portal:"); //username is admin
+		System.out.print("Username:");
+		if (sc.nextLine() == "admin");
+
+
+		cons = System.console();
+		char[] pwd = cons.readPassword("Enter your password: "); //password is password
+		String password = new String(pwd);
+		
+		if (password.equals("password"))
+		{
+			System.out.println("Login sucessful");
+		}
+		else{
+			System.out.println("Error. invalid access attempt, exiting out of system.");
+			System.exit(0);
+		}
         System.out.println("Welcome to MOBLIMA Admin Portal! :)");
         int in = 0;
         while (in != 9) {
