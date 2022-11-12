@@ -145,14 +145,13 @@ public class DAO {
     }
 
     /**
-     * Reads data from file and parses into a list of bookings
+     * Reads data from file and parses into a map of (Transaction Id -> bookings)
      * @param sessions The map of current ongoing sessions
-     * @return a list of the bookings made
+     * @return a map of the bookings made
      */
-    public static LinkedList<Booking> getBookings(HashMap<String, MovieSession> sessions, HashMap<String, User> users) {
+    public static HashMap<String, Booking> getBookings(HashMap<String, MovieSession> sessions, HashMap<String, User> users) {
 
-        LinkedList<Booking> list = new LinkedList<Booking>();
-
+        HashMap<String, Booking> map = new HashMap<String, Booking>();
         try {
             File f = new File("./data/bookings.csv");
             Scanner sc = new Scanner(f);
@@ -161,14 +160,14 @@ public class DAO {
                 in = sc.nextLine();
                 // regex to split by comma, but not those within quotation marks
                 params = in.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-                list.add(new Booking(params[0], sessions.get(params[1]), users.get(params[2])));
+                map.put(params[0], new Booking(params[0], sessions.get(params[1]), users.get(params[2])));
             }
         } catch (FileNotFoundException e) {
             System.out.println("Cineplexes File not found");
             e.printStackTrace();
         }
 
-        return list;
+        return map;
 
     }
 
@@ -669,10 +668,10 @@ public class DAO {
      * * Reads data from file and parses into a linked list of tickets
      * @return a linked list of the available Cineplexes
      */
-    public static LinkedList<Ticket> getTickets(HashMap<String, Booking> bookings) {
+    public static void setTickets(HashMap<String, Booking> bookings) {
 
         LinkedList<Ticket> tickets = new LinkedList<Ticket>();
-        try (BufferedReader br = new BufferedReader(new FileReader("./data/movies.csv"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("./data/tickets.csv"))) {
 
             String in = br.readLine(), params[];
 
@@ -698,8 +697,6 @@ public class DAO {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return tickets;
     }
 
     /**
@@ -732,4 +729,18 @@ public class DAO {
         return holidays;
 
     }
+
+    public static void addHolidayToCSV(String date) {
+        try {
+            FileWriter myWriter = new FileWriter("./data/holidays.csv", true);
+            myWriter.write(date + "\n");
+            myWriter.close();
+
+        } catch (IOException e) {
+            System.out.println("An error occurred when adding holiday to CSV, please see DAO.java");
+            e.printStackTrace();
+        }
+    }
+
+
 }
