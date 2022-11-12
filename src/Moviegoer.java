@@ -21,7 +21,6 @@ class Moviegoer {
     }
 
     public static void main(String[] args) {
-
         Scanner sc = new Scanner(System.in);
 
         // Key = User name, Value = User
@@ -56,9 +55,10 @@ class Moviegoer {
             HashMap<String, ArrayList<MovieSession>> sessions = DAO.getSessions(cinemas, movies);
             // Key = Session Id, Value = Session
             HashMap<String, MovieSession> sessionsById = DAO.getSessionsById(sessions);
-            LinkedList<Booking> bookings = DAO.getBookings(sessionsById, users);
+            HashMap<String, Booking> bookings = DAO.getBookings(sessionsById, users);
 
             DAO.setReviews(movies, users);
+            DAO.setTickets(bookings);
             MoviegoerBooking.setTickets(sessionsById, bookings);
 
             System.out.println("What would you like to do today?");
