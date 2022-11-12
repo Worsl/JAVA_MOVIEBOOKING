@@ -19,30 +19,26 @@ import static org.fusesource.jansi.Ansi.Color.*;
  */
 public class MoviegoerBooking {
 
-    // public static void setTickets(sessions) {
+    public static void setTickets (HashMap<String, MovieSession> sessions, LinkedList<Booking> bookings) {
+        for (Booking b : bookings) {
+            for (Ticket t : b.getTickets()) {
+                System.out.println(b.getMovieSession().getSessionId());
+                System.out.println(t.getSeat().getSeatId());
+                sessions.get(b.getMovieSession().getSessionId()).setSeat(t.getSeat().getSeatId());
+            }
+        }
 
-    // }
+    }
 
     /**
      * Prints the booking records of the current login user
      * @param user The current login user
      */
-    public static void viewBookingRecord(User user) {
-        try {
-            String path = "./data/bookings.csv";
-            String line = "";
-            BufferedReader br = new BufferedReader(new FileReader(path));
-
-            while((line = br.readLine()) != null) {
-                String[] values = line.split(",");
-                //System.out.println(values[2] + user.getName());
-                if (values[2].equalsIgnoreCase(user.getName())) {
-                    System.out.println(line);
-                }
-            }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
+    public static void viewBookingRecord(User user, LinkedList<Booking> bookings) {
+        for (Booking booking : bookings) {
+            // TODO print the booking details properly
+            if (user.equals(booking.getOwner()))
+                System.out.println(booking);
         }
     }
 
@@ -171,7 +167,7 @@ public class MoviegoerBooking {
 
         try {
             FileWriter fw = new FileWriter("./data/bookings.csv",true);
-            fw.write(newBooking.getTID() + "," + newBooking.getMovieSession().getSessionid() + "," + newBooking.getOwner().getName() + "\n");
+            fw.write(newBooking.getTID() + "," + newBooking.getMovieSession().getSessionId() + "," + newBooking.getOwner().getName() + "\n");
             fw.close();
         }
 

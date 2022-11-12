@@ -1,6 +1,7 @@
 import models.*;
 import moviegoer.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -54,10 +55,11 @@ class Moviegoer {
             // Key = Movie Title, Value = List of corresponding sessions
             HashMap<String, ArrayList<MovieSession>> sessions = DAO.getSessions(cinemas, movies);
             // Key = Session Id, Value = Session
-            HashMap<String, MovieSession> sessionsById = DAO.getSessionsById(cinemas, movies);
+            HashMap<String, MovieSession> sessionsById = DAO.getSessionsById(sessions);
+            LinkedList<Booking> bookings = DAO.getBookings(sessionsById, users);
 
             DAO.setReviews(movies, users);
-            // MoviegoerBooking.setTickets(sessions);
+            MoviegoerBooking.setTickets(sessionsById, bookings);
 
             System.out.println("What would you like to do today?");
             System.out.println("1. List / Search movies");
@@ -86,7 +88,7 @@ class Moviegoer {
                 MoviegoerBooking.createBooking(sessions, currentUser, sc);
                 break;
             case 6:
-                MoviegoerBooking.viewBookingRecord(currentUser);
+                MoviegoerBooking.viewBookingRecord(currentUser, bookings);
                 break;
             case 7:
                 System.out.print("Thank you for using MOBLIMA!");

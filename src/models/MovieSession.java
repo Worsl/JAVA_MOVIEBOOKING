@@ -35,7 +35,7 @@ public class MovieSession {
      */
     private LinkedHashMap<String, Seat> seats;
 
-    private String sessionid;
+    private String sessionId;
 
     /**
      * Creates a new Session from the given parameters
@@ -43,11 +43,11 @@ public class MovieSession {
      * @param cinema the Session's cinema
      * @param movie the Session's movie
      */
-    public MovieSession (String timeSlot, Cinema cinema, Movie movie, String sessionid) {
+    public MovieSession (String timeSlot, Cinema cinema, Movie movie, String sessionId) {
         this.timeSlot = LocalDateTime.parse(timeSlot, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         this.cinema = cinema;
         this.movie = movie;
-        this.sessionid = sessionid;
+        this.sessionId = sessionId;
 
         this.seats = new LinkedHashMap<String, Seat>();
         String rows[] = { "A", "B", "C", "D", "E", "F", "G", "H", "I"}, seatId;
@@ -148,8 +148,8 @@ public class MovieSession {
         return count;
     }
 
-    public String getSessionid() {
-        return this.sessionid;
+    public String getSessionId() {
+        return this.sessionId;
     }
 
     public void listofavailableSeats() {
