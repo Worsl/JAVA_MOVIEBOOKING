@@ -147,29 +147,28 @@ class Moviegoer {
                 HashMap<String, ArrayList<MovieSession>> sessions = DAO.getSessions(cinemas, movies);
                 // Key = Session Id, Value = Session
                 HashMap<String, MovieSession> sessionsById = DAO.getSessionsById(sessions);
-                LinkedList<Booking> bookings = DAO.getBookings(sessionsById, users);
+                HashMap<String, Booking> bookings = DAO.getBookings(sessionsById, users);
     
                 DAO.setReviews(movies, users);
+                DAO.setTickets(bookings);
                 MoviegoerBooking.setTickets(sessionsById, bookings);
                 
-                ConsolePrompt prompt = new ConsolePrompt();                     // #2
+                ConsolePrompt prompt = new ConsolePrompt();
                 PromptBuilder promptBuilder = prompt.getPromptBuilder();
-                promptBuilder.createListPrompt()                                                // #1
-                .name("mainmenu")                                                            // #2
-                .message("What would you like to do today?")                                          // #3
-                .newItem("1").text("1. List / Search movies").add()  // without name (name defaults to text)     #4
-                .newItem("2").text("2. Look at a movie's details & reviews").add()                                 // #5
-                .newItem("3").text("3. Show top 5 movies").add()                                         
+                promptBuilder.createListPrompt()
+                .name("mainMenu")
+                .message("What would you like to do today?")
+                .newItem("1").text("1. List / Search movies").add()
+                .newItem("2").text("2. Look at a movie's details & reviews").add()
+                .newItem("3").text("3. Show top 5 movies").add()
                 .newItem("4").text("4. Review a movie").add()
                 .newItem("5").text("5. Book a movie").add()
                 .newItem("6").text("6. View booking history").add()
-                .newItem("7").text("7. Exit").add()
-                // .pageSize(10)                                                                 #6
-                // .relativePageSize(66)																											   #7
+                .newItem("7").text("7. Exit").add()                
                 .addPrompt();
     
                 HashMap<String, ? extends PromtResultItemIF> result = prompt.prompt(promptBuilder.build());
-                ListResult listchoice = (ListResult) result.get("mainmenu");
+                ListResult listchoice = (ListResult) result.get("mainMenu");
                 int listchoiceint = Integer.parseInt(listchoice.getSelectedId());
                 in = listchoiceint;
                 
