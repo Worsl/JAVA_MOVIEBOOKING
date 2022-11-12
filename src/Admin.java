@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Scanner;
-import java.io.console;
+import java.io.Console;
 
 /**
  * The entry point for the admin portal
