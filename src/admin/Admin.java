@@ -1,5 +1,7 @@
 package admin;
+
 import models.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.HashMap;
@@ -20,10 +22,7 @@ class Admin {
          // Key = Movie Title, Value = movie object
          HashMap<String, Movie> movies = DAO.getMovies();
          // Key = Movie Title, Value = List of corresponding sessions
-         HashMap<String, LinkedList<MovieSession>> sessions = DAO.getSessions(cinemas, movies);
-         // Key = Movie Title, Value = List of corresponding reviews
-         HashMap<String, LinkedList<Review>> reviews = DAO.getReviews(movies);
-
+         HashMap<String, ArrayList<MovieSession>> sessions = DAO.getSessions(cinemas, movies);
 
          Scanner sc = new Scanner(System.in);
 
@@ -46,7 +45,7 @@ class Admin {
             case 1:
             	System.out.println("Enter movie title: ");
             	String title = sc.next();
-            	
+
             	System.out.println("Enter movie showing status: ");
             	String showingStatus = sc.next();
             	System.out.println("Enter movie synopsis: ");

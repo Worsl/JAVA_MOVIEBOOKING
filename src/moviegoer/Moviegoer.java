@@ -1,5 +1,6 @@
 import models.*;
-import java.util.LinkedList;
+import moviegoer.*;
+import java.util.ArrayList;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -19,23 +20,11 @@ class Moviegoer {
     }
 
     public static void main(String[] args) {
-        // Key = User name, Value = User
-        HashMap<String, User> users = DAO.getUsers();
-        // Key = Cineplex Name, Value = Cineplex
-        HashMap<String, Cineplex> cineplexes = DAO.getCineplexes();
-        // Key = Cinema Code, Value = Cinema
-        HashMap<String, Cinema> cinemas = DAO.getCinemas(cineplexes);
-        // Key = Movie Title, Value = movie object
-        HashMap<String, Movie> movies = DAO.getMovies();
-        // Key = Movie Title, Value = List of corresponding sessions
-        HashMap<String, LinkedList<MovieSession>> sessions = DAO.getSessions(cinemas, movies);
-        // 
-        HashMap<String, LinkedList<MovieSession>> sessions2= DAO.getSessions2(cinemas,movies);
-
-                // Key = Movie Title, Value = List of corresponding reviews
-        DAO.getReviews(movies); // updates reviews into list in movie object
 
         Scanner sc = new Scanner(System.in);
+
+        // Key = User name, Value = User
+        HashMap<String, User> users = DAO.getUsers();
 
         System.out.println("Welcome to MOBLIMA! Please enter your login details: ");
         Console console = System.console();
@@ -56,6 +45,20 @@ class Moviegoer {
 
         int in = 0;
         while (in != 7) {
+            // Key = Cineplex Name, Value = Cineplex
+            HashMap<String, Cineplex> cineplexes = DAO.getCineplexes();
+            // Key = Cinema Code, Value = Cinema
+            HashMap<String, Cinema> cinemas = DAO.getCinemas(cineplexes);
+            // Key = Movie Title, Value = movie object
+            HashMap<String, Movie> movies = DAO.getMovies();
+            // Key = Movie Title, Value = List of corresponding sessions
+            HashMap<String, ArrayList<MovieSession>> sessions = DAO.getSessions(cinemas, movies);
+            // Key = Session Id, Value = Session
+            HashMap<String, MovieSession> sessionsById = DAO.getSessionsById(cinemas, movies);
+
+            DAO.setReviews(movies, users);
+            // MoviegoerBooking.setTickets(sessions);
+
             System.out.println("What would you like to do today?");
             System.out.println("1. List / Search movies");
             System.out.println("2. Look at a movie's details & reviews");
@@ -69,29 +72,27 @@ class Moviegoer {
             switch(in) {
             case 1:
                 functionsByEeChern.viewMovieList(movies);
-                System.out.println();
                 break;
             case 2:
                 functionsByEeChern.lookForMovieDetails(movies);
-                System.out.println();
                 break;
             case 3:
                 functionsByEeChern.listTop5(movies);
                 break;
             case 4:
                 functionsByEeChern.reviewMovie(movies, currentUser);
-                System.out.println();
                 break;
             case 5:
-                Booking.createBooking(cinemas, movies, sessions, sessions2, currentUser);
+                MoviegoerBooking.createBooking(sessions, currentUser, sc);
                 break;
             case 6:
-                Booking.viewBookingrecord(currentUser);
+                MoviegoerBooking.viewBookingRecord(currentUser);
                 break;
             case 7:
-                System.out.println("Thank you for using MOBLIMA!");
+                System.out.print("Thank you for using MOBLIMA!");
                 break;
             }
+            System.out.println();
         }
 
     }

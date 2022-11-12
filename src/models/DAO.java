@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.ArrayList;
 import java.io.*;
 /**
  * DAO.java
@@ -112,9 +113,9 @@ public class DAO {
      * Reads data from file and parses into a map of (Movie Title -> Session)
      * @return a map of the available sessions
      */
-    public static HashMap<String, LinkedList<MovieSession>> getSessions(HashMap<String, Cinema> cinemas, HashMap<String, Movie> movies) {
+    public static HashMap<String, ArrayList<MovieSession>> getSessions(HashMap<String, Cinema> cinemas, HashMap<String, Movie> movies) {
 
-        HashMap<String, LinkedList<MovieSession>> map = new HashMap<String, LinkedList<MovieSession>>();
+        HashMap<String, ArrayList<MovieSession>> map = new HashMap<String, ArrayList<MovieSession>>();
         try {
             File f = new File("./data/moviesessions.csv");
             Scanner sc = new Scanner(f);
@@ -124,17 +125,16 @@ public class DAO {
                 in = sc.nextLine();
                 // regex to split string by comma, but not commas within quotation marks
                 params = in.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-                String movieid = params[3];
                 Cinema cinema = cinemas.get(params[0]);
                 Movie movie = movies.get(params[1]);
-                String id = params[4];
+                String id = params[3];
                 if (cinema != null && movie != null)
-                    if (map.get(movieid) != null)
-                        map.get(movieid).add(new MovieSession(params[2], cinema, movie, id));
+                    if (map.get(params[1]) != null)
+                        map.get(params[1]).add(new MovieSession(params[2], cinema, movie, id));
                     else {
-                        LinkedList <MovieSession> ll = new LinkedList<MovieSession>();
+                        ArrayList <MovieSession> ll = new ArrayList<MovieSession>();
                         ll.add(new MovieSession(params[2], cinema, movie, id));
-                        map.put(movieid, ll);
+                        map.put(params[1], ll);
                     }
             }
         } catch (FileNotFoundException e) {
@@ -144,9 +144,7 @@ public class DAO {
 
         return map;
     }
-    
-    
-    
+
     //define file paths
     static String movies_filepath = "./data/movies.csv";
     static String moviesessions_filepath = "./data/moviesessions.csv";
@@ -257,9 +255,9 @@ public class DAO {
     } 
 
    // Reading data for users to choose
-   public static HashMap<String, LinkedList<MovieSession>> getSessions2(HashMap<String, Cinema> cinemas, HashMap<String, Movie> movies) {
+   public static HashMap<String, MovieSession> getSessionsById (HashMap<String, Cinema> cinemas, HashMap<String, Movie> movies) {
 
-    HashMap<String, LinkedList<MovieSession>> map = new HashMap<String, LinkedList<MovieSession>>();
+    HashMap<String, MovieSession> map = new HashMap<String, MovieSession>();
     try {
         File f = new File("./data/moviesessions.csv");
         Scanner sc = new Scanner(f);
@@ -272,16 +270,9 @@ public class DAO {
 
             Cinema cinema = cinemas.get(params[0]);
             Movie movie = movies.get(params[1]);
-            String movieid = (params[3]);
-            String sessionid = (params[4]);
+            String sessionid = (params[3]);
             if (cinema != null && movie != null)
-                if (map.get(sessionid) != null)
-                    map.get(sessionid).add(new MovieSession(params[2], cinema, movie, sessionid));
-                else {
-                    LinkedList <MovieSession> ll = new LinkedList<MovieSession>();
-                    ll.add(new MovieSession(params[2], cinema, movie, sessionid));
-                    map.put(sessionid, ll);
-                }
+                map.put(sessionid, new MovieSession(params[2], cinema, movie, sessionid));
         }
     } catch (FileNotFoundException e) {
         System.out.println("Movies File not found");
@@ -580,10 +571,12 @@ public class DAO {
     }
 
     /**
-     * Reads data from file and parses into a map of (Movie Title -> Reviews)
+     * Reads data from file and binds the reviews to the movie
+     * @param movies a map of movies
+     * @param users a map of users
      * @return a map of the reviews
      */
-    public static HashMap<String, LinkedList<Review>> getReviews(HashMap<String, Movie> movies) {
+    public static HashMap<String, LinkedList<Review>> setReviews(HashMap<String, Movie> movies, HashMap<String, User> users) {
 
         HashMap<String, LinkedList<Review>> map = new HashMap<String, LinkedList<Review>>();
 
@@ -600,8 +593,7 @@ public class DAO {
                 // params 0 = rating, params 1 = movietitle, params 2 = reviewer, params 3 = comment
                 int ratingScore = Integer.parseInt(params[0]);
                 Movie movie = movies.get(params[1]);
-                User reviewer = new User(params[2], "undefined", "undefined", "");
-                Review review = new Review(reviewer, ratingScore, params[3]);
+                Review review = new Review(users.get(params[2]), ratingScore, params[5]);
                 if (movie != null)
                     movie.addReview(review);
             }
@@ -660,7 +652,45 @@ public class DAO {
         }
     }
 
+    /**
+     * * Reads data from file and parses into a linked list of tickets
+     * @return a linked list of the available Cineplexes
+     */
+    // TODO 
+    public static LinkedList<Ticket> getTickets() {
+        Booking b = null;
+        LinkedList<Ticket> tickets = new LinkedList<Ticket>();
+        try (BufferedReader br = new BufferedReader(new FileReader("./data/movies.csv"))) {
+
+            String in = br.readLine(), params[];
+
+            while (in != null) {
+                // regex to split string by comma, but not commas within quotation marks
+                params = in.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+                tickets.add(new Ticket(TicketType.valueOf(params[0]),
+                                       b.getMovieSession().getSeat(params[1]),
+                                       b
+                ));
+                in = br.readLine();
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Ticket File not found");
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return tickets;
+    }
+
+    /**
+     * The set containing the list of holidays.
+     */
     private static HashSet<LocalDate> holidays = null;
+    /**
+     * Reads from holidays csv file to retrieve the list of holidays. If this file has already been read, the value would be stored in the holidays variable and the file would not be read again.
+     * @return a hash set of holiday dates
+     */
     public static HashSet<LocalDate> getHolidays() {
         if (holidays != null) return holidays;
         holidays = new HashSet<LocalDate>();
