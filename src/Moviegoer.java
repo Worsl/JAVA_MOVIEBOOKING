@@ -175,12 +175,27 @@ class Moviegoer {
                         functionsByEeChern.viewMovieList(movies);
                         break;
                     case 2:
+                    try {
+                        TerminalFactory.get().restore();
+                        } catch (Exception e) {
+                        e.printStackTrace();
+                        }
                         functionsByEeChern.lookForMovieDetails(movies);
                         break;
                     case 3:
+                    try {
+                        TerminalFactory.get().restore();
+                        } catch (Exception e) {
+                        e.printStackTrace();
+                        }
                         functionsByEeChern.listTop5(movies);
                         break;
                     case 4:
+                    try {
+                        TerminalFactory.get().restore();
+                        } catch (Exception e) {
+                        e.printStackTrace();
+                        }
                         functionsByEeChern.reviewMovie(movies, currentUser);
                         break;
                     case 5:
