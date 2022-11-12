@@ -2,6 +2,8 @@ package models;
 
 import java.util.LinkedList;
 
+import models.ShowingStatus;
+
 /**
  * Represents a movie
  */
@@ -68,8 +70,7 @@ public class Movie {
      * @param duration The Movie's duration
      * @param contentRating The Movie's content rating
      */
-    public Movie(String title, ShowingStatus showingStatus, String synopsis, String director, String cast,
-            MovieType movieType, int duration, ContentRating contentRating) {
+    public Movie(String title, ShowingStatus showingStatus, String synopsis, String director, String cast, MovieType movieType, int duration, ContentRating contentRating) {
         this.title = title;
         this.showingStatus = showingStatus;
         this.synopsis = synopsis;
@@ -160,6 +161,13 @@ public class Movie {
      */
     public MovieType getMovieType() {
         return this.movieType;
+    }
+
+    /**
+     * Sets this Movie to END_OF_SHOWING
+     */
+    public void remove() {
+        this.showingStatus = ShowingStatus.END_OF_SHOWING;
     }
 
     /**

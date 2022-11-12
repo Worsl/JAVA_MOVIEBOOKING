@@ -1,9 +1,10 @@
-package models;
+package moviegoer;
 
+import models.*;
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class functionsByEeChern {
+public class MoviegoerMovie {
     /**
      * Checks if the movie exists
      * @param the movie title to be checked and the list of movies
@@ -14,7 +15,7 @@ public class functionsByEeChern {
             String key = set.getKey();
                 if(movieTitle.equals(key)){
                     return true;
-                } 
+                }
         }
         return false;
     }
@@ -22,11 +23,11 @@ public class functionsByEeChern {
     /**
      * Queries the user for a movie title to find that movie object.
      * @param movies the map of movies
-     * @return Movie 
+     * @return Movie
      */
     public static Movie LookForMovieByTitle(HashMap<String, Movie> movies)  {
         Scanner sc = new Scanner(System.in);
-        
+
         String movieTitle = "";
         boolean check = false;
         // check to see if the movie exists
@@ -46,7 +47,7 @@ public class functionsByEeChern {
      */
     public static void reviewMovie(HashMap<String, Movie> movies, User user){
         Scanner sc = new Scanner(System.in);
-        
+
         // check to see if the movie exists
         String movieTitle = LookForMovieByTitle(movies).getTitle();
 
@@ -63,7 +64,6 @@ public class functionsByEeChern {
                 sc.next();
             }
         }
-        
 
         sc.nextLine(); //flushes the scanner buffer.
         System.out.println("Enter your comments:");
@@ -105,12 +105,12 @@ public class functionsByEeChern {
                 break;
         }
     }
-        
+
 
     /**
      * lists top 5 movies based on their rating
      * @param movies map of movies
-     */ 
+     */
     public static void listTop5byRatings(HashMap<String, Movie> movies){
         Movie[] movieList = new Movie[movies.size()];
         int counter = 0;
@@ -123,7 +123,7 @@ public class functionsByEeChern {
         counter = 1;
         int n = min(5, movies.size());
         for (int i=0; i<n; i++){
-            System.out.println("(" + String.valueOf(counter) + ")      " + movieList[i].getTitle() + "      Average Rating: " + movieList[i].getAverageRating());    
+            System.out.println("(" + String.valueOf(counter) + ")      " + movieList[i].getTitle() + "      Average Rating: " + movieList[i].getAverageRating());
             counter++;
         }
     }
@@ -166,10 +166,10 @@ public class functionsByEeChern {
         counter = 1;
         int n = min(5, movies.size());
         for (int i=0; i<n; i++){
-            System.out.println("(" + String.valueOf(counter) + ")      " + movieList[i].getTitle() + "      Tickets Sold: " + movieList[i].getTicketsSold());    
+            System.out.println("(" + String.valueOf(counter) + ")      " + movieList[i].getTitle() + "      Tickets Sold: " + movieList[i].getTicketsSold());
             counter++;
         }
-    
+
     }
 
     /**
@@ -222,7 +222,7 @@ public class functionsByEeChern {
         int counter = 1;
         for (HashMap.Entry<String, Movie> set : movies.entrySet()) {
             String key = set.getKey();
-            System.out.println("(" + String.valueOf(counter) + ")      " + key);    
+            System.out.println("(" + String.valueOf(counter) + ")      " + key);
             counter++;
         }
     }

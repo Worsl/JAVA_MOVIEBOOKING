@@ -1,24 +1,18 @@
 package models;
-/**
- * ShowingStatus.java
- *
- * Written on Tuesday, 25 October 2022.
- */
-
 
 /**
  * Represents the ShowingStatus of a movie
  */
 public enum ShowingStatus {
 
-    COMING_SOON(0), 
-    PREVIEW(1), 
-    NOW_SHOWING(2), 
-    END_OF_SHOWING(3); 
+    COMING_SOON(0),
+    PREVIEW(1),
+    NOW_SHOWING(2),
+    END_OF_SHOWING(3);
 
     int status;
 
-    ShowingStatus(int number) 
+    ShowingStatus(int number)
     {
         this.status = number;
     }
@@ -29,11 +23,13 @@ public enum ShowingStatus {
     }
 
     /**
+     * Returns the corresponding showing status based on parameters
+     * @param status The string to be matched
      * @return ShowingStatus ENUM based on String parsed
      */
-    public static ShowingStatus getShowingStatus(String s) {
-        
-        switch(s.toUpperCase())
+    public static ShowingStatus getShowingStatus(String status) {
+
+        switch(status.toUpperCase())
         {
 
             case "COMING_SOON":{

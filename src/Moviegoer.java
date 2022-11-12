@@ -49,12 +49,13 @@ class Moviegoer {
             HashMap<String, Cineplex> cineplexes = DAO.getCineplexes();
             // Key = Cinema Code, Value = Cinema
             HashMap<String, Cinema> cinemas = DAO.getCinemas(cineplexes);
-            // Key = Movie Title, Value = movie object
+            // Key = Movie Title, Value = Movie
             HashMap<String, Movie> movies = DAO.getMovies();
             // Key = Movie Title, Value = List of corresponding sessions
             HashMap<String, ArrayList<MovieSession>> sessions = DAO.getSessions(cinemas, movies);
             // Key = Session Id, Value = Session
             HashMap<String, MovieSession> sessionsById = DAO.getSessionsById(sessions);
+            // Key = Transaction Id, Value = Booking
             HashMap<String, Booking> bookings = DAO.getBookings(sessionsById, users);
 
             DAO.setReviews(movies, users);
@@ -73,16 +74,16 @@ class Moviegoer {
 
             switch(in) {
             case 1:
-                functionsByEeChern.viewMovieList(movies);
+                MoviegoerMovie.viewMovieList(movies);
                 break;
             case 2:
-                functionsByEeChern.lookForMovieDetails(movies);
+                MoviegoerMovie.lookForMovieDetails(movies);
                 break;
             case 3:
-                functionsByEeChern.listTop5(movies);
+                MoviegoerMovie.listTop5(movies);
                 break;
             case 4:
-                functionsByEeChern.reviewMovie(movies, currentUser);
+                MoviegoerMovie.reviewMovie(movies, currentUser);
                 break;
             case 5:
                 MoviegoerBooking.createBooking(sessions, currentUser, sc);
