@@ -729,4 +729,18 @@ public class DAO {
         return holidays;
 
     }
+
+    public static void addHolidayToCSV(String date) {
+        try {
+            FileWriter myWriter = new FileWriter("./data/holidays.csv", true);
+            myWriter.write(date + "\n");
+            myWriter.close();
+
+        } catch (IOException e) {
+            System.out.println("An error occurred when adding holiday to CSV, please see DAO.java");
+            e.printStackTrace();
+        }
+    }
+
+
 }

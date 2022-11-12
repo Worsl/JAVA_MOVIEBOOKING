@@ -57,7 +57,8 @@ class Admin {
             System.out.println("6. Update a time slot for a movie");
             System.out.println("7. Delete an existing time slot for a movie");
             System.out.println("8. Show movie sessions in system");
-            System.out.println("9. Exit");
+			System.out.println("9. Add a holiday to system");
+            System.out.println("10. Exit");
             in = sc.nextInt();
 
             switch(in) {
@@ -145,7 +146,16 @@ class Admin {
             case 8:
             	DAO.showTimeSlot();
                 break;
-            case 9:
+			case 9:
+				System.out.println("Enter holiday date YYYY-MM-DD: ");
+				String addedDate = sc.next();
+				while(!(addedDate.matches("\\d{4}-\\d{2}-\\d{2}"))){
+					System.out.println("Enter holiday date YYYY-MM-DD: ");
+					addedDate = sc.next();
+				}
+				DAO.addHolidayToCSV(addedDate);
+				break;
+            case 10:
                 System.out.println("Thank you for using MOBLIMA Admin Portal!");
                 break;
             }
