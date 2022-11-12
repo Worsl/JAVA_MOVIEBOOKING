@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Scanner;
-import java.io.console;
+import java.io.Console;
 
 /**
  * The entry point for the admin portal
@@ -24,30 +24,29 @@ class Admin {
          HashMap<String, ArrayList<MovieSession>> sessions = DAO.getSessions(cinemas, movies);
 
          Scanner sc = new Scanner(System.in);
-		Console cons;
+         Console cons;
 
-	System.out.println("Please enter your credentials to visit the Admin Portal:"); //username is admin
-	System.out.print("Username:");
-	if (sc.nextLine() == "admin");
+         System.out.println("Please enter your credentials to visit the Admin Portal:"); //username is admin
+         System.out.print("Username:");
+         String username = sc.nextLine();
+             ;
 
+         cons = System.console();
+         char[] pwd = cons.readPassword("Enter your password: "); //password is password
+         String password = new String(pwd);
 
-	cons = System.console();
-	char[] pwd = cons.readPassword("Enter your password: "); //password is password
-	String password = new String(pwd);
-		
-	if (password.equals("password"))
-	{
-		System.out.println("Login sucessful");
-	}
-	else{
-		System.out.println("Error. invalid access attempt, exiting out of system.");
-		System.exit(0);
-	}
-	     
-	     
+         if (username.equals("admin") && password.equals("password"))
+             {
+                 System.out.println("Login sucessful");
+             }
+         else{
+             System.out.println("Error. invalid access attempt, exiting out of system.");
+             System.exit(0);
+         }
+
         System.out.println("Welcome to MOBLIMA Admin Portal! :)");
         int in = 0;
-        while (in != 9) {
+        while (in != 10) {
             System.out.println("What would you like to do today?");
             System.out.println("1. Add a new movie");
             System.out.println("2. Update a movie's details");
@@ -57,7 +56,7 @@ class Admin {
             System.out.println("6. Update a time slot for a movie");
             System.out.println("7. Delete an existing time slot for a movie");
             System.out.println("8. Show movie sessions in system");
-			System.out.println("9. Add a holiday to system");
+            System.out.println("9. Add a holiday to system");
             System.out.println("10. Exit");
             in = sc.nextInt();
 
@@ -80,13 +79,13 @@ class Admin {
             	int duration = sc.nextInt();
             	System.out.println("Enter movie content rating: ");
             	String contentRating = sc.next();
-            	
+
             	DAO.addMovie(title, showingStatus, synopsis, director, cast, type, duration, contentRating);
             	break;
             case 2:
             	System.out.println("Enter movie title: ");
             	String title2 = sc.next();
-            	
+
             	System.out.println("Select category to update ");
             	System.out.println("1: showing status");
             	System.out.println("2: synopsis");
@@ -96,16 +95,16 @@ class Admin {
             	System.out.println("6: duration");
             	System.out.println("7: content rating");
             	int category = sc.nextInt();
-            	
+
             	System.out.println("Enter updated text");
             	String edit = sc.next();
-            	
+
             	DAO.updateMovie(title2, category, edit);
             	break;
             case 3:
             	System.out.println("Enter movie title: ");
             	String title3 = sc.next();
-            	
+
             	DAO.deleteMovie(title3);
                 break;
             case 4:
@@ -118,10 +117,10 @@ class Admin {
             	String title5 = sc.next();
             	System.out.println("Enter time slot: ");
             	String timeSlot5 = sc.next();
-            	
+
             	DAO.addTimeSlot(cinema5, title5, timeSlot5);
                 break;
-            case 6:  
+            case 6:
             	System.out.println("Enter cinema: ");
             	String cinema6 = sc.next();
             	System.out.println("Enter movie title: ");
@@ -130,17 +129,17 @@ class Admin {
             	String timeSlot6 = sc.next();
             	System.out.println("Enter new time slot: ");
             	String newTimeSlot6 = sc.next();
-            	
+
             	DAO.updateTimeSlot(cinema6, title6, timeSlot6, newTimeSlot6);
             	break;
-            case 7:  
+            case 7:
             	System.out.println("Enter cinema: ");
             	String cinema7 = sc.next();
             	System.out.println("Enter movie title: ");
             	String title7 = sc.next();
             	System.out.println("Enter time slot: ");
             	String timeSlot7 = sc.next();
-            	
+
             	DAO.deleteTimeSlot(cinema7, title7, timeSlot7);
             	break;
             case 8:
