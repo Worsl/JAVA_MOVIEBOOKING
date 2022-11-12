@@ -14,6 +14,16 @@ import org.fusesource.jansi.AnsiConsole;
 import static org.fusesource.jansi.Ansi.*;
 import static org.fusesource.jansi.Ansi.Color.*;
 
+import de.codeshelf.consoleui.elements.ConfirmChoice.ConfirmationValue;
+import de.codeshelf.consoleui.prompt.ConfirmResult;
+import de.codeshelf.consoleui.prompt.ConsolePrompt;
+import de.codeshelf.consoleui.prompt.InputResult;
+import de.codeshelf.consoleui.prompt.ListResult;
+import de.codeshelf.consoleui.prompt.PromtResultItemIF;
+import de.codeshelf.consoleui.prompt.builder.PromptBuilder;
+import jline.TerminalFactory;
+import org.fusesource.jansi.AnsiConsole;
+
 /**
  * The functions accessible to moviegoers regarding booking
  */
@@ -45,7 +55,7 @@ public class MoviegoerBooking {
     public static void createBooking
         (HashMap<String, ArrayList<MovieSession>> sessions,
          User user,
-         Scanner sc) {
+         Scanner sc) throws IOException {
 
         boolean ok = false;
 
@@ -161,8 +171,20 @@ public class MoviegoerBooking {
             }
         }
 
-        System.out.format("The total price for your booking is S$%.2f.Confirm Purchase? (y/n)\n", + newBooking.getTotalPrice());
-        if (!sc.next().equalsIgnoreCase("y")) return;
+        AnsiConsole.systemInstall();
+        ConsolePrompt prompt = new ConsolePrompt();                     // #2
+        PromptBuilder promptBuilder = prompt.getPromptBuilder();
+        promptBuilder.createConfirmPromp()
+            .name("delivery")                                      // #2
+            .message("The total price for your booking is " + newBooking.getTotalPrice() + "Confirm Purchase? (y/n)")                // #3
+            .addPrompt();
+        HashMap<String, ? extends PromtResultItemIF> result = prompt.prompt(promptBuilder.build());    
+        ConfirmResult confirmchoice = (ConfirmResult) result.get("delivery");
+
+
+        //System.out.format("The total price for your booking is S$%.2f.Confirm Purchase? (y/n)\n", + newBooking.getTotalPrice());
+        if (confirmchoice.getConfirmed() == ConfirmationValue.YES) return;
+        AnsiConsole.systemUninstall();;
 
 
         try {
