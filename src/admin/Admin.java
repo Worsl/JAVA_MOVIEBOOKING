@@ -34,9 +34,9 @@ class Admin {
             System.out.println("2. Update a movie's details");
             System.out.println("3. Delete an existing movie");
             System.out.println("4. Show movies in system");
-            System.out.println("5. Add a new time slot for a movie");
-            System.out.println("6. Update a time slot for a movie");
-            System.out.println("7. Delete an existing time slot for a movie");
+            System.out.println("5. Add a new movie session");
+            System.out.println("6. Update a movie session");
+            System.out.println("7. Delete a movie session");
             System.out.println("8. Show movie sessions in system");
             System.out.println("9. Exit");
             in = sc.nextInt();
@@ -92,39 +92,37 @@ class Admin {
                 DAO.showMovie();
             	break;
             case 5:
+            	System.out.println("Enter session id: ");
+            	String sessionID5 = sc.next();
             	System.out.println("Enter cinema: ");
             	String cinema5 = sc.next();
             	System.out.println("Enter movie title: ");
             	String title5 = sc.next();
-            	System.out.println("Enter time slot: ");
-            	String timeSlot5 = sc.next();
+            	System.out.println("Enter data time (YYYY-MM-DD HH:MM format): ");
+            	String dateTime5 = sc.next();
             	
-            	DAO.addTimeSlot(cinema5, title5, timeSlot5);
+            	DAO.addSession(cinema5, title5, dateTime5, sessionID5);
                 break;
             case 6:  
-            	System.out.println("Enter cinema: ");
-            	String cinema6 = sc.next();
-            	System.out.println("Enter movie title: ");
-            	String title6 = sc.next();
-            	System.out.println("Enter time slot: ");
-            	String timeSlot6 = sc.next();
-            	System.out.println("Enter new time slot: ");
-            	String newTimeSlot6 = sc.next();
+            	System.out.println("Enter session id: ");
+            	String sessionID6 = sc.next();
+            	System.out.println("Enter new cinema: ");
+            	String newCinema6 = sc.next();
+            	System.out.println("Enter new movie title: ");
+            	String newTitle6 = sc.next();
+            	System.out.println("Enter new data time (YYYY-MM-DD HH:MM format): ");
+            	String newDateTime6 = sc.next();
             	
-            	DAO.updateTimeSlot(cinema6, title6, timeSlot6, newTimeSlot6);
+            	DAO.updateSession(newCinema6, newTitle6, newDateTime6, sessionID6);
             	break;
             case 7:  
-            	System.out.println("Enter cinema: ");
-            	String cinema7 = sc.next();
-            	System.out.println("Enter movie title: ");
-            	String title7 = sc.next();
-            	System.out.println("Enter time slot: ");
-            	String timeSlot7 = sc.next();
+            	System.out.println("Enter session id: ");
+            	String sessionID7 = sc.next();
             	
-            	DAO.deleteTimeSlot(cinema7, title7, timeSlot7);
+            	DAO.deleteSession(sessionID7);
             	break;
             case 8:
-            	DAO.showTimeSlot();
+            	DAO.showSession();
                 break;
             case 9:
                 System.out.println("Thank you for using MOBLIMA Admin Portal!");
