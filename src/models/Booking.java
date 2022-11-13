@@ -31,9 +31,9 @@ public class Booking {
     /**
      * Creates a new Booking from the given parameters
      *
-     * @param tickets The Booking's transaction ID
+     * @param TID The Booking's transaction ID
      * @param movieSession  The Booking's session
-     * @param user The Booking's owner
+     * @param owner The Booking's owner
      */
     public Booking(String TID, MovieSession movieSession, User owner) {
         this.TID = TID;
@@ -81,7 +81,7 @@ public class Booking {
 
     /**
      * Adds a new ticket to this booking.
-     * @param the new ticket to be added to this booking
+     * @param t the new ticket to be added to this booking
      */
     public void addTicket(Ticket t) {
         tickets.add(t);

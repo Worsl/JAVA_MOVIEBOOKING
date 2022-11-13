@@ -25,7 +25,7 @@ public class DAO {
     private static String movieFilePath = "./data/movies.csv";
 
     /**
-     * Reads data from file and parses into a map of (Cineplex Name -> Cineplex)
+     * Reads data from file and parses into a map of (Cineplex Name: Cineplex)
      * @return a map of the available Cineplexes
      */
     public static HashMap<String, Cineplex> getCineplexes() {
@@ -52,7 +52,7 @@ public class DAO {
     }
 
     /**
-     * Reads data from file and parses into a map of (Cinema Code -> Cinemas)
+     * Reads data from file and parses into a map of (Cinema Code: Cinemas)
      * @param cineplexes the map of current available cineplexes
      * @return a map of the available cinemas
      */
@@ -84,7 +84,7 @@ public class DAO {
     }
 
     /**
-     * Reads data from file and parses into a map of (Movie Title -> Movies)
+     * Reads data from file and parses into a map of (Movie Title: Movies)
      * @return a map of the available movies
      */
     public static HashMap<String, Movie> getMovies() {
@@ -112,7 +112,7 @@ public class DAO {
    }
 
     /**
-     * Reads data from file and parses into a map of (Movie Title -> Session)
+     * Reads data from file and parses into a map of (Movie Title: Session)
      * @return a map of the available sessions
      */
     public static HashMap<String, ArrayList<MovieSession>> getSessions(HashMap<String, Cinema> cinemas, HashMap<String, Movie> movies) {
@@ -148,7 +148,7 @@ public class DAO {
     }
 
     /**
-     * Reads data from file and parses into a map of (Transaction Id -> bookings)
+     * Reads data from file and parses into a map of (Transaction Id: bookings)
      * @param sessions The map of current ongoing sessions
      * @return a map of the bookings made
      */
@@ -180,7 +180,7 @@ public class DAO {
     static String temp2 = "./data/temp2.csv";
 
     /**
-     * Reads data from file and parses into a map of (Session Id -> Session)
+     * Reads data from file and parses into a map of (Session Id: Session)
      * @param sessions The list of available sessions in the system;
      * @return a map of the sessions available
      */
@@ -513,8 +513,7 @@ public class DAO {
     /**
      * Reads data from file and binds the sessions to the movie
      * @param movies a map of movies
-     * @param users a map of users
-     * @return a map of the reviews
+     * @param sessions a map of sessions
      */
     public static void setSessions(HashMap<String, Movie> movies, HashMap<String, ArrayList<MovieSession>> sessions) {
 
@@ -530,7 +529,7 @@ public class DAO {
    }
 
     /**
-    * Reads data from file and parses into a map of (User Name -> User)
+    * Reads data from file and parses into a map of (User Name: User)
     * @return a map of the available Cineplexes
     */
    public static HashMap<String, User> getUsers() {
@@ -577,7 +576,6 @@ public class DAO {
 
     /**
      * * Reads data from file and parses into a linked list of tickets
-     * @return a linked list of the available Cineplexes
      */
     public static void setTickets(HashMap<String, Booking> bookings) {
 
@@ -612,9 +610,9 @@ public class DAO {
 
     /**
      * The set containing the list of holidays.
-     * @return The HashSet of holiday dates
      */
     private static HashSet<LocalDate> holidays = null;
+
     /**
      * Reads from holidays csv file to retrieve the list of holidays. If this file has already been read, the value would be stored in the holidays variable and the file would not be read again.
      * @return a hash set of holiday dates

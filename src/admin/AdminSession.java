@@ -84,6 +84,7 @@ public class AdminSession {
 
     /**
      * Deletes the session with the corresponding id
+     * @param sc The scanner used in the entry point
      */
     public static void deleteSession(Scanner sc) {
         System.out.println("Enter session id: ");

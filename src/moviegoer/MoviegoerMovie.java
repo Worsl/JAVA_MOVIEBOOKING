@@ -17,7 +17,9 @@ import java.io.IOException;
 public class MoviegoerMovie {
     /**
      * Checks if the movie exists
-     * @param the movie title to be checked and the list of movies
+     * @param movies The list of movies in the system
+     * @param movieTitle The movie title to be checked
+     * @return true if movie exists in our system, false otherwise
      */
     public static boolean movieExists(HashMap<String, Movie> movies, String movieTitle){
         // Iterating HashMap through for loop
@@ -171,7 +173,6 @@ public class MoviegoerMovie {
     /**
      * Sorts the list of movies via insertion sort by their average rating.
      * @param movieList list of movies to sort
-     * @param n size of the list of movies
      */
     private static void sortByRating(Movie[] movieList) {
         int n = movieList.length;
@@ -226,7 +227,6 @@ public class MoviegoerMovie {
     /**
      * Sorts the list of movies via insertion sort by their number of tickets sold.
      * @param movieList list of movies to sort
-     * @param n size of the list of movies
      */
     private static void sortBySales(Movie[] movieList) {
         int n = movieList.length;
