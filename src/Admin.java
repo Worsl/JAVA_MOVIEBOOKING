@@ -47,6 +47,8 @@ class Admin {
             HashMap<String, Movie> movies = DAO.getMovies();
             // Key = Movie Title, Value = List of corresponding sessions
             HashMap<String, ArrayList<MovieSession>> sessions = DAO.getSessions(cinemas, movies);
+            // Key = Session Id, Value = Session
+            HashMap<String, MovieSession> sessionsById = DAO.getSessionsById(sessions);
 
             System.out.println("What would you like to do today?");
             System.out.println("1. Add a new movie");
@@ -78,10 +80,10 @@ class Admin {
                 AdminSession.newSession(cinemas, movies, sessions, sc);
                 break;
             case 6:
-                AdminSession.updateSession(cinemas, movies, sc);
+                AdminSession.updateSession(cinemas, movies, sessionsById, sc);
                 break;
             case 7:
-                AdminSession.deleteSession(sc);
+                AdminSession.deleteSession(sessionsById, sc);
                 break;
             case 8:
                 AdminSession.showSession(sessions);

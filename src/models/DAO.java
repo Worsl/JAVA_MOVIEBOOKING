@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.io.PrintWriter;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
@@ -23,8 +24,10 @@ public class DAO {
 
     // File Paths
     private static String movieFilePath = "./data/movies.csv";
+    private static String sessionFilePath = "./data/moviesessions.csv";
 
     /**
+     *
      * Reads data from file and parses into a map of (Cineplex Name: Cineplex)
      * @return a map of the available Cineplexes
      */
@@ -119,7 +122,7 @@ public class DAO {
 
         HashMap<String, ArrayList<MovieSession>> map = new HashMap<String, ArrayList<MovieSession>>();
         try {
-            File f = new File("./data/moviesessions.csv");
+            File f = new File(sessionFilePath);
             Scanner sc = new Scanner(f);
             String in, params[];
 
@@ -175,7 +178,7 @@ public class DAO {
     }
 
     //define file paths
-    static String moviesessions = "./data/moviesessions.csv";
+
     static String temp1 = "./data/temp1.csv";
     static String temp2 = "./data/temp2.csv";
 
@@ -330,7 +333,7 @@ public class DAO {
 
         try {
         	//check sessionID not already in file
-        	File f = new File(moviesessions);
+        	File f = new File(sessionFilePath);
             Scanner sc = new Scanner(f);
         	String in, params[];
 
@@ -348,7 +351,7 @@ public class DAO {
         	sc.close();
 
         	//add session to file
-        	FileWriter fw = new FileWriter(moviesessions, true);
+        	FileWriter fw = new FileWriter(sessionFilePath, true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter pw = new PrintWriter(bw);
 
@@ -359,7 +362,7 @@ public class DAO {
             System.out.println("Movie session successfully added.");
 
         } catch (FileNotFoundException e) {
-        	System.out.println("Moviesessions File not found");
+        	System.out.println("Movie Sessions File not found");
             e.printStackTrace();
         } catch (IOException e) {
         	System.out.println("IOException");
@@ -376,107 +379,37 @@ public class DAO {
      * @param newDateTime The new time slot of the session
      * @param sessionID The unique identifier of this session
      */
-    public static void updateSession(String newCinema, String newTitle, String newDateTime, String sessionID) {
-
-    	File oldFile = new File(moviesessions);
-        File newFile = new File(temp2);
+    public static void updateSession(HashMap<String, MovieSession> sessions) {
 
         try {
-            FileWriter fw = new FileWriter(temp2, true);
-            BufferedWriter bw = new BufferedWriter(fw);
-            PrintWriter pw = new PrintWriter(bw);
-        	Scanner sc = new Scanner(new File(moviesessions));
-            String in, params[];
-            boolean found = false;
-
-            while (sc.hasNextLine()) {
-                in = sc.nextLine();
-                // regex to split string by comma, but not commas within quotation marks
-                params = in.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-
-                if (params[3].equals(sessionID)) {
-                	pw.println(newCinema + "," + newTitle + "," + newDateTime + "," + sessionID);
-                	found = true;
-                } else {
-                	pw.println(in);
-                }
+            FileWriter fw = new FileWriter(sessionFilePath);
+            for (MovieSession session: sessions.values()) {
+                fw.write(session.getCinema().getCinemaCode() + "," + session.getMovie().getTitle() + "," + session.getTimeSlot().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) + "," + session.getSessionId() + "\n");
             }
+            fw.close();
 
-            sc.close();
-            pw.flush();
-            pw.close();
-            oldFile.delete();
-            File dump = new File(moviesessions);
-            newFile.renameTo(dump);
-
-            if (found) {
-            	System.out.println("Movie session successfully updated");
-            } else {
-            	System.out.println("Movie session not found");
-            }
-
-        } catch (FileNotFoundException e) {
-            System.out.println("Moviesessions File not found");
-            e.printStackTrace();
         } catch (IOException e) {
         	System.out.println("IOException");
         	e.printStackTrace();
     	}
-
-        return;
     }
 
     /**
      * Removes an existing movie session by setting its showing status to END_OF_SHOWING
      * @param sessionID The unique identifer of the session to be removed
      */
-    public static void deleteSession(String sessionID) {
-
-    	File oldFile = new File(moviesessions);
-        File newFile = new File(temp2);
-
+    public static void deleteSession(LinkedList<MovieSession> sessions) {
         try {
-            FileWriter fw = new FileWriter(temp2, true);
-            BufferedWriter bw = new BufferedWriter(fw);
-            PrintWriter pw = new PrintWriter(bw);
-        	Scanner sc = new Scanner(new File(moviesessions));
-            String in, params[];
-            Boolean found = false;
-
-            while (sc.hasNextLine()) {
-                in = sc.nextLine();
-                // regex to split string by comma, but not commas within quotation marks
-                params = in.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-
-                if (!params[3].equals(sessionID)) {
-                	pw.println(in);
-                } else {
-                	found = true;
-                }
+            FileWriter fw =  new FileWriter(sessionFilePath);
+            for (MovieSession session: sessions) {
+                fw.write(session.getCinema().getCinemaCode() + "," + session.getMovie().getTitle() + "," + session.getTimeSlot().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) + "," + session.getSessionId() + "\n");
             }
-
-            sc.close();
-            pw.flush();
-            pw.close();
-            oldFile.delete();
-            File dump = new File (moviesessions);
-            newFile.renameTo(dump);
-
-            if (found) {
-            	System.out.println("Movie session successfully deleted");
-            } else {
-            	System.out.println("Movie session not found");
-            }
-
-        } catch (FileNotFoundException e) {
-            System.out.println("Moviesessions File not found");
-            e.printStackTrace();
-        } catch (IOException e) {
+            fw.close();
+        }
+        catch (IOException e) {
         	System.out.println("IOException");
         	e.printStackTrace();
     	}
-
-        return;
     }
 
     /**

@@ -2,6 +2,7 @@ package admin;
 
 import models.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -53,12 +54,19 @@ public class AdminSession {
      * Updates an existing record of a session in the system
      * @param cinemas The list of current cinemas in the system
      * @param movies  The list of current movies in the system
+     * @param sessions  The list of current sessions in the system
+     * @param sc The scanner used in the entry point
      */
     public static void updateSession(HashMap<String, Cinema> cinemas,
                                      HashMap<String, Movie> movies,
+                                     HashMap<String, MovieSession> sessions,
                                      Scanner sc) {
         System.out.println("Enter session id: ");
         String sessionId = sc.next();
+        if (!sessions.containsKey(sessionId)) {
+            System.out.println("Invalid Session Id. The session doesn't exist");
+            return;
+        }
 
         System.out.println("Enter new cinema code: ");
         String newCinema = sc.next();
@@ -73,7 +81,10 @@ public class AdminSession {
                     System.out.println("Enter new date time (YYYY-MM-DD HH:MM format): ");
                     newDateTime = sc.nextLine();
                 }
-                DAO.updateSession(newCinema, newTitle, newDateTime, sessionId);
+                sessions.get(sessionId).setCinema(cinemas.get(newCinema));
+                sessions.get(sessionId).setMovie(movies.get(newTitle));
+                sessions.get(sessionId).setTimeSlot(newDateTime);
+                DAO.updateSession(sessions);
             }
             else
                 System.out.println("That movie does not exist!");
@@ -84,13 +95,21 @@ public class AdminSession {
 
     /**
      * Deletes the session with the corresponding id
+     * @param sessions The list of sessions in the system
      * @param sc The scanner used in the entry point
      */
-    public static void deleteSession(Scanner sc) {
+    public static void deleteSession(HashMap<String, MovieSession> sessions, Scanner sc) {
         System.out.println("Enter session id: ");
         String sessionId = sc.next();
+        if (sessions.containsKey(sessionId)) {
+            LinkedList<MovieSession> sessionList = new LinkedList<MovieSession>();
+            for (MovieSession session: sessions.values()) {
+                if (!session.getSessionId().equals(sessionId)) sessionList.add(session);
+            }
+            DAO.deleteSession(sessionList);
+        }
+        else System.out.println("That session does not exist!");
 
-        DAO.deleteSession(sessionId);
     }
 
     /**
