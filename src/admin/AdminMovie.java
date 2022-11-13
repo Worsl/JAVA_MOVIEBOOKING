@@ -8,6 +8,11 @@ import java.util.Scanner;
  * The functions accessible to admin regarding Movie
  */
 public class AdminMovie {
+
+    /**
+     * Creates a new movie to be added to the system
+     * @param movies The list of current movies in the system
+     */
     public static void addMovie(HashMap<String, Movie> movies, Scanner sc) {
 
         System.out.println("Enter movie title: ");
@@ -110,6 +115,9 @@ public class AdminMovie {
         DAO.addMovie(new Movie(title, status, synopsis, director, cast, type, duration, rating));
     }
 
+    /**
+     * Updates an existing movie record in the system
+     */
     public static void editMovie(Scanner sc) {
         System.out.println("Enter movie title: ");
         String title = sc.next();
@@ -130,6 +138,10 @@ public class AdminMovie {
         DAO.updateMovie(title, category, edit);
     }
 
+    /**
+     * Removes an existing movie record in the system
+     * @param movies The list of movies currently in our system
+     */
     public static void deleteMovie(HashMap<String, Movie> movies, Scanner sc) {
 
         System.out.println("Enter movie title: ");
@@ -144,6 +156,10 @@ public class AdminMovie {
             System.out.println("Movie title not found");
     }
 
+    /**
+     * Prints out the details of the movies in our system
+     * @param movies The list of movies currently in our system
+     */
     public static void showMovies(HashMap<String, Movie> movies) {
         for (Movie m: movies.values()) {
             System.out.println("Title: " + m.getTitle());

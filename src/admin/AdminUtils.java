@@ -8,6 +8,12 @@ import java.util.Scanner;
  * Helper functions used in the admin program
  */
 public class AdminUtils {
+
+    /**
+     * Generates a unique session Id to be assigned to a new session
+     * @param sessions The list of existing sessions in our system
+     * @return the newly created session Id
+     */
     public static String generateSessionId(HashMap<String, ArrayList<MovieSession>> sessions) {
         int id = 0;
 
@@ -20,6 +26,9 @@ public class AdminUtils {
         return String.valueOf(id + 1);
     }
 
+    /**
+     * Adds a new holiday date and saves into the system.
+     */
     public static void addHolidayDate(Scanner sc) {
         System.out.println("Enter holiday date (YYYY-MM-DD format): ");
         String addedDate = sc.next();

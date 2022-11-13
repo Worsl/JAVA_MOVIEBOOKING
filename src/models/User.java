@@ -32,6 +32,13 @@ public class User {
      */
     private LinkedList<Booking> bookings;
 
+    /**
+     * Creates a new User object with the given parameters
+     * @param name  the User's name
+     * @param email    the User's email
+     * @param mobile     the Session's mobile
+     * @param password the Session's password
+     */
     public User (String name, String email, String mobile, String password) {
         this.name = name;
         this.email = email;
@@ -94,6 +101,11 @@ public class User {
         bookings.add(b);
     }
 
+    /**
+     * Checks if the password given matches with the user
+     * @param password the password to be matched
+     * @return true if the password matches, false otherwise
+     */
     public boolean validatePassword(String password) {
         return this.password.equals(password);
     }

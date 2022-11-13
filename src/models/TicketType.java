@@ -17,9 +17,12 @@ public enum TicketType {
         this.agePricing = number;
     }
 
+    /**
+     * returns the value associated with the TicketType Enum
+     */
     public int getAgePricing()
     {
-        // returns the value associated with the TicketType Enum
+
         return this.agePricing;
     }
 

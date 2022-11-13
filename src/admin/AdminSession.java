@@ -7,8 +7,17 @@ import java.util.Scanner;
 
 import java.time.format.DateTimeFormatter;
 
+/**
+ * The functions accessible to Admin regarding Session
+ */
 public class AdminSession {
 
+    /**
+     * Creates a new session to be added to the system
+     * @param cinemas The list of current cinemas in the system
+     * @param movies The list of current movies in the system
+     * @param sessions The list of current sessions in the system
+     */
     public static void newSession(HashMap<String, Cinema> cinemas,
                                   HashMap<String, Movie> movies,
                                   HashMap<String, ArrayList<MovieSession>> sessions,
@@ -40,6 +49,11 @@ public class AdminSession {
 
     }
 
+    /**
+     * Updates an existing record of a session in the system
+     * @param cinemas The list of current cinemas in the system
+     * @param movies  The list of current movies in the system
+     */
     public static void updateSession(HashMap<String, Cinema> cinemas,
                                      HashMap<String, Movie> movies,
                                      Scanner sc) {
@@ -80,6 +94,7 @@ public class AdminSession {
 
     /**
      * Prints all the movie sessions stored
+     * @param sessions The list of current sessions in the system
      */
     public static void showSession(HashMap<String, ArrayList<MovieSession>> sessions) {
 

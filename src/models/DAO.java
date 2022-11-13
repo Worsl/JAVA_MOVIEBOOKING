@@ -179,7 +179,11 @@ public class DAO {
     static String temp1 = "./data/temp1.csv";
     static String temp2 = "./data/temp2.csv";
 
-    // Reading data for users to choose
+    /**
+     * Reads data from file and parses into a map of (Session Id -> Session)
+     * @param sessions The list of available sessions in the system;
+     * @return a map of the sessions available
+     */
     public static HashMap<String, MovieSession> getSessionsById(HashMap<String, ArrayList<MovieSession>> sessions) {
 
         HashMap<String, MovieSession> map = new HashMap<String, MovieSession>();
@@ -223,13 +227,15 @@ public class DAO {
 
     /**
      * update a movie in file
-     * @return void
+     * @param title The title of the movie to be updated
+     * @param category The field of the movie to be updated
+     * @param edit The updated value
      */
     public static void updateMovie(String title, int category, String edit) {
 
     	File oldFile = new File(movieFilePath);
     	File newFile = new File(temp1);
-    	
+
         try {
         	FileWriter fw = new FileWriter(temp1, true);
         	BufferedWriter bw = new BufferedWriter(fw);
@@ -242,7 +248,7 @@ public class DAO {
                 in = sc.nextLine();
                 // regex to split string by comma, but not commas within quotation marks
                 params = in.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
- 
+
                 if (params[0].equals(title) && !params[1].equals("End Showing")) {
                 	params[category] = edit;
                 	pw.println(params[0]+","+params[1]+","+params[2]+","+params[3]+","+params[4]+","+params[5]+","+params[6]+","+params[7]);
@@ -251,20 +257,20 @@ public class DAO {
                 	pw.println(in);
                 }
             }
-            
+
             sc.close();
             pw.flush();
             pw.close();
             oldFile.delete();
             File dump = new File (movieFilePath);
             newFile.renameTo(dump);
-            
+
             if (found) {
             	System.out.println("Movie successfully updated");
             } else {
             	System.out.println("Movie title not found");
             }
-            
+
         } catch (FileNotFoundException e) {
             System.out.println("Movies File not found");
             e.printStackTrace();
@@ -272,13 +278,13 @@ public class DAO {
         	System.out.println("IOException");
         	e.printStackTrace();
     	}
-        
+
         return;
     }
 
     /**
-     * Delete a movie from file
-     * @return void
+     * Deletes a movie from the system
+     * @param movies The updated list of movies
      */
     public static void deleteMovie(HashMap<String, Movie> movies) {
 
@@ -314,17 +320,20 @@ public class DAO {
     }
 
     /**
-     * add a movie session 
-     * @return void
+     * Creates a new session to be added to the system
+     * @param cinema The cinema the session would be held in
+     * @param title The movie's title for this session
+     * @param dateTime The planned scheduled time when this session will occur
+     * @param sessionID The unique identifier assigned to this session
      */
     public static void addSession(String cinema, String title, String dateTime, String sessionID) {
-    	
+
         try {
         	//check sessionID not already in file
         	File f = new File(moviesessions);
             Scanner sc = new Scanner(f);
         	String in, params[];
-        	
+
         	while (sc.hasNextLine()) {
                 in = sc.nextLine();
                 // regex to split string by comma, but not commas within quotation marks
@@ -335,20 +344,20 @@ public class DAO {
                 	return;
                 }
         	}
-        	
+
         	sc.close();
-        	
+
         	//add session to file
         	FileWriter fw = new FileWriter(moviesessions, true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter pw = new PrintWriter(bw);
-            
+
             pw.println(cinema + "," + title + "," + dateTime + "," + sessionID);
             pw.flush();
             pw.close();
-            
+
             System.out.println("Movie session successfully added.");
-  
+
         } catch (FileNotFoundException e) {
         	System.out.println("Moviesessions File not found");
             e.printStackTrace();
@@ -356,19 +365,22 @@ public class DAO {
         	System.out.println("IOException");
         	e.printStackTrace();
     	}
-        
+
         return;
     }
-    
+
     /**
-     * update a movie session
-     * @return void
+     * Updates an existing session in the system
+     * @param newCinema The new Cinema to be updated
+     * @param newTitle The title of the new Movie to be updated
+     * @param newDateTime The new time slot of the session
+     * @param sessionID The unique identifier of this session
      */
     public static void updateSession(String newCinema, String newTitle, String newDateTime, String sessionID) {
-    	
+
     	File oldFile = new File(moviesessions);
         File newFile = new File(temp2);
-        
+
         try {
             FileWriter fw = new FileWriter(temp2, true);
             BufferedWriter bw = new BufferedWriter(fw);
@@ -381,7 +393,7 @@ public class DAO {
                 in = sc.nextLine();
                 // regex to split string by comma, but not commas within quotation marks
                 params = in.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
- 
+
                 if (params[3].equals(sessionID)) {
                 	pw.println(newCinema + "," + newTitle + "," + newDateTime + "," + sessionID);
                 	found = true;
@@ -389,20 +401,20 @@ public class DAO {
                 	pw.println(in);
                 }
             }
-            
+
             sc.close();
             pw.flush();
             pw.close();
             oldFile.delete();
             File dump = new File(moviesessions);
             newFile.renameTo(dump);
-            
+
             if (found) {
             	System.out.println("Movie session successfully updated");
             } else {
             	System.out.println("Movie session not found");
             }
-            
+
         } catch (FileNotFoundException e) {
             System.out.println("Moviesessions File not found");
             e.printStackTrace();
@@ -410,19 +422,19 @@ public class DAO {
         	System.out.println("IOException");
         	e.printStackTrace();
     	}
-        
+
         return;
-    } 
+    }
 
     /**
-     * Delete a movie session
-     * @return void
+     * Removes an existing movie session by setting its showing status to END_OF_SHOWING
+     * @param sessionID The unique identifer of the session to be removed
      */
     public static void deleteSession(String sessionID) {
-    	
+
     	File oldFile = new File(moviesessions);
         File newFile = new File(temp2);
-        
+
         try {
             FileWriter fw = new FileWriter(temp2, true);
             BufferedWriter bw = new BufferedWriter(fw);
@@ -430,32 +442,32 @@ public class DAO {
         	Scanner sc = new Scanner(new File(moviesessions));
             String in, params[];
             Boolean found = false;
-            
+
             while (sc.hasNextLine()) {
                 in = sc.nextLine();
                 // regex to split string by comma, but not commas within quotation marks
                 params = in.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
- 
+
                 if (!params[3].equals(sessionID)) {
                 	pw.println(in);
                 } else {
                 	found = true;
                 }
             }
-            
+
             sc.close();
             pw.flush();
             pw.close();
             oldFile.delete();
             File dump = new File (moviesessions);
             newFile.renameTo(dump);
-            
+
             if (found) {
             	System.out.println("Movie session successfully deleted");
             } else {
             	System.out.println("Movie session not found");
             }
-            
+
         } catch (FileNotFoundException e) {
             System.out.println("Moviesessions File not found");
             e.printStackTrace();
@@ -463,7 +475,7 @@ public class DAO {
         	System.out.println("IOException");
         	e.printStackTrace();
     	}
-        
+
         return;
     }
 
@@ -554,7 +566,7 @@ public class DAO {
         try {
             if(comment == "") comment = " "; // replace blank comments with a single space.
             FileWriter myWriter = new FileWriter("./data/reviews.csv", true);
-            myWriter.write(String.valueOf(ratingScore) + "," + movie + "," + reviewer + "," + email + "," + mobileNumber + "," + comment + "\n");
+            myWriter.write(String.valueOf(ratingScore) + "," + movie + "," + reviewer + "," + email + "," + mobileNumber + ",\"" + comment + "\"\n");
             myWriter.close();
 
         } catch (IOException e) {
@@ -600,6 +612,7 @@ public class DAO {
 
     /**
      * The set containing the list of holidays.
+     * @return The HashSet of holiday dates
      */
     private static HashSet<LocalDate> holidays = null;
     /**
@@ -629,6 +642,10 @@ public class DAO {
 
     }
 
+    /**
+     * Adds a new holiday Date and saves to file
+     * @param date The new holiday date to be added
+     */
     public static void addHolidayToCSV(String date) {
         try {
             FileWriter myWriter = new FileWriter("./data/holidays.csv", true);

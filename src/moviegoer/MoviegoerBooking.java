@@ -30,6 +30,57 @@ import org.fusesource.jansi.AnsiConsole;
  */
 public class MoviegoerBooking {
 
+    /**
+     * Prints out the seat arrangement for a given session
+     * @param session The session to be shown
+     */
+    public static void listOfAvailableSeats(MovieSession session) {
+                AnsiConsole.systemInstall();
+
+        int count = 0;
+
+        Color color;
+        for (Seat seat : session.getAllSeats().values()) {
+            color = RED;
+            switch (seat.getSeatType()) {
+            case STANDARD:
+                if (!seat.checkOccupied()) color = GREEN;
+                System.out.print(ansi().fg(color).a(seat.getSeatId()).reset() + " ");
+                count++;
+                break;
+            case COUPLE:
+                if (!seat.checkOccupied()) color = MAGENTA;
+                System.out.print(ansi().fgBright(color).a(seat.getSeatId() + "-" + seat.getSeatId()).reset() + " ");
+                count += 2;
+                break;
+            case DISABLED:
+                if (!seat.checkOccupied()) color = BLUE;
+                System.out.print(ansi().fg(color).a(seat.getSeatId()).reset() + " ");
+                count++;
+                break;
+            case PREMIUM:
+                if (!seat.checkOccupied()) color = YELLOW;
+                System.out.print(ansi().fg(color).a("   " + seat.getSeatId()).reset() + "    ");
+                count += 3;
+                break;
+            default:
+                break;
+
+            }
+            if (count >= 9) {
+                System.out.println();
+                count = 0;
+            }
+        }
+
+        AnsiConsole.systemUninstall();
+    }
+
+    /**
+     * Mark the seats for a particular session to be unavailable
+     * @param sessions The list of current sessions available in the system
+     * @param bookings The list of current bookings made by past users
+     */
     public static void setTickets (HashMap<String, MovieSession> sessions, HashMap<String, Booking> bookings) {
         for (Booking b : bookings.values()) {
             for (Ticket t : b.getTickets()) {
@@ -60,6 +111,12 @@ public class MoviegoerBooking {
         }
     }
 
+    /**
+     * Creates a new booking made by a given user to be stored
+     * @param movies The list of current movies available in the system
+     * @param sessions The list of current sessions available in the system
+     * @param user The user who made the booking
+     */
     public static void createBooking
         (HashMap<String, Movie> movies,
          HashMap<String, ArrayList<MovieSession>> sessions,
@@ -89,7 +146,7 @@ public class MoviegoerBooking {
         .message("Select the movie you like to book");
         int index = 1;
         for (String title: moviesArr) {
-            if (movies.containsKey(title) && movies.get(title).getShowingStatus() != ShowingStatus.END_OF_SHOWING)
+            if (movies.containsKey(title) && (movies.get(title).getShowingStatus() == ShowingStatus.PREVIEW || movies.get(title).getShowingStatus() == ShowingStatus.NOW_SHOWING))
                 lpb.newItem(String.valueOf(index)).text("" + index++ + ". "+ title).add();
         }
         lpb.addPrompt();
@@ -121,29 +178,6 @@ public class MoviegoerBooking {
             } catch (Exception e) {
             e.printStackTrace();
             }
-        
-
-        // ok = false;
-
-        // while (!ok) {
-        //     System.out.println("Please select the session you would like:");
-
-        //     int idx = 1;
-        //     for (MovieSession session: sessionsArr) {
-        //         System.out.println(idx++ + ") " + session.getCinema().getCineplex().getName() + ", " + session.getCinema().getCinemaCode() + ", " + session.getTimeSlot().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")));
-        //     }
-
-        //     int sessionChoice = sc.nextInt();
-
-        //     ok = sessionChoice <= idx && movieChoice > 0;
-        //     if (!ok) {
-        //         System.out.println("You have selected an invalid session");
-        //     }
-        //     else {
-        //         selectedSession = sessionsArr.get(sessionChoice - 1);
-        //     }
-
-        // }
 
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
@@ -172,7 +206,8 @@ public class MoviegoerBooking {
 
         while (noOfTickets > 0) {
 
-            selectedSession.listofavailableSeats();
+            listOfAvailableSeats(selectedSession);
+
             if (!newBooking.getTickets().isEmpty()) {
                 System.out.println("You have currently selected:");
                 for (Ticket t : newBooking.getTickets())

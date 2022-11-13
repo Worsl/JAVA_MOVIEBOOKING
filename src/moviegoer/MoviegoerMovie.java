@@ -2,7 +2,9 @@ package moviegoer;
 
 import models.*;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Scanner;
+import java.time.format.DateTimeFormatter;
 import de.codeshelf.consoleui.prompt.ConsolePrompt;
 import de.codeshelf.consoleui.prompt.InputResult;
 import de.codeshelf.consoleui.prompt.ListResult;
@@ -40,10 +42,6 @@ public class MoviegoerMovie {
         boolean check = false;
         // check to see if the movie exists
         while (!check) {
-            // System.out.println("Enter the movie title:");
-            // movieTitle = sc.nextLine();
-            // check = movieExists(movies, movieTitle);
-            // if (!check) System.out.println("Movie does not exist, please try again.");
             try {
                 ConsolePrompt prompt = new ConsolePrompt();
                 PromptBuilder promptBuilder = prompt.getPromptBuilder();
@@ -52,15 +50,14 @@ public class MoviegoerMovie {
                     .name("movieTitle")
                     .message("Enter the movie title")
                     .defaultValue("Example: Black Adam")
-                    //.mask('*')
                     .addPrompt();
- 
+
                 HashMap<String, ? extends PromtResultItemIF> result = prompt.prompt(promptBuilder.build());
                 InputResult promptmovieTitle = (InputResult) result.get("movieTitle");
                 movieTitle = promptmovieTitle.getInput();
                 check = movieExists(movies, movieTitle);
                 if (!check) System.out.println("Movie does not exist, please try again.");
-                
+
               } catch (IOException e) {
                 e.printStackTrace();
         }finally {
@@ -71,7 +68,7 @@ public class MoviegoerMovie {
             }
           }
         }
-        
+
         return movies.get(movieTitle);
     }
 
@@ -86,20 +83,9 @@ public class MoviegoerMovie {
         // check to see if the movie exists
         String movieTitle = LookForMovieByTitle(movies).getTitle();
 
-        // System.out.println("Enter a rating out of 5:");
-         int movieRating = -1;
-         String movieComment;
-        // while(!(movieRating >= 1 && movieRating <= 5)){
-        //     if (sc.hasNextInt()) {
-        //         movieRating = sc.nextInt();
-        //         if(!(movieRating >= 1 && movieRating <= 5)){
-        //             System.out.println("Please input an integer between 1 and 5.");
-        //         }
-        //     } else {
-        //         System.out.println("Please input an integer.");
-        //         sc.next();
-        //     }
-        // }
+        int movieRating = -1;
+        String movieComment;
+
         ConsolePrompt prompt = new ConsolePrompt();
         PromptBuilder promptBuilder = prompt.getPromptBuilder();
         promptBuilder.createListPrompt()
@@ -116,11 +102,6 @@ public class MoviegoerMovie {
         .name("review")
         .message("Enter your comments: ")
         .addPrompt();
-
-
-        // sc.nextLine(); //flushes the scanner buffer.
-        // System.out.println("Enter your comments:");
-        // String movieComment = sc.nextLine();
 
         HashMap<String, ? extends PromtResultItemIF> result = prompt.prompt(promptBuilder.build());
         ListResult rating = (ListResult) result.get("Rating");
@@ -270,7 +251,38 @@ public class MoviegoerMovie {
      */
     public static void lookForMovieDetails(HashMap<String, Movie> movies){
         Movie movie = LookForMovieByTitle(movies);
-        movie.viewMovieDetails();
+
+        System.out.println("Movie Title :       " + movie.getTitle());
+        System.out.println("Showing Status :    " + movie.getShowingStatus());
+        System.out.println("Synopsis :          " + movie.getSynopsis());
+        System.out.println("Director :          " + movie.getDirector());
+        System.out.println("Cast :              " + movie.getCast());
+        System.out.println("Movie Type :        " + movie.getMovieType());
+        System.out.println("Duration :          " + movie.getDuration());
+        System.out.println("Content Rating :    " + movie.getContentRating());
+
+        LinkedList<MovieSession> movieSessions = movie.getMovieSessions();
+        System.out.println("Number of Sessions: " + movieSessions.size());
+
+        for (int i = 0; i < movieSessions.size(); i++) {
+            MovieSession movieSession = movieSessions.get(i);
+            System.out.println(movieSession.getCinema().getCineplex().getName() + "     " +  movieSession.getCinema().getCinemaCode() + "     " + movieSession.getTimeSlot().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")));
+            System.out.println("Number of Seats Occupied : " + movieSession.countSeats());
+            System.out.println();
+        }
+
+
+        System.out.println("Average Rating :    " + movie.getAverageRating());
+        LinkedList<Review> reviews = movie.getReviews();
+        int counter = 1;
+        for (int i = 0; i < reviews.size(); i++) {
+            Review review = reviews.get(i);
+            String reviewerName = review.getReviewer().getName();
+            System.out.println("(" + String.valueOf(counter) + ")      " + reviewerName + "     Rating:" + String.valueOf(review.getRatingScore()));
+            System.out.println("Review : " + review.getComment());
+            System.out.println();
+            counter++;
+        }
     }
 
     /**

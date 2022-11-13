@@ -93,6 +93,7 @@ class Admin {
                 System.out.println("Thank you for using MOBLIMA Admin Portal!");
                 break;
             }
+            System.out.println();
         }
     }
 }

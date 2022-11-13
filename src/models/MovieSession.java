@@ -35,6 +35,9 @@ public class MovieSession {
      */
     private LinkedHashMap<String, Seat> seats;
 
+    /**
+     * The unique identifier of the session.
+     */
     private String sessionId;
 
     /**
@@ -42,6 +45,7 @@ public class MovieSession {
      * @param timeSlot the Session's time slot
      * @param cinema the Session's cinema
      * @param movie the Session's movie
+     * @param sessionId the Session's unique id
      */
     public MovieSession (String timeSlot, Cinema cinema, Movie movie, String sessionId) {
         this.timeSlot = LocalDateTime.parse(timeSlot, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
@@ -69,9 +73,6 @@ public class MovieSession {
             seats.put(seatId + "5", new Seat(seatId + "5", this, SeatType.DISABLED));
         }
     }
-
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_GREEN = "\u001B[91m";
 
     //Overriding the default toString() Method
     @Override
@@ -104,6 +105,14 @@ public class MovieSession {
     }
 
     /**
+     * Gets all the seats of this session
+     * @return the LinkedList of seats
+     */
+    public LinkedHashMap<String, Seat> getAllSeats() {
+        return this.seats;
+    }
+
+    /**
      * Gets the particular seat of this session
      * @param seatId the id of the seat to return
      * @return the Seat with the corresponding seatId
@@ -111,6 +120,7 @@ public class MovieSession {
     public Seat getSeat(String seatId) {
         return seats.get(seatId);
     }
+
     /**
      * Books a particular seat given by the parameter
      * @param seatId the id of the seat to be booked
@@ -148,52 +158,12 @@ public class MovieSession {
         return count;
     }
 
+    /**
+     * Gets the unique identifier for this session
+     * @return the Session Id
+     */
     public String getSessionId() {
         return this.sessionId;
-    }
-
-    public void listofavailableSeats() {
-        AnsiConsole.systemInstall();
-
-        //seats.get("A3").occupySeat();
-
-        int count = 0;
-
-        Color color;
-        for (Seat seat : seats.values()) {
-            color = RED;
-            switch (seat.getSeatType()) {
-            case STANDARD:
-                if (!seat.checkOccupied()) color = GREEN;
-                System.out.print(ansi().fg(color).a(seat.getSeatId()).reset() + " ");
-                count++;
-                break;
-            case COUPLE:
-                if (!seat.checkOccupied()) color = MAGENTA;
-                System.out.print(ansi().fgBright(color).a(seat.getSeatId() + "-" + seat.getSeatId()).reset() + " ");
-                count += 2;
-                break;
-            case DISABLED:
-                if (!seat.checkOccupied()) color = BLUE;
-                System.out.print(ansi().fg(color).a(seat.getSeatId()).reset() + " ");
-                count++;
-                break;
-            case PREMIUM:
-                if (!seat.checkOccupied()) color = YELLOW;
-                System.out.print(ansi().fg(color).a("   " + seat.getSeatId()).reset() + "    ");
-                count += 3;
-                break;
-            default:
-                break;
-
-            }
-            if (count >= 9) {
-                System.out.println();
-                count = 0;
-            }
-        }
-
-        AnsiConsole.systemUninstall();
     }
 
 }
