@@ -376,11 +376,8 @@ public class DAO {
     }
 
     /**
-     * Updates an existing session in the system
-     * @param newCinema The new Cinema to be updated
-     * @param newTitle The title of the new Movie to be updated
-     * @param newDateTime The new time slot of the session
-     * @param sessionID The unique identifier of this session
+     * Updates the new set of sessions to the system
+     * @param sessions The collection of sessions to be updated
      */
     public static void updateSession(HashMap<String, MovieSession> sessions) {
 
@@ -399,7 +396,7 @@ public class DAO {
 
     /**
      * Removes an existing movie session by setting its showing status to END_OF_SHOWING
-     * @param sessionID The unique identifer of the session to be removed
+     * @param sessions The collections of sessions to be updated
      */
     public static void deleteSession(LinkedList<MovieSession> sessions) {
         try {
