@@ -156,7 +156,7 @@ class Moviegoer {
                             } catch (Exception e) {
                             e.printStackTrace();
                             }
-                        MoviegoerBooking.createBooking(sessions, currentUser, sc);
+                        MoviegoerBooking.createBooking(movies, sessions, currentUser, sc);
                         break;
                     case 6:
                         MoviegoerBooking.viewBookingRecord(currentUser, bookings);
