@@ -14,6 +14,9 @@ import jline.TerminalFactory;
 import org.fusesource.jansi.AnsiConsole;
 import java.io.IOException;
 
+/**
+ * The functions accessible to moviegoers regarding Movie
+ */
 public class MoviegoerMovie {
     /**
      * Checks if the movie exists

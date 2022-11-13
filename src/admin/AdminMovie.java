@@ -122,7 +122,7 @@ public class AdminMovie {
      */
     public static void editMovie(Scanner sc) {
         System.out.println("Enter movie title: ");
-        String title = sc.next();
+        String title = sc.nextLine();
 
         System.out.println("Select category to update ");
         System.out.println("1: showing status");
@@ -135,7 +135,8 @@ public class AdminMovie {
         int category = sc.nextInt();
 
         System.out.println("Enter updated text");
-        String edit = sc.next();
+        System.out.println(sc.nextLine());
+        String edit = sc.nextLine();
 
         DAO.updateMovie(title, category, edit);
     }
