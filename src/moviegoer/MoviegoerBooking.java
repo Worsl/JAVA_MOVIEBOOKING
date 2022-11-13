@@ -93,6 +93,7 @@ public class MoviegoerBooking {
     /**
      * Prints the booking records of the current login user
      * @param user The current login user
+     * @param bookings The list of bookings made by all users
      */
     public static void viewBookingRecord(User user, HashMap<String, Booking> bookings) {
         for (Booking booking : bookings.values()) {
@@ -113,9 +114,10 @@ public class MoviegoerBooking {
 
     /**
      * Creates a new booking made by a given user to be stored
-     * @param movies The list of current movies available in the system
+     * @param movies   The list of current movies available in the system
      * @param sessions The list of current sessions available in the system
-     * @param user The user who made the booking
+     * @param user     The user who made the booking
+     * @param sc       The scanner used in the entry point
      */
     public static void createBooking
         (HashMap<String, Movie> movies,

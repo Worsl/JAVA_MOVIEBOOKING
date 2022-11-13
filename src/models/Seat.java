@@ -29,7 +29,7 @@ public class Seat {
 
     /**
      * Creates a new Seat from the given parameters
-     * @param seatNo The Seat's number
+     * @param seatId The Seat's number
      * @param movieSession The Seat's associated movieSession
      */
     public Seat (String seatId, MovieSession movieSession, SeatType seatType) {

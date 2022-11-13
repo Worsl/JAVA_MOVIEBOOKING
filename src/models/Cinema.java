@@ -23,7 +23,6 @@ public class Cinema {
     /**
      * Creates a new Cinema from the given parameters
      * @param cinemaCode the Cinema's code
-     * @param capacity the Cinema's capacity
      * @param cinemaClass the Cinema's class
      * @param cineplex the Cinema's cineplex
      */

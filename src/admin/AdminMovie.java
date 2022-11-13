@@ -12,6 +12,7 @@ public class AdminMovie {
     /**
      * Creates a new movie to be added to the system
      * @param movies The list of current movies in the system
+     * @param sc     The scanner used in the entry point
      */
     public static void addMovie(HashMap<String, Movie> movies, Scanner sc) {
 
@@ -117,6 +118,7 @@ public class AdminMovie {
 
     /**
      * Updates an existing movie record in the system
+     * @param sc The scanner used in the entry point
      */
     public static void editMovie(Scanner sc) {
         System.out.println("Enter movie title: ");
@@ -141,6 +143,7 @@ public class AdminMovie {
     /**
      * Removes an existing movie record in the system
      * @param movies The list of movies currently in our system
+     * @param sc     The scanner used in the entry point
      */
     public static void deleteMovie(HashMap<String, Movie> movies, Scanner sc) {
 

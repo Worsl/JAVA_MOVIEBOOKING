@@ -28,6 +28,7 @@ public class AdminUtils {
 
     /**
      * Adds a new holiday date and saves into the system.
+     * @param sc The scanner used in the entry point
      */
     public static void addHolidayDate(Scanner sc) {
         System.out.println("Enter holiday date (YYYY-MM-DD format): ");

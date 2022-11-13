@@ -23,7 +23,7 @@ public class Review {
     /**
      * Crates a new Review from the given parameters
      * @param reviewer The Review's reviewer
-     * @param rating The Review's rating
+     * @param ratingScore The Review's rating
      * @param comment The Review's comment
      */
     public Review (User reviewer, int ratingScore, String comment) {

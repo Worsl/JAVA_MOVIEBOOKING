@@ -184,7 +184,7 @@ public class Movie {
 
     /**
      * Adds a review for this Movie
-     * @param the new review of this Movie
+     * @param review The new review of this Movie
      */
     public void addReview(Review review) {
         this.reviews.add(review);
@@ -192,7 +192,7 @@ public class Movie {
 
     /**
      * Adds a new session for this Movie
-     * @param the new movie session of this movie
+     * @param movieSession The new movie session of this movie
      */
     public void addMovieSession(MovieSession movieSession) {
         this.movieSessions.add(movieSession);
