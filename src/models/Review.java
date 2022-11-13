@@ -23,7 +23,7 @@ public class Review {
     /**
      * Crates a new Review from the given parameters
      * @param reviewer The Review's reviewer
-     * @param rating The Review's rating
+     * @param ratingScore The Review's rating
      * @param comment The Review's comment
      */
     public Review (User reviewer, int ratingScore, String comment) {
@@ -50,7 +50,7 @@ public class Review {
 
     /**
      * Updates the rating score of this review
-     * @param ratingScore the new rating sacore of this review
+     * @param ratingScore the new rating score of this review
      */
     public void setRatingScore(int ratingScore) {
         this.ratingScore = ratingScore;

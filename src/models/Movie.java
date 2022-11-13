@@ -2,6 +2,8 @@ package models;
 
 import java.util.LinkedList;
 
+import models.ShowingStatus;
+
 /**
  * Represents a movie
  */
@@ -68,8 +70,7 @@ public class Movie {
      * @param duration The Movie's duration
      * @param contentRating The Movie's content rating
      */
-    public Movie(String title, ShowingStatus showingStatus, String synopsis, String director, String cast,
-            MovieType movieType, int duration, ContentRating contentRating) {
+    public Movie(String title, ShowingStatus showingStatus, String synopsis, String director, String cast, MovieType movieType, int duration, ContentRating contentRating) {
         this.title = title;
         this.showingStatus = showingStatus;
         this.synopsis = synopsis;
@@ -163,6 +164,13 @@ public class Movie {
     }
 
     /**
+     * Sets this Movie to END_OF_SHOWING
+     */
+    public void remove() {
+        this.showingStatus = ShowingStatus.END_OF_SHOWING;
+    }
+
+    /**
      * Gets the number of tickets sold for this Movie.
      * @return the sum of tickets sold for this Movie.
      */
@@ -176,7 +184,7 @@ public class Movie {
 
     /**
      * Adds a review for this Movie
-     * @param the new review of this Movie
+     * @param review The new review of this Movie
      */
     public void addReview(Review review) {
         this.reviews.add(review);
@@ -184,10 +192,26 @@ public class Movie {
 
     /**
      * Adds a new session for this Movie
-     * @param the new movie session of this movie
+     * @param movieSession The new movie session of this movie
      */
     public void addMovieSession(MovieSession movieSession) {
         this.movieSessions.add(movieSession);
+    }
+
+    /**
+     * Get the average rating of the movie
+     * @return average rating of the reviews
+     */
+    public float getAverageRating() {
+        float totalRating = 0;
+        int n = 0;
+        LinkedList<Review> reviews = this.getReviews();
+        for (int i = 0; i < reviews.size(); i++) {
+            totalRating += reviews.get(i).getRatingScore();
+            n++;
+        }
+        if(n==0) return 0;
+        else return totalRating/n;
     }
 
 }

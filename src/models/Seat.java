@@ -1,5 +1,6 @@
 package models;
 
+
 /**
  * Represents a seat for a given booking
  *
@@ -22,14 +23,26 @@ public class Seat {
     private MovieSession movieSession;
 
     /**
-     * Creates a new Seat from the given parameters
-     * @param seatNo The Seat's number
-     * @param movieSession The Seat's associated movieSession
+     * The type of the seat
      */
-    public Seat (String seatId, MovieSession movieSession) {
+    private SeatType seatType;
+
+    /**
+     * Creates a new Seat from the given parameters
+     * @param seatId The Seat's number
+     * @param movieSession The Seat's associated movieSession
+     * @param seatType The Seat's seat type
+     */
+    public Seat (String seatId, MovieSession movieSession, SeatType seatType) {
         this.isOccupied = false;
         this.seatId = seatId;
         this.movieSession = movieSession;
+        this.seatType = seatType;
+    }
+
+    @Override
+    public String toString() {
+        return seatId;
     }
 
     /**
@@ -37,6 +50,13 @@ public class Seat {
      */
     public void occupySeat() {
         isOccupied = true;
+    }
+
+    /**
+     * Sets this seat to be unoccupied
+     */
+    public void unoccupySeat() {
+        isOccupied = false;
     }
 
     /**
@@ -53,6 +73,14 @@ public class Seat {
      */
     public String getSeatId() {
         return this.seatId;
+    }
+
+    /**
+     * Gets the type of this seat
+     * @return the seatType of this seat
+     */
+    public SeatType getSeatType() {
+        return this.seatType;
     }
 
 }

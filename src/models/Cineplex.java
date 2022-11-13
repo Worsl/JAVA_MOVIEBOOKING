@@ -99,7 +99,7 @@ public class Cineplex {
 
     /**
      * Sets the closing hours of this Cineplex.
-     * @return closingHorus this Cineplex's new closing hours.
+     * @param closingHours this Cineplex's new closing hours.
      */
     public void setClosingHours(LocalTime closingHours) {
         this.closingHours = closingHours;

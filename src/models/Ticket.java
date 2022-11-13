@@ -1,5 +1,6 @@
 package models;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 
 /**
@@ -64,7 +65,17 @@ public class Ticket {
      * @return the price of the ticket
      */
     public double getTicketPrice() {
-        // TODO determine logic for price (by CinemaClass, TicketType, MovieType)
-        return 0;
+        double dayPrice = 0;
+        LocalDateTime dt = this.booking.getMovieSession().getTimeSlot();
+        DayOfWeek day = dt.getDayOfWeek();
+        if (DAO.getHolidays().contains(dt.toLocalDate())) dayPrice = 3;
+        else if (day == DayOfWeek.FRIDAY || day == DayOfWeek.SATURDAY || day == DayOfWeek.SUNDAY)
+            dayPrice = 2;
+        return this.seat.getSeatType().multiplier *
+            (
+             this.booking.getMovieSession().getCinema().getCinemaClass().loungePrice +
+             this.booking.getMovieSession().getMovie().getMovieType().basePrice +
+             this.ticketType.agePricing
+             ) + dayPrice;
     }
 }
