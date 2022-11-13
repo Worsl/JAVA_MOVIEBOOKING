@@ -116,6 +116,8 @@ public class DAO {
 
     /**
      * Reads data from file and parses into a map of (Movie Title: Session)
+     * @param cinemas The list of cinemas available in the system
+     * @param movies The list of movies available in the system
      * @return a map of the available sessions
      */
     public static HashMap<String, ArrayList<MovieSession>> getSessions(HashMap<String, Cinema> cinemas, HashMap<String, Movie> movies) {
@@ -153,6 +155,7 @@ public class DAO {
     /**
      * Reads data from file and parses into a map of (Transaction Id: bookings)
      * @param sessions The map of current ongoing sessions
+     * @param users The map of current registered users
      * @return a map of the bookings made
      */
     public static HashMap<String, Booking> getBookings(HashMap<String, MovieSession> sessions, HashMap<String, User> users) {
@@ -229,7 +232,7 @@ public class DAO {
     }
 
     /**
-     * update a movie in file
+     * Updates a movie in file
      * @param title The title of the movie to be updated
      * @param category The field of the movie to be updated
      * @param edit The updated value
@@ -491,8 +494,9 @@ public class DAO {
     * Writes reviews into a CSV file:
      * @param ratingScore The Movie's Rating
      * @param movie The Movie's Title
-     * @param reviewer The Reviewer/User's name
-     * @param comment The Rating's comments
+     * @param reviewer The Reviewer's name
+     * @param mobileNumber The Reviewer's mobile number
+     * @param comment The Reviewer's comments
     */
    public static void writeReviewsToCSV(int ratingScore, String movie, String reviewer, String email, String mobileNumber, String comment) {
         try {
@@ -508,7 +512,8 @@ public class DAO {
     }
 
     /**
-     * * Reads data from file and parses into a linked list of tickets
+     * Reads data from file and parses into a linked list of tickets
+     * @param bookings The map of past bookings made by users
      */
     public static void setTickets(HashMap<String, Booking> bookings) {
 

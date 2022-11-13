@@ -148,6 +148,7 @@ public class MovieSession {
     /**
      * Books a particular seat given by the parameter
      * @param seatId the id of the seat to be booked
+     * @return true if seat is successfully set, false otherwise
      */
     public boolean setSeat(String seatId) {
         boolean check = false;

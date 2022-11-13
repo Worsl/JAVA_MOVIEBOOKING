@@ -163,7 +163,7 @@ public class MoviegoerMovie {
         sortByRating(movieList);
 
         counter = 1;
-        int n = min(5, movies.size());
+        int n = Math.min(5, movies.size());
         for (int i=0; i<n; i++){
             System.out.println("(" + String.valueOf(counter) + ")      " + movieList[i].getTitle() + "      Average Rating: " + movieList[i].getAverageRating());
             counter++;
@@ -205,23 +205,12 @@ public class MoviegoerMovie {
         sortBySales(movieList);
 
         counter = 1;
-        int n = min(5, movies.size());
+        int n = Math.min(5, movies.size());
         for (int i=0; i<n; i++){
             System.out.println("(" + String.valueOf(counter) + ")      " + movieList[i].getTitle() + "      Tickets Sold: " + movieList[i].getTicketsSold());
             counter++;
         }
 
-    }
-
-    /**
-     * utility function to find the minimum of two integer values
-     * @param a an int
-     * @param b an int
-     * @return the smaller integer, a if tied.
-     */
-    private static int min(int a, int b) {
-        if(a<=b) return a;
-        else return b;
     }
 
     /**

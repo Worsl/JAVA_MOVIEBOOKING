@@ -96,9 +96,10 @@ public class User {
 
     /**
      * Adds a new booking for this user
+     * @param booking The new booking to be added to user
      */
-    public void addBooking(Booking b) {
-        bookings.add(b);
+    public void addBooking(Booking booking) {
+        bookings.add(booking);
     }
 
     /**

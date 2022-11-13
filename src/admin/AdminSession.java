@@ -18,6 +18,7 @@ public class AdminSession {
      * @param cinemas The list of current cinemas in the system
      * @param movies The list of current movies in the system
      * @param sessions The list of current sessions in the system
+     * @param sc The scanner used in the entry point
      */
     public static void newSession(HashMap<String, Cinema> cinemas,
                                   HashMap<String, Movie> movies,

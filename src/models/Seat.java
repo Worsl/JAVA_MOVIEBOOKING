@@ -31,6 +31,7 @@ public class Seat {
      * Creates a new Seat from the given parameters
      * @param seatId The Seat's number
      * @param movieSession The Seat's associated movieSession
+     * @param seatType The Seat's seat type
      */
     public Seat (String seatId, MovieSession movieSession, SeatType seatType) {
         this.isOccupied = false;
