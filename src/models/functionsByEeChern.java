@@ -87,7 +87,7 @@ public class functionsByEeChern {
 
         // System.out.println("Enter a rating out of 5:");
          int movieRating = -1;
-         String movieComment;
+         //String movieComment;
         // while(!(movieRating >= 1 && movieRating <= 5)){
         //     if (sc.hasNextInt()) {
         //         movieRating = sc.nextInt();
@@ -125,7 +125,7 @@ public class functionsByEeChern {
         ListResult rating = (ListResult) result.get("Rating");
         InputResult review1 = (InputResult) result.get("review");
         movieRating = Integer.parseInt(rating.getSelectedId());
-        movieComment = review1.getInput();
+        String movieComment = String.format("\"%s\"", review1.getInput());
 
         Review review = new Review(user, movieRating, movieComment);
 
