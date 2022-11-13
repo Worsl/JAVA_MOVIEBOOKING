@@ -1,7 +1,8 @@
 # MOBLIMA
-OODP Course project for a movie booking application.
+Done by Group SS11_GP3 OODP Course project for a movie booking application.
 
-Done by SS11_GP3
+This project can be found on [Github](https://github.com/Worsl/OODP_SS11_GP3)
+A demo for this project can be found on [Youtube](https://www.youtube.com/watch?v=yUlwvRwmYz4)
 
 # Contributions
 This project could not have been possible without the following:
