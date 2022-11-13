@@ -50,7 +50,7 @@ public class Review {
 
     /**
      * Updates the rating score of this review
-     * @param ratingScore the new rating sacore of this review
+     * @param ratingScore the new rating score of this review
      */
     public void setRatingScore(int ratingScore) {
         this.ratingScore = ratingScore;

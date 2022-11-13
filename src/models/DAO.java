@@ -23,7 +23,13 @@ import java.io.*;
 public class DAO {
 
     // File Paths
+    /**
+     * The relative file path that stores movie data
+     */
     private static String movieFilePath = "./data/movies.csv";
+    /**
+     * The relative file path that stores session data
+     */
     private static String sessionFilePath = "./data/moviesessions.csv";
 
     /**

@@ -106,7 +106,7 @@ public class MovieSession {
 
     /**
      * Gets all the seats of this session
-     * @return the LinkedList of seats
+     * @return the LinkedHashMap of seats
      */
     public LinkedHashMap<String, Seat> getAllSeats() {
         return this.seats;
