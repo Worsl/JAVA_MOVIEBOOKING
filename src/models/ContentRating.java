@@ -10,15 +10,15 @@ package models;
 * Represents the ContentRating enum
 */
 public enum ContentRating {
-    PG, 
+    PG,
     PG13,
-    NC16, 
-    M18, 
+    NC16,
+    M18,
     R21;
 
     /**
      * @return ContentRating ENUM based on String parsed
-     */    
+     */
     public static ContentRating getContentRating(String s) {
         switch(s.toUpperCase())
         {

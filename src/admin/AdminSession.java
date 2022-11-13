@@ -21,10 +21,10 @@ public class AdminSession {
             System.out.println("Enter movie title: ");
             String title = sc.nextLine();
             if (movies.containsKey(title)) {
-                System.out.println("Enter data time (YYYY-MM-DD HH:MM format): ");
+                System.out.println("Enter date time (YYYY-MM-DD HH:MM format): ");
                 String dateTime = sc.nextLine();
                 while (!(dateTime.matches("\\d{4}-\\d{2}-\\d{2}\\s\\d{2}:\\d{2}"))) {
-                    System.out.println("Enter data time (YYYY-MM-DD HH:MM format): ");
+                    System.out.println("Enter date time (YYYY-MM-DD HH:MM format): ");
                     dateTime = sc.nextLine();
                 }
 
@@ -53,10 +53,10 @@ public class AdminSession {
             System.out.println("Enter new movie title: ");
             String newTitle = sc.nextLine();
             if (movies.containsKey(newTitle)) {
-                System.out.println("Enter new data time (YYYY-MM-DD HH:MM format): ");
+                System.out.println("Enter new date time (YYYY-MM-DD HH:MM format): ");
                 String newDateTime = sc.nextLine();
                 while (!(newDateTime.matches("\\d{4}-\\d{2}-\\d{2}\\s\\d{2}:\\d{2}"))) {
-                    System.out.println("Enter new data time (YYYY-MM-DD HH:MM format): ");
+                    System.out.println("Enter new date time (YYYY-MM-DD HH:MM format): ");
                     newDateTime = sc.nextLine();
                 }
                 DAO.updateSession(newCinema, newTitle, newDateTime, sessionId);

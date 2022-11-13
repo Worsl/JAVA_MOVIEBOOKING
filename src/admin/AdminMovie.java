@@ -18,7 +18,34 @@ public class AdminMovie {
             return;
         }
         System.out.println("Enter movie showing status: ");
-        String showingStatus = sc.next(); // TODO
+        ShowingStatus status = null;
+        int showingStatusOpt = 0;
+        while (showingStatusOpt > 4 || showingStatusOpt <= 0) {
+            System.out.println("1. Coming Soon");
+            System.out.println("2. Preview");
+            System.out.println("3. Now Showing");
+            System.out.println("4. End of Showing");
+            showingStatusOpt = sc.nextInt();
+            switch (showingStatusOpt) {
+                case 1:
+                    status = ShowingStatus.COMING_SOON;
+                    break;
+                case 2:
+                    status = ShowingStatus.PREVIEW;
+                    break;
+                case 3:
+                    status = ShowingStatus.NOW_SHOWING;
+                    break;
+                case 4:
+                    status = ShowingStatus.END_OF_SHOWING;
+                    break;
+                default:
+                    System.out.println("You have selected an invalid choice.");
+                    status = null;
+                    break;
+            }
+        }
+        sc.nextLine();
         System.out.println("Enter movie synopsis: ");
         String synopsis = sc.nextLine();
         System.out.println("Enter movie director: ");
@@ -26,13 +53,61 @@ public class AdminMovie {
         System.out.println("Enter movie cast: ");
         String cast = sc.nextLine();
         System.out.println("Enter movie type: ");
-        String type = sc.nextLine();
+        MovieType type = null;
+        int typeOpt = 0;
+        while (typeOpt > 2 || typeOpt <= 0) {
+            System.out.println("1. Regular");
+            System.out.println("2. 3D");
+            typeOpt = sc.nextInt();
+            switch (typeOpt) {
+                case 1:
+                    type = MovieType.REGULAR;
+                    break;
+                case 2:
+                    type = MovieType.THREE_DIMENSIONAL;
+                    break;
+                default:
+                    System.out.println("You have selected an invalid choice.");
+                    type = null;
+                    break;
+            }
+        }
+
         System.out.println("Enter movie duration: ");
         int duration = sc.nextInt();
         System.out.println("Enter movie content rating: ");
-        String contentRating = sc.next(); // TODO
+        ContentRating rating = null;
+        int contentRatingOpt = 0;
+        while (contentRatingOpt > 5 || contentRatingOpt <= 0) {
+            System.out.println("1. PG");
+            System.out.println("2. PG13");
+            System.out.println("3. NC16");
+            System.out.println("4. M18");
+            System.out.println("5. R21");
+            contentRatingOpt = sc.nextInt();
+            switch (contentRatingOpt) {
+                case 1:
+                    rating = ContentRating.PG;
+                    break;
+                case 2:
+                    rating = ContentRating.PG13;
+                    break;
+                case 3:
+                    rating = ContentRating.NC16;
+                    break;
+                case 4:
+                    rating = ContentRating.M18;
+                    break;
+                case 5:
+                    rating = ContentRating.R21;
+                    break;
+                default:
+                    System.out.println("You have selected an invalid choice.");
+                    status = null;
+            }
+        }
 
-        DAO.addMovie(new Movie(title, ShowingStatus.getShowingStatus(showingStatus), synopsis, director, cast, MovieType.getMovieType(type), duration, ContentRating.getContentRating(contentRating)));
+        DAO.addMovie(new Movie(title, status, synopsis, director, cast, type, duration, rating));
     }
 
     public static void editMovie(Scanner sc) {

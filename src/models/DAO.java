@@ -206,7 +206,7 @@ public class DAO {
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter pw = new PrintWriter(bw);
 
-            pw.println(movie.getTitle() + "," + movie.getShowingStatus().name() + "," + movie.getSynopsis() + "," + movie.getDirector() + "," + movie.getCast() + "," + movie.getMovieType().name() + "," + movie.getDuration() + "," + movie.getContentRating().name());
+            pw.println(movie.getTitle() + "," + movie.getShowingStatus().name() + ",\"" + movie.getSynopsis() + "\"," + movie.getDirector() + ",\"" + movie.getCast() + "\"," + movie.getMovieType().name() + "," + movie.getDuration() + "," + movie.getContentRating().name());
             pw.flush();
             pw.close();
 
