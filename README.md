@@ -42,6 +42,9 @@ java -cp lib/\*: $PROGRAM
 ```
 Replace `$PROGRAM` with Moviegoer or Admin
 
+## Login as Moviegoer
+When using the application as a moviegoer, you will be prompted to log in. The user credentials can be found in users.csv (The format of how to read can be seen [below](#userscsv))
+
 <a id="orgc5c4c26"></a>
 
 # Data CSV Files Format
