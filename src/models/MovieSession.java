@@ -122,6 +122,30 @@ public class MovieSession {
     }
 
     /**
+     * Updates this session to be held at another cinema
+     * @param cinema The cinema to be held at
+     */
+    public void setCinema(Cinema cinema) {
+        this.cinema = cinema;
+    }
+
+    /**
+     * Updates this session's movie
+     * @param movie The new movie to be screened
+     */
+    public void setMovie(Movie movie) {
+        this.movie = movie;
+    }
+
+    /**
+     * Updates the new time slot for this session
+     * @param timeSlot The new timing for this session
+     */
+    public void setTimeSlot(String timeSlot) {
+        this.timeSlot = LocalDateTime.parse(timeSlot, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+    }
+
+    /**
      * Books a particular seat given by the parameter
      * @param seatId the id of the seat to be booked
      */
